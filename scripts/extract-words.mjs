@@ -1,0 +1,27 @@
+import {readFile} from "fs/promises";
+
+const fileName = process.argv[2];
+
+if (!fileName) throw new Error("please pass filename!");
+
+const content = await readFile(fileName, "utf8");
+
+const map = {
+  ä: "ae",
+  ö: "oe",
+  ü: "ue",
+  ß: "ss",
+};
+
+const applyMapping = (word) =>
+  Array.from(word)
+    .map((letter) => map[letter] || letter)
+    .join("");
+
+const validWords = content
+  .split("\n")
+  .map((word) => word.toLowerCase())
+  .map(applyMapping)
+  .filter((w) => w.length === 5);
+
+console.log(JSON.stringify(validWords, null, 2));
