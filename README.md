@@ -16,7 +16,7 @@ This is the code base which we build togther in [my twitch stream](https://www.t
 
 ### Next steps:
 
-- [] style with vanilla-extract (dark & light theme!)
-- [] proper game loop
-- [] animations (and sounds?)
-- [] localization (i.e. support for different languages and keyboard layouts)
+- [ ] style with vanilla-extract (dark & light theme!)
+- [ ] proper game loop
+- [ ] animations (and sounds?)
+- [ ] localization (i.e. support for different languages and keyboard layouts)
