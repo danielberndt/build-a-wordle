@@ -11,6 +11,8 @@ const map = {
   ö: "oe",
   ü: "ue",
   ß: "ss",
+  é: "e",
+  á: "a",
 };
 
 const applyMapping = (word) =>
@@ -22,6 +24,9 @@ const validWords = content
   .split("\n")
   .map((word) => word.toLowerCase())
   .map(applyMapping)
+  .filter((w) => /^[a-z]+$/.test(w))
   .filter((w) => w.length === 5);
 
-console.log(JSON.stringify(validWords, null, 2));
+const uniqueWords = [...new Set(validWords)];
+
+console.log(JSON.stringify(uniqueWords, null, 2));
