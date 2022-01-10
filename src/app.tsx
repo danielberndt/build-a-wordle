@@ -80,16 +80,18 @@ type BoardProps = {
   guessWord: string;
 };
 
+const fillWith = (input: string, fillChar: string, len: number) => {
+  if (input.length >= len) return input;
+  return input + Array.from(new Array(len - input.length), () => fillChar).join("");
+};
+
 const Board = ({input, submittedWords, guessWord}: BoardProps) => (
   <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
     {submittedWords.map((word, idx) => (
       <SubmittedWord key={idx} word={word} guessWord={guessWord} />
     ))}
-    {input ? (
-      <div style={{fontFamily: "monospace", fontSize: "12vw"}}>{input}</div>
-    ) : (
-      <div style={{fontSize: "5vw", color: "lightgray"}}>start typing...</div>
-    )}
+
+    <div style={{fontFamily: "monospace", fontSize: "12vw"}}>{fillWith(input, "·", 5)}</div>
   </div>
 );
 
