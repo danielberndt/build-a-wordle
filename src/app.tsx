@@ -36,8 +36,8 @@ const evaluateWord = ({word, guessWord}: {word: string; guessWord: string}): Ann
   letters.forEach((l, idx) => {
     if (l === guessWord[idx]) {
       correctIdx.add(idx);
+      remainingLetters.delete(l);
     }
-    remainingLetters.delete(l);
   });
 
   return letters.map((letter, idx) => {
