@@ -21,13 +21,8 @@ const createGuessWordMapping = (guessWord: string): GuessWordMapping => {
   return mapping;
 };
 
-const evaluateWord = ({
-  word,
-  guessWordMapping,
-}: {
-  word: string;
-  guessWordMapping: GuessWordMapping;
-}): AnnotadedLetter[] => {
+const evaluateWord = ({word, guessWord}: {word: string; guessWord: string}): AnnotadedLetter[] => {
+  const guessWordMapping = createGuessWordMapping(guessWord);
   // const mapping = {
   //   g: [0],
   //   u: [1],
@@ -35,12 +30,24 @@ const evaluateWord = ({
   //   s: [3, 4]
   // }
 
-  return Array.from(word).map((letter, idx) => {
-    const indeces = guessWordMapping[letter];
-    const getType = (): AnnotadedLetter["type"] => {
-      if (indeces === undefined) return "notFound";
-      if (indeces.includes(idx)) return "correctPosition";
-      return "found";
+  const remainingLetters = new Set(Array.from(guessWord));
+  const letters = Array.from(word);
+  const correctIdx = new Set<number>();
+  letters.forEach((l, idx) => {
+    if (l === guessWord[idx]) {
+      correctIdx.add(idx);
+    }
+    remainingLetters.delete(l);
+  });
+
+  return letters.map((letter, idx) => {
+    const getType = () => {
+      if (correctIdx.has(idx)) return "correctPosition";
+      if (remainingLetters.has(letter)) {
+        remainingLetters.delete(letter);
+        return "found";
+      }
+      return "notFound";
     };
     return {letter, type: getType()};
   });
@@ -52,12 +59,12 @@ const typeByColor: {[Type in AnnotadedLetter["type"]]: string} = {
   correctPosition: "green",
 };
 
-type SubmittedWordProps = {word: string; guessWordMapping: GuessWordMapping};
-const SubmittedWord = ({word, guessWordMapping}: SubmittedWordProps) => {
-  const annotatedLetters = evaluateWord({word, guessWordMapping});
+type SubmittedWordProps = {word: string; guessWord: string};
+const SubmittedWord = ({word, guessWord}: SubmittedWordProps) => {
+  const annotatedLetters = evaluateWord({word, guessWord});
 
   return (
-    <div>
+    <div style={{fontFamily: "monospace", fontSize: "12vw"}}>
       {annotatedLetters.map(({letter, type}, idx) => (
         <span key={idx} style={{color: typeByColor[type]}}>
           {letter}
@@ -70,62 +77,21 @@ const SubmittedWord = ({word, guessWordMapping}: SubmittedWordProps) => {
 type BoardProps = {
   input: string;
   submittedWords: string[];
-  guessWordMapping: GuessWordMapping;
+  guessWord: string;
 };
 
-const Board = ({input, submittedWords, guessWordMapping}: BoardProps) => (
-  <div>
-    Board:
+const Board = ({input, submittedWords, guessWord}: BoardProps) => (
+  <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
     {submittedWords.map((word, idx) => (
-      <SubmittedWord key={idx} word={word} guessWordMapping={guessWordMapping} />
+      <SubmittedWord key={idx} word={word} guessWord={guessWord} />
     ))}
-    <div>{input}</div>
+    {input ? (
+      <div style={{fontFamily: "monospace", fontSize: "12vw"}}>{input}</div>
+    ) : (
+      <div style={{fontSize: "5vw", color: "lightgray"}}>start typing...</div>
+    )}
   </div>
 );
-
-type InputProps = {
-  input: string;
-  setInput: StateUpdater<string>;
-  onSubmitWord: (word: string) => void;
-  deWords: string[];
-  annotatedKeys: AnnotatedKeys;
-};
-
-const Input = ({input, setInput, onSubmitWord, deWords}: InputProps) => {
-  const [error, setError] = useState<string | null>(null);
-  const wordSet = useMemo(() => new Set(deWords), []);
-
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    if (!input.match(/[a-zA-Z]/)) {
-      setError("only letters please!");
-      return;
-    }
-
-    if (input.length !== 5) {
-      setError("5 letters please!");
-      return;
-    }
-
-    if (!wordSet.has(input.toLowerCase())) {
-      setError("not a valid word!");
-      return;
-    }
-
-    setError(null);
-    onSubmitWord(input.toLowerCase());
-    setInput("");
-  };
-
-  return (
-    <div>
-      {error && <div style={{color: "red"}}>{error}</div>}
-      <form onSubmit={handleSubmit}>
-        <input type="text" value={input} onInput={(e: any) => setInput(e.target.value)} />
-      </form>
-    </div>
-  );
-};
 
 const keyRows = ["qwertzuiop".split(""), "asdfghjkl".split(""), "yxcvbnm".split("")];
 
@@ -140,10 +106,22 @@ type LetterButtonProps = {
   annotatedKey: AnnotadedLetter["type"] | undefined;
   onClick: (letter: string) => unknown;
 };
+
+const buttonStyle = {
+  flex: "auto",
+  minHeight: "2.5rem",
+  minWidth: "1rem",
+  margin: "2px 0.5vw",
+  fontFamily: "monospace",
+};
+
 const LetterButton = ({letter, annotatedKey, onClick}: LetterButtonProps) => {
   return (
     <button
-      style={{backgroundColor: annotatedKey ? buttonColorsByType[annotatedKey] : undefined}}
+      style={{
+        ...buttonStyle,
+        backgroundColor: annotatedKey ? buttonColorsByType[annotatedKey] : undefined,
+      }}
       onClick={() => onClick(letter)}
     >
       {letter}
@@ -151,7 +129,14 @@ const LetterButton = ({letter, annotatedKey, onClick}: LetterButtonProps) => {
   );
 };
 
-const NewInput = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: InputProps) => {
+type ButtonInputProps = {
+  input: string;
+  setInput: StateUpdater<string>;
+  onSubmitWord: (word: string) => void;
+  deWords: string[];
+  annotatedKeys: AnnotatedKeys;
+};
+const ButtonInput = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: ButtonInputProps) => {
   const [error, setError] = useState<string | null>(null);
   const wordSet = useMemo(() => new Set(deWords), []);
 
@@ -178,9 +163,9 @@ const NewInput = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Input
   };
 
   return (
-    <div>
-      {error && <div style={{color: "red"}}>{error}</div>}
-      <div>
+    <div style={{display: "flex", flexDirection: "column"}}>
+      {error && <div style={{color: "red", textAlign: "center"}}>{error}</div>}
+      <div style={{display: "flex"}}>
         {keyRows[0].map((letter) => (
           <LetterButton
             key={letter}
@@ -190,7 +175,7 @@ const NewInput = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Input
           />
         ))}
       </div>
-      <div>
+      <div style={{display: "flex"}}>
         {keyRows[1].map((letter) => (
           <LetterButton
             key={letter}
@@ -200,8 +185,10 @@ const NewInput = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Input
           />
         ))}
       </div>
-      <div>
-        <button onClick={handleSubmit}>enter</button>
+      <div style={{display: "flex"}}>
+        <button style={buttonStyle} onClick={handleSubmit}>
+          enter
+        </button>
         {keyRows[2].map((letter) => (
           <LetterButton
             key={letter}
@@ -210,7 +197,9 @@ const NewInput = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Input
             onClick={(l) => setInput(input + l)}
           />
         ))}
-        <button onClick={() => setInput(input.slice(0, -1))}>del</button>
+        <button style={buttonStyle} onClick={() => setInput(input.slice(0, -1))}>
+          del
+        </button>
       </div>
     </div>
   );
@@ -263,15 +252,9 @@ export function App() {
   return (
     <>
       {/* <Heading /> */}
-      <Board guessWordMapping={guessWordMapping} input={input} submittedWords={submittedWords} />
-      <Input
-        setInput={setInput}
-        input={input}
-        onSubmitWord={handleSubmitWord}
-        deWords={deWords}
-        annotatedKeys={annotatedKeys}
-      />
-      <NewInput
+      <Board guessWord={guessWord} input={input} submittedWords={submittedWords} />
+      <div style={{flex: "auto", maxHeight: 500}} />
+      <ButtonInput
         setInput={setInput}
         input={input}
         onSubmitWord={handleSubmitWord}
