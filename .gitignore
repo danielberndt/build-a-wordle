@@ -4,3 +4,5 @@ dist
 dist-ssr
 *.local
 data/*
+!data/german-pruned.txt
+src/word-lists/*
