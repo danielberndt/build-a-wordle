@@ -47,7 +47,7 @@ const applyMapping = (word) =>
 const input = await readFromStdin();
 
 const validWords = input
-  .split("\n")
+  .split(/\s+/)
   .map((word) => word.toLowerCase())
   .map(applyMapping)
   .filter((w) => /^[a-z]+$/.test(w))
