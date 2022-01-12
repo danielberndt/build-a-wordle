@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "postinstall": "node scripts/extract-words.mjs ./data/german-pruned.txt > src/word-lists/valid_words_de.json"
   },
   "dependencies": {
     "preact": "^10.5.15"
