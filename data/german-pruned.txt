@@ -1700,3 +1700,8 @@ rodeo
 cello
 snack
 pfahl
+pudel
+klone
+gassi
+prise
+raben
