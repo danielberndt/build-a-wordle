@@ -1,4 +1,6 @@
 import {StateUpdater, useEffect, useMemo, useRef, useState} from "preact/hooks";
+import {Box, Col, Row} from "./Box";
+import {themeBright} from "./ui.css";
 import deWords from "./word-lists/valid_words_de.json";
 
 const Heading = () => <div>Heading</div>;
@@ -205,7 +207,7 @@ const ButtonInput = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Bu
   return (
     <div style={{display: "flex", flexDirection: "column"}}>
       {error && <div style={{color: "red", textAlign: "center"}}>{error}</div>}
-      <div style={{display: "flex"}}>
+      <Row>
         {keyRows[0].map((letter) => (
           <LetterButton
             key={letter}
@@ -214,8 +216,8 @@ const ButtonInput = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Bu
             onClick={onAddLetter}
           />
         ))}
-      </div>
-      <div style={{display: "flex"}}>
+      </Row>
+      <Row px={4}>
         {keyRows[1].map((letter) => (
           <LetterButton
             key={letter}
@@ -224,8 +226,8 @@ const ButtonInput = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Bu
             onClick={onAddLetter}
           />
         ))}
-      </div>
-      <div style={{display: "flex"}}>
+      </Row>
+      <Row>
         <button style={buttonStyle} onClick={handleFormSubmit}>
           enter
         </button>
@@ -240,7 +242,7 @@ const ButtonInput = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Bu
         <button style={buttonStyle} onClick={onBackspace}>
           del
         </button>
-      </div>
+      </Row>
     </div>
   );
 };
@@ -290,7 +292,7 @@ export function App() {
   const annotatedKeys = getAnnotatedKeys({submittedWords, guessWordMapping});
 
   return (
-    <>
+    <Col className={themeBright} fillParent>
       {/* <Heading /> */}
       <Board guessWord={guessWord} input={input} submittedWords={submittedWords} />
       <div style={{flex: "auto", maxHeight: 500}} />
@@ -301,6 +303,6 @@ export function App() {
         deWords={deWords}
         annotatedKeys={annotatedKeys}
       />
-    </>
+    </Col>
   );
 }
