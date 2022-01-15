@@ -30,21 +30,21 @@ const evaluateWord = ({word, guessWord}: {word: string; guessWord: string}): Ann
   //   s: [3, 4]
   // }
 
-  const remainingLetters = new Set(Array.from(guessWord));
+  const remainingLetters = Array.from(guessWord);
   const letters = Array.from(word);
   const correctIdx = new Set<number>();
   letters.forEach((l, idx) => {
     if (l === guessWord[idx]) {
       correctIdx.add(idx);
-      remainingLetters.delete(l);
+      remainingLetters.splice(remainingLetters.indexOf(l), 1);
     }
   });
 
   return letters.map((letter, idx) => {
     const getType = () => {
       if (correctIdx.has(idx)) return "correctPosition";
-      if (remainingLetters.has(letter)) {
-        remainingLetters.delete(letter);
+      if (remainingLetters.includes(letter)) {
+        remainingLetters.splice(remainingLetters.indexOf(letter), 1);
         return "found";
       }
       return "notFound";
