@@ -27,6 +27,6 @@ const validWords = content
   .filter((w) => /^[a-z]+$/.test(w))
   .filter((w) => w.length === 5);
 
-const uniqueWords = [...new Set(validWords)];
+const uniqueWords = [...new Set(validWords)].sort();
 
 console.log(JSON.stringify(uniqueWords, null, 2));

@@ -126,7 +126,6 @@ beleg
 berge
 beruf
 besen
-beste
 beten
 beton
 beuge
@@ -326,7 +325,6 @@ ebben
 ebene
 ebnen
 echos
-echte
 ecken
 eckig
 edikt
@@ -356,7 +354,6 @@ eklat
 ekzem
 elend
 elfen
-elfte
 elite
 email
 empor
@@ -378,7 +375,6 @@ erker
 erlen
 ernst
 ernte
-erste
 esche
 essen
 essig
@@ -566,9 +562,6 @@ gummi
 gunst
 gurke
 gurte
-guten
-guter
-gutes
 haare
 haben
 hacke
@@ -584,7 +577,6 @@ halme
 hanse
 harfe
 harke
-harte
 harze
 hasch
 hasen
@@ -705,7 +697,6 @@ kaese
 kahle
 kakao
 kalif
-kalte
 kamel
 kamin
 kampf
@@ -996,7 +987,6 @@ neffe
 neige
 nepal
 nerze
-nette
 netto
 netze
 nicht
@@ -1420,8 +1410,6 @@ torso
 torte
 tosen
 total
-toten
-toter
 trage
 trakt
 trank
@@ -1568,7 +1556,6 @@ yacht
 zange
 zaren
 zarin
-zarte
 zebra
 zeche
 zehen
@@ -1705,3 +1692,11 @@ klone
 gassi
 prise
 raben
+klamm
+nelke
+erpel
+kelte
+popel
+gries
+klaue
+sooft
