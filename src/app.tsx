@@ -1,4 +1,4 @@
-import {StateUpdater, useMemo, useState} from "preact/hooks";
+import {StateUpdater, useEffect, useMemo, useRef, useState} from "preact/hooks";
 import deWords from "./word-lists/valid_words_de.json";
 
 const Heading = () => <div>Heading</div>;
@@ -22,14 +22,6 @@ const createGuessWordMapping = (guessWord: string): GuessWordMapping => {
 };
 
 const evaluateWord = ({word, guessWord}: {word: string; guessWord: string}): AnnotadedLetter[] => {
-  const guessWordMapping = createGuessWordMapping(guessWord);
-  // const mapping = {
-  //   g: [0],
-  //   u: [1],
-  //   e: [2]
-  //   s: [3, 4]
-  // }
-
   const remainingLetters = Array.from(guessWord);
   const letters = Array.from(word);
   const correctIdx = new Set<number>();
@@ -142,9 +134,8 @@ const ButtonInput = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Bu
   const [error, setError] = useState<string | null>(null);
   const wordSet = useMemo(() => new Set(deWords), []);
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    if (!input.match(/[a-zA-Z]/)) {
+  const handleSubmit = () => {
+    if (!input.match(/^[a-zA-Z]+$/)) {
       setError("only letters please!");
       return;
     }
@@ -164,6 +155,53 @@ const ButtonInput = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Bu
     setInput("");
   };
 
+  const onAddLetter = (l: string) => {
+    setInput((prev) => (prev.length < 5 ? prev + l : prev));
+    setError(null);
+  };
+
+  const onBackspace = () => {
+    setInput((prev) => prev.slice(0, -1));
+    setError(null);
+  };
+
+  const refs = useRef({handleSubmit, setInput, onAddLetter, onBackspace});
+  useEffect(() => {
+    refs.current = {
+      handleSubmit,
+      setInput,
+      onAddLetter,
+      onBackspace,
+    };
+  });
+
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      const key = e.key.toLowerCase();
+      if (key === "enter") {
+        refs.current.handleSubmit();
+      }
+      if (key.match(/^[a-z]$/)) refs.current.onAddLetter(key);
+      console.log(e);
+    };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.key === "Backspace") refs.current.onBackspace();
+    };
+
+    document.addEventListener("keypress", handleKeyPress);
+    document.addEventListener("keyup", handleKeyUp);
+    return () => {
+      document.removeEventListener("keypress", handleKeyPress);
+      document.removeEventListener("keyup", handleKeyUp);
+    };
+  }, []);
+
+  const handleFormSubmit = (e: any) => {
+    e.preventDefault();
+    handleSubmit();
+  };
+
   return (
     <div style={{display: "flex", flexDirection: "column"}}>
       {error && <div style={{color: "red", textAlign: "center"}}>{error}</div>}
@@ -173,7 +211,7 @@ const ButtonInput = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Bu
             key={letter}
             letter={letter}
             annotatedKey={annotatedKeys[letter]}
-            onClick={(l) => setInput(input + l)}
+            onClick={onAddLetter}
           />
         ))}
       </div>
@@ -183,12 +221,12 @@ const ButtonInput = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Bu
             key={letter}
             letter={letter}
             annotatedKey={annotatedKeys[letter]}
-            onClick={(l) => setInput(input + l)}
+            onClick={onAddLetter}
           />
         ))}
       </div>
       <div style={{display: "flex"}}>
-        <button style={buttonStyle} onClick={handleSubmit}>
+        <button style={buttonStyle} onClick={handleFormSubmit}>
           enter
         </button>
         {keyRows[2].map((letter) => (
@@ -196,10 +234,10 @@ const ButtonInput = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Bu
             key={letter}
             letter={letter}
             annotatedKey={annotatedKeys[letter]}
-            onClick={(l) => setInput(input + l)}
+            onClick={onAddLetter}
           />
         ))}
-        <button style={buttonStyle} onClick={() => setInput(input.slice(0, -1))}>
+        <button style={buttonStyle} onClick={onBackspace}>
           del
         </button>
       </div>
