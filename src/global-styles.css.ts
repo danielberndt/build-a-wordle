@@ -27,8 +27,6 @@ globalStyle("#app", {
   display: "flex",
   flexDirection: "column",
   height: "100%",
-  fontSize: "1.5em",
-  padding: "2vw 2vw",
 });
 
 globalStyle("img", {

@@ -1,5 +1,6 @@
 import {StateUpdater, useEffect, useMemo, useRef, useState} from "preact/hooks";
 import {Box, Col, Row} from "./Box";
+import Frame from "./Frame";
 import {themeBright} from "./ui.css";
 import deWords from "./word-lists/valid_words_de.json";
 
@@ -58,7 +59,7 @@ const SubmittedWord = ({word, guessWord}: SubmittedWordProps) => {
   const annotatedLetters = evaluateWord({word, guessWord});
 
   return (
-    <div style={{fontFamily: "monospace", fontSize: "12vw"}}>
+    <div style={{fontFamily: "monospace", fontSize: "6rem"}}>
       {annotatedLetters.map(({letter, type}, idx) => (
         <span key={idx} style={{color: typeByColor[type]}}>
           {letter}
@@ -85,7 +86,7 @@ const Board = ({input, submittedWords, guessWord}: BoardProps) => (
       <SubmittedWord key={idx} word={word} guessWord={guessWord} />
     ))}
 
-    <div style={{fontFamily: "monospace", fontSize: "12vw"}}>{fillWith(input, "·", 5)}</div>
+    <div style={{fontFamily: "monospace", fontSize: "6rem"}}>{fillWith(input, "·", 5)}</div>
   </div>
 );
 
@@ -205,7 +206,7 @@ const ButtonInput = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Bu
   };
 
   return (
-    <div style={{display: "flex", flexDirection: "column"}}>
+    <Col px={3} pb={3}>
       {error && <div style={{color: "red", textAlign: "center"}}>{error}</div>}
       <Row>
         {keyRows[0].map((letter) => (
@@ -243,7 +244,7 @@ const ButtonInput = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Bu
           del
         </button>
       </Row>
-    </div>
+    </Col>
   );
 };
 
@@ -293,16 +294,18 @@ export function App() {
 
   return (
     <Col className={themeBright} fillParent>
-      {/* <Heading /> */}
-      <Board guessWord={guessWord} input={input} submittedWords={submittedWords} />
-      <div style={{flex: "auto", maxHeight: 500}} />
-      <ButtonInput
-        setInput={setInput}
-        input={input}
-        onSubmitWord={handleSubmitWord}
-        deWords={deWords}
-        annotatedKeys={annotatedKeys}
-      />
+      <Frame>
+        {/* <Heading /> */}
+        <Board guessWord={guessWord} input={input} submittedWords={submittedWords} />
+        <Box fillParent />
+        <ButtonInput
+          setInput={setInput}
+          input={input}
+          onSubmitWord={handleSubmitWord}
+          deWords={deWords}
+          annotatedKeys={annotatedKeys}
+        />
+      </Frame>
     </Col>
   );
 }

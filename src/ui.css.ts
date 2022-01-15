@@ -1,4 +1,4 @@
-import {createTheme, style, styleVariants} from "@vanilla-extract/css";
+import {ComplexStyleRule, createTheme, style, styleVariants} from "@vanilla-extract/css";
 
 const colors = {
   white: "#ffffff",
@@ -18,6 +18,7 @@ export const [themeBright, themeVars] = createTheme({
   foregroundBg: colors.white,
   backgrounBg: colors.gray200,
   textPrimary: colors.gray700,
+  border: colors.gray300,
 });
 
 const spacingSteps = [0, 0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4, 6, 10];
@@ -32,7 +33,7 @@ const fontSizes = {
 
 const sizes = {sm: "20rem", md: "30rem", lg: "45rem"};
 
-const radiusScale = {
+export const radiusScale = {
   xs: "0.125rem",
   sm: "0.25rem",
   md: "0.5rem",
@@ -56,11 +57,23 @@ const withColorsTransition = style([
   },
 ]);
 
-const media = {
-  sm: "screen and (max-width: 30em)",
-  md: "screen and (max-width: 45em)",
-  lg: "screen and (max-width: 60em)",
-  xl: "screen and (max-width: 80em)",
+type StyleArrayFn = <StyleMap extends Record<string | number, unknown>, T extends keyof StyleMap>(
+  array: T[],
+  mapFn: (val: T) => ComplexStyleRule
+) => Record<T, string>;
+
+const styleArray: StyleArrayFn = (arr, mapFn) => {
+  const map = {} as any;
+  arr.forEach((val) => (map[val] = style(mapFn(val))));
+  return map;
+};
+
+export const media = {
+  nonMobile: "screen and (min-width: 30em)",
+  // sm: "screen and (max-width: 30em)",
+  // md: "screen and (max-width: 45em)",
+  // lg: "screen and (max-width: 60em)",
+  // xl: "screen and (max-width: 80em)",
 };
 
 const baseStyles = {
@@ -71,39 +84,34 @@ const baseStyles = {
 
   sp: spacingSteps.map((v) => style({gap: `${v}rem`})),
 
-  display: styleVariants({
-    block: {display: "block"},
-    flex: {display: "flex"},
-    inlineBlock: {display: "inline-block"},
-    grid: {display: "grid"},
-    none: {display: "none"},
-  }),
-  flexDir: styleVariants({
-    column: {flexDirection: "column"},
-    row: {flexDirection: "row"},
-  }),
-  align: {
-    end: style({alignItems: "flex-end"}),
-    start: style({alignItems: "flex-start"}),
-    stretch: style({alignItems: "stretch"}),
-    center: style({alignItems: "center"}),
-    baseline: style({alignItems: "baseline"}),
-  },
-  justify: {
-    end: style({justifyContent: "flex-end"}),
-    start: style({justifyContent: "flex-start"}),
-    stretch: style({justifyContent: "stretch"}),
-    center: style({justifyContent: "center"}),
-  },
+  display: styleVariants(
+    {block: "block", flex: "flex", inlineBlock: "inline-block", grid: "grid", none: "none"},
+    (val) => ({display: val})
+  ),
+  flexDir: styleArray(["column", "row"], (val) => ({flexDirection: val})),
+  align: styleVariants(
+    {
+      end: "flex-end",
+      start: "flex-start",
+      stretch: "stretch",
+      center: "center",
+      baseline: "baseline",
+    },
+    (val) => ({alignItems: val})
+  ),
+  justify: styleVariants(
+    {end: "flex-end", start: "flex-start", stretch: "stretch", center: "center"},
+    (val) => ({justifyContent: val})
+  ),
   color: styleVariants(textColors, (val) => [withColorsTransition, {color: val}]),
   bg: styleVariants(bgColors, (val) => [withColorsTransition, {backgroundColor: val}]),
   rounded: styleVariants(radiusScale, (val) => ({borderRadius: val})),
-  position: styleVariants(
-    {absolute: "absolute", relative: "relative", sticky: "sticky", fixed: "fixed"} as const,
-    (val) => ({
-      position: val,
-    })
-  ),
+  position: styleArray(["absolute", "relative", "sticky", "fixed"], (val) => ({position: val})),
+
+  width: styleArray(["100%"], (val) => ({width: val})),
+  maxWidth: styleArray(["100%"], (val) => ({maxWidth: val})),
+  height: styleArray(["100%"], (val) => ({height: val})),
+  maxHeight: styleArray(["100%"], (val) => ({maxHeight: val})),
 };
 
 export const uiStyles = {
