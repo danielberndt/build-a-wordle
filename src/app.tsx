@@ -50,12 +50,6 @@ const evaluateWord = ({word, guessWord}: {word: string; guessWord: string}): Ann
   });
 };
 
-const typeByColor: {[Type in AnnotadedLetter["type"]]: string} = {
-  notFound: "gray",
-  found: "orange",
-  correctPosition: "green",
-};
-
 type SubmittedWordProps = {word: string; guessWord: string};
 const SubmittedWord = ({word, guessWord}: SubmittedWordProps) => {
   const annotatedLetters = evaluateWord({word, guessWord});
@@ -110,7 +104,7 @@ const Board = ({input, submittedWords, guessWord}: BoardProps) => (
 );
 
 const ErrorPill = ({error}: {error: string}) => (
-  <Col absolute bottom="100%" left="0" right="0" align="center" py={4}>
+  <Col absolute bottom="100%" left="0" right="0" align="center" py={4} px={2}>
     <Box
       className={pillThemes.error}
       rounded="md"
@@ -122,6 +116,7 @@ const ErrorPill = ({error}: {error: string}) => (
       borderWidth={2}
       bold
       borderColor="pill"
+      textAlign="center"
     >
       {error}
     </Box>
@@ -142,6 +137,11 @@ const ButtonInput = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Bu
   const wordSet = useMemo(() => new Set(deWords), []);
 
   const handleSubmit = () => {
+    if (!input) {
+      setError("Bitte ein Wort mit 5 Buchstaben eingeben!");
+      return;
+    }
+
     if (!input.match(/^[a-zA-Z]+$/)) {
       setError("Bitte nur Buchstaben!");
       return;

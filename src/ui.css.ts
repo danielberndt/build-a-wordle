@@ -296,6 +296,7 @@ const baseStyles = {
 
   textTransform: styleArray(["uppercase"], (val) => ({textTransform: val})),
   weight: styleArray(["normal", "bold"], (val) => ({fontWeight: val})),
+  textAlign: styleArray(["left", "right", "center"], (val) => ({textAlign: val})),
 };
 
 export const uiStyles = {
