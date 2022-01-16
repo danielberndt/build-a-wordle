@@ -113,7 +113,6 @@ const Keyboard = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Keybo
         refs.current.handleSubmit();
       }
       if (key.match(/^[a-z]$/)) refs.current.onAddLetter(key);
-      console.log(e);
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
