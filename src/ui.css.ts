@@ -153,10 +153,25 @@ export const wordBoxThemes = {
   }),
 };
 
+export const pillTheme = createThemeContract({
+  bg: "",
+  border: "",
+  text: "",
+});
+
+export const pillThemes = {
+  error: createTheme(pillTheme, {
+    bg: colors.rose600,
+    border: colors.rose400,
+    text: colors.rose100,
+  }),
+};
+
 const spacingSteps = [0, 0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4, 6, 10];
 const fontSizes = {
   sm: 12,
   md: 16,
+  lg: 24,
   xl: 30,
 };
 
@@ -176,6 +191,7 @@ const bgColors = {
 
   button: buttonTheme.bg,
   wordBox: wordBoxTheme.bg,
+  pill: pillTheme.bg,
 };
 
 const hoverBgColors = {
@@ -185,12 +201,14 @@ const hoverBgColors = {
 const borderColors = {
   button: buttonTheme.border,
   wordBox: wordBoxTheme.border,
+  pill: pillTheme.border,
 };
 
 const textColors = {
   primary: themeVars.textPrimary,
   button: buttonTheme.text,
   wordBox: wordBoxTheme.text,
+  pill: pillTheme.text,
 };
 
 const withColorsTransition = style([
@@ -203,7 +221,7 @@ const withColorsTransition = style([
 const withBorder = style({borderStyle: "solid"});
 
 type StyleArrayFn = <StyleMap extends Record<string | number, unknown>, T extends keyof StyleMap>(
-  array: T[],
+  array: readonly T[],
   mapFn: (val: T) => ComplexStyleRule
 ) => Record<T, string>;
 
@@ -220,6 +238,8 @@ export const media = {
   // lg: "screen and (max-width: 60em)",
   // xl: "screen and (max-width: 80em)",
 };
+
+const baseDims = ["0", "100%"] as const;
 
 const baseStyles = {
   pt: spacingSteps.map((v) => style({paddingTop: `${v}rem`})),
@@ -265,9 +285,14 @@ const baseStyles = {
 
   width: styleArray(["1rem", "100%"], (val) => ({width: val})),
   maxWidth: styleArray(["100%"], (val) => ({maxWidth: val})),
-  height: styleArray(["3rem", "100%"], (val) => ({height: val})),
-  maxHeight: styleArray(["5rem", "100%"], (val) => ({maxHeight: val})),
-  minHeight: styleArray(["2rem"], (val) => ({minHeight: val})),
+  height: styleArray(["100%"], (val) => ({height: val})),
+  maxHeight: styleArray(["3rem", "5rem", "100%"], (val) => ({maxHeight: val})),
+  minHeight: styleArray(["2rem", "12rem"], (val) => ({minHeight: val})),
+
+  left: styleArray(baseDims, (val) => ({left: val})),
+  right: styleArray(baseDims, (val) => ({right: val})),
+  top: styleArray(baseDims, (val) => ({top: val})),
+  bottom: styleArray(baseDims, (val) => ({bottom: val})),
 
   textTransform: styleArray(["uppercase"], (val) => ({textTransform: val})),
   weight: styleArray(["normal", "bold"], (val) => ({fontWeight: val})),

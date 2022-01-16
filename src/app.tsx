@@ -3,11 +3,13 @@ import {Box, Col, Row} from "./Box";
 import Frame from "./Frame";
 import LetterButton, {BaseButton} from "./LetterButton";
 import {AnnotadedLetter, AnnotatedKeys} from "./types";
-import {themeBright} from "./ui.css";
+import {pillThemes, themeBright} from "./ui.css";
 import deWords from "./word-lists/valid_words_de.json";
 import LetterBox, {LetterRow} from "./WordBox";
 
 const Heading = () => <div>Heading</div>;
+
+const MAX_GUESSES = 6;
 
 type GuessWordMapping = {[letter: string]: number[]};
 
@@ -94,14 +96,35 @@ const Board = ({input, submittedWords, guessWord}: BoardProps) => (
       <SubmittedWord key={idx} word={word} guessWord={guessWord} />
     ))}
 
-    <LetterRow>
-      {fillWith(input, "", 5).map((letter, idx) => (
-        <LetterBox key={idx} letter={letter} />
-      ))}
-    </LetterRow>
-    {Array.from(new Array(5 - submittedWords.length)).map((_, idx) => (
+    {submittedWords.length < MAX_GUESSES && (
+      <LetterRow>
+        {fillWith(input, "", 5).map((letter, idx) => (
+          <LetterBox key={idx} letter={letter} />
+        ))}
+      </LetterRow>
+    )}
+    {Array.from(new Array(Math.max(0, MAX_GUESSES - submittedWords.length - 1))).map((_, idx) => (
       <EmptyRow key={idx} />
     ))}
+  </Col>
+);
+
+const ErrorPill = ({error}: {error: string}) => (
+  <Col absolute bottom="100%" left="0" right="0" align="center" py={4}>
+    <Box
+      className={pillThemes.error}
+      rounded="md"
+      px={4}
+      py={2}
+      align="center"
+      bg="pill"
+      color="pill"
+      borderWidth={2}
+      bold
+      borderColor="pill"
+    >
+      {error}
+    </Box>
   </Col>
 );
 
@@ -120,17 +143,17 @@ const ButtonInput = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Bu
 
   const handleSubmit = () => {
     if (!input.match(/^[a-zA-Z]+$/)) {
-      setError("only letters please!");
+      setError("Bitte nur Buchstaben!");
       return;
     }
 
     if (input.length !== 5) {
-      setError("5 letters please!");
+      setError("Ich brauche 5 Buchstaben!");
       return;
     }
 
     if (!wordSet.has(input.toLowerCase())) {
-      setError("not a valid word!");
+      setError("Das Wort ist nicht in meiner Liste!");
       return;
     }
 
@@ -187,9 +210,9 @@ const ButtonInput = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Bu
   };
 
   return (
-    <Col px={3} pb={3} sp={2}>
-      {error && <div style={{color: "red", textAlign: "center"}}>{error}</div>}
-      <Row sp={2}>
+    <Col px={3} pb={3} sp={2} fillParent relative>
+      {error && <ErrorPill error={error} />}
+      <Row sp={2} fillParent>
         {keyRows[0].map((letter) => (
           <LetterButton
             key={letter}
@@ -199,7 +222,7 @@ const ButtonInput = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Bu
           />
         ))}
       </Row>
-      <Row sp={2} px={4}>
+      <Row sp={2} px={4} fillParent>
         {keyRows[1].map((letter) => (
           <LetterButton
             key={letter}
@@ -209,7 +232,7 @@ const ButtonInput = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Bu
           />
         ))}
       </Row>
-      <Row sp={2}>
+      <Row sp={2} fillParent>
         <BaseButton fontSize="sm" onClick={handleFormSubmit}>
           enter
         </BaseButton>
@@ -228,6 +251,33 @@ const ButtonInput = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Bu
     </Col>
   );
 };
+
+const WonMessage = ({onReplay}: {onReplay: () => void}) => (
+  <Col sp={4} align="center" justify="center" px={4} fillParent pb={4}>
+    <Box bold fontSize="lg">
+      Gewonnen 🎉
+    </Box>
+    <BaseButton onClick={onReplay} px={4}>
+      Neuer Versuch
+    </BaseButton>
+  </Col>
+);
+const LostMessage = ({onReplay, guessWord}: {onReplay: () => void; guessWord: string}) => (
+  <Col sp={2} align="center" px={4} fillParent pb={4}>
+    <Box bold fontSize="lg">
+      Verloren :(
+    </Box>
+    <Col align="center" justify="center" sp={1} fillParent>
+      <Box>Das gesuchte Wort war</Box>
+      <Box textTransform="uppercase" bold fontSize="xl">
+        {guessWord}
+      </Box>
+    </Col>
+    <BaseButton onClick={onReplay} px={4}>
+      Neuer Versuch
+    </BaseButton>
+  </Col>
+);
 
 const getRandomElement = (list: string[]): string => {
   const idx = Math.floor(Math.random() * list.length);
@@ -262,30 +312,62 @@ const getAnnotatedKeys = ({
   return keys;
 };
 
+const getGameState = (opts: {submittedWords: string[]; guessWord: string}) => {
+  const {submittedWords, guessWord} = opts;
+  if (submittedWords[submittedWords.length - 1] === guessWord) return "won";
+  if (submittedWords.length >= MAX_GUESSES) return "lost";
+  return "playing";
+};
+
 export function App() {
+  // const [guessWord, setGuessWord] = useState<string>("halte");
+  // const [submittedWords, setSubmittedWords] = useState<string[]>([
+  //   "bonus",
+  //   "pferd",
+  //   "autos",
+  //   "magen",
+  //   "bogen",
+  //   "halte",
+  // ]);
+
   const [guessWord, setGuessWord] = useState<string>(getRandomWord);
-  const [input, setInput] = useState<string>("");
-  // const [submittedWords, setSubmittedWords] = useState<string[]>(["bonus", "pferd", "autos"]);
   const [submittedWords, setSubmittedWords] = useState<string[]>([]);
 
+  const [input, setInput] = useState<string>("");
+
+  const gameState = getGameState({submittedWords, guessWord});
   const handleSubmitWord = (word: string) => {
     setSubmittedWords((prev) => [...prev, word]);
   };
   const guessWordMapping = createGuessWordMapping(guessWord);
   const annotatedKeys = getAnnotatedKeys({submittedWords, guessWordMapping});
 
+  const handleReplay = () => {
+    setGuessWord(getRandomWord());
+    setInput("");
+    setSubmittedWords([]);
+  };
+
   return (
     <Col className={themeBright} fillParent>
       <Frame>
         {/* <Heading /> */}
         <Board guessWord={guessWord} input={input} submittedWords={submittedWords} />
-        <ButtonInput
-          setInput={setInput}
-          input={input}
-          onSubmitWord={handleSubmitWord}
-          deWords={deWords}
-          annotatedKeys={annotatedKeys}
-        />
+        <Col minHeight="12rem">
+          {gameState === "won" ? (
+            <WonMessage onReplay={handleReplay} />
+          ) : gameState === "lost" ? (
+            <LostMessage guessWord={guessWord} onReplay={handleReplay} />
+          ) : (
+            <ButtonInput
+              setInput={setInput}
+              input={input}
+              onSubmitWord={handleSubmitWord}
+              deWords={deWords}
+              annotatedKeys={annotatedKeys}
+            />
+          )}
+        </Col>
       </Frame>
     </Col>
   );

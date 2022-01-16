@@ -21,7 +21,9 @@ export const BaseButton = ({
 }: BoxProps<"button"> & {annotation?: AnnotadedLetter["type"]}) => (
   <Box
     as="button"
-    height="3rem"
+    minHeight="2rem"
+    maxHeight="3rem"
+    height="100%"
     rounded="md"
     fillParent
     bg="button"
