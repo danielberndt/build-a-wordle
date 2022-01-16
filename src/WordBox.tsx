@@ -42,7 +42,7 @@ const LetterBox = ({
   const lastTypeRef = useRef(type);
 
   const [styles, api] = useSpring(() => ({
-    to: {opacity: 1, scale: 1, scaleX: 1},
+    to: {opacity: 1, scale: 1, scaleX: 1, rotate: 0},
     config: springConfigs.quick,
   }));
 
@@ -60,10 +60,9 @@ const LetterBox = ({
     if (animateReveal) {
       api.start({
         to: async (next) => {
-          await next({scaleX: 0, config: {duration: 250}, delay: idx * 250});
+          await next({scale: 0, rotate: 180, delay: idx * 150, config: {restVelocity: 0.1}});
           setThemeClass(type);
-          await next({scaleX: 1, scale: 1.25, config: {duration: 250}});
-          await next({scale: 1});
+          await next({scale: 1, rotate: 360});
         },
       });
     }
