@@ -9,6 +9,7 @@ globalStyle("html, body", {
   color: "#444",
   fontFamily:
     '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+  touchAction: "pan-x pan-y",
 
   "@media": {
     "screen and (min-width: 30em)": {
