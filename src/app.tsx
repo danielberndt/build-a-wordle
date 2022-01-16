@@ -1,13 +1,12 @@
 import {StateUpdater, useEffect, useMemo, useRef, useState} from "preact/hooks";
 import {Box, Col, Row} from "./Box";
 import Frame from "./Frame";
+import LetterButton, {BaseButton} from "./LetterButton";
+import {AnnotadedLetter, AnnotatedKeys} from "./types";
 import {themeBright} from "./ui.css";
 import deWords from "./word-lists/valid_words_de.json";
 
 const Heading = () => <div>Heading</div>;
-
-type AnnotadedLetter = {letter: string; type: "notFound" | "found" | "correctPosition"};
-type AnnotatedKeys = {[letter: string]: AnnotadedLetter["type"] | undefined};
 
 type GuessWordMapping = {[letter: string]: number[]};
 
@@ -92,40 +91,6 @@ const Board = ({input, submittedWords, guessWord}: BoardProps) => (
 
 const keyRows = ["qwertzuiop".split(""), "asdfghjkl".split(""), "yxcvbnm".split("")];
 
-const buttonColorsByType: {[Type in AnnotadedLetter["type"]]: string} = {
-  correctPosition: "green",
-  found: "yellow",
-  notFound: "gray",
-};
-
-type LetterButtonProps = {
-  letter: string;
-  annotatedKey: AnnotadedLetter["type"] | undefined;
-  onClick: (letter: string) => unknown;
-};
-
-const buttonStyle = {
-  flex: "auto",
-  minHeight: "2.5rem",
-  minWidth: "1rem",
-  margin: "2px 0.5vw",
-  fontFamily: "monospace",
-};
-
-const LetterButton = ({letter, annotatedKey, onClick}: LetterButtonProps) => {
-  return (
-    <button
-      style={{
-        ...buttonStyle,
-        backgroundColor: annotatedKey ? buttonColorsByType[annotatedKey] : undefined,
-      }}
-      onClick={() => onClick(letter)}
-    >
-      {letter}
-    </button>
-  );
-};
-
 type ButtonInputProps = {
   input: string;
   setInput: StateUpdater<string>;
@@ -206,9 +171,9 @@ const ButtonInput = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Bu
   };
 
   return (
-    <Col px={3} pb={3}>
+    <Col px={3} pb={3} sp={2}>
       {error && <div style={{color: "red", textAlign: "center"}}>{error}</div>}
-      <Row>
+      <Row sp={2}>
         {keyRows[0].map((letter) => (
           <LetterButton
             key={letter}
@@ -218,7 +183,7 @@ const ButtonInput = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Bu
           />
         ))}
       </Row>
-      <Row px={4}>
+      <Row sp={2} px={4}>
         {keyRows[1].map((letter) => (
           <LetterButton
             key={letter}
@@ -228,10 +193,10 @@ const ButtonInput = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Bu
           />
         ))}
       </Row>
-      <Row>
-        <button style={buttonStyle} onClick={handleFormSubmit}>
+      <Row sp={2}>
+        <BaseButton fontSize="sm" onClick={handleFormSubmit}>
           enter
-        </button>
+        </BaseButton>
         {keyRows[2].map((letter) => (
           <LetterButton
             key={letter}
@@ -240,9 +205,9 @@ const ButtonInput = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Bu
             onClick={onAddLetter}
           />
         ))}
-        <button style={buttonStyle} onClick={onBackspace}>
+        <BaseButton fontSize="sm" onClick={onBackspace}>
           del
-        </button>
+        </BaseButton>
       </Row>
     </Col>
   );

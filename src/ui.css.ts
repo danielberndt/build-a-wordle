@@ -1,5 +1,12 @@
-import {ComplexStyleRule, createTheme, style, styleVariants} from "@vanilla-extract/css";
+import {
+  ComplexStyleRule,
+  createTheme,
+  createThemeContract,
+  style,
+  styleVariants,
+} from "@vanilla-extract/css";
 
+// inspired by tailwind
 const colors = {
   white: "#ffffff",
 
@@ -12,6 +19,36 @@ const colors = {
   gray700: "#3f3f46",
   gray800: "#27272a",
   gray900: "#18181b",
+
+  green100: "#dcfce7",
+  green200: "#bbf7d0",
+  green300: "#86efac",
+  green400: "#4ade80",
+  green500: "#22c55e",
+  green600: "#16a34a",
+  green700: "#15803d",
+  green800: "#166534",
+  green900: "#14532d",
+
+  amber100: "#fef3c7",
+  amber200: "#fde68a",
+  amber300: "#fcd34d",
+  amber400: "#fbbf24",
+  amber500: "#f59e0b",
+  amber600: "#d97706",
+  amber700: "#b45309",
+  amber800: "#92400e",
+  amber900: "#78350f",
+
+  rose100: "#ffe4e6",
+  rose200: "#fecdd3",
+  rose300: "#fda4af",
+  rose400: "#fb7185",
+  rose500: "#f43f5e",
+  rose600: "#e11d48",
+  rose700: "#be123c",
+  rose800: "#9f1239",
+  rose900: "#881337",
 };
 
 export const [themeBright, themeVars] = createTheme({
@@ -19,16 +56,73 @@ export const [themeBright, themeVars] = createTheme({
   backgrounBg: colors.gray200,
   textPrimary: colors.gray700,
   border: colors.gray300,
+
+  actions: {
+    green: {
+      bg: colors.green600,
+      bgHover: colors.green500,
+      border: colors.green200,
+      text: colors.green100,
+    },
+    yellow: {
+      bg: colors.amber600,
+      bgHover: colors.amber500,
+      border: colors.amber200,
+      text: colors.amber100,
+    },
+    inactive: {
+      bg: colors.gray600,
+      bgHover: colors.gray500,
+      border: colors.gray200,
+      text: colors.gray100,
+    },
+    neutral: {
+      bg: colors.gray600,
+      bgHover: colors.gray500,
+      border: colors.gray200,
+      text: colors.gray100,
+    },
+  },
 });
+
+const buttonTheme = createThemeContract({
+  bg: "",
+  bgHover: "",
+  border: "",
+  text: "",
+});
+
+export const buttonThemes = {
+  green: createTheme(buttonTheme, {
+    bg: colors.green600,
+    bgHover: colors.green500,
+    border: colors.green400,
+    text: colors.green100,
+  }),
+  yellow: createTheme(buttonTheme, {
+    bg: colors.amber400,
+    bgHover: colors.amber300,
+    border: colors.amber500,
+    text: colors.amber800,
+  }),
+  inactive: createTheme(buttonTheme, {
+    bg: colors.gray600,
+    bgHover: colors.gray500,
+    border: colors.gray700,
+    text: colors.gray300,
+  }),
+  neutral: createTheme(buttonTheme, {
+    bg: colors.gray200,
+    bgHover: colors.gray100,
+    border: colors.gray300,
+    text: colors.gray800,
+  }),
+};
 
 const spacingSteps = [0, 0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4, 6, 10];
 const fontSizes = {
-  xs: [18, 18],
-  sm: [20, 20],
-  md: [24, 22],
-  lg: [28, 24],
-  xl: [36, 26],
-  xxl: [48, 30],
+  sm: 16,
+  md: 20,
 };
 
 const sizes = {sm: "20rem", md: "30rem", lg: "45rem"};
@@ -44,10 +138,21 @@ export const radiusScale = {
 const bgColors = {
   front: themeVars.foregroundBg,
   back: themeVars.backgrounBg,
+
+  button: buttonTheme.bg,
+};
+
+const hoverBgColors = {
+  button: buttonTheme.bgHover,
+};
+
+const borderColors = {
+  button: buttonTheme.border,
 };
 
 const textColors = {
   primary: themeVars.textPrimary,
+  button: buttonTheme.text,
 };
 
 const withColorsTransition = style([
@@ -56,6 +161,8 @@ const withColorsTransition = style([
     transitionDuration: "0.15s",
   },
 ]);
+
+const withBorder = style({borderStyle: "solid"});
 
 type StyleArrayFn = <StyleMap extends Record<string | number, unknown>, T extends keyof StyleMap>(
   array: T[],
@@ -105,13 +212,26 @@ const baseStyles = {
   ),
   color: styleVariants(textColors, (val) => [withColorsTransition, {color: val}]),
   bg: styleVariants(bgColors, (val) => [withColorsTransition, {backgroundColor: val}]),
+  hoverBg: styleVariants(hoverBgColors, (val) => [
+    withColorsTransition,
+    {":hover": {backgroundColor: val}},
+  ]),
   rounded: styleVariants(radiusScale, (val) => ({borderRadius: val})),
   position: styleArray(["absolute", "relative", "sticky", "fixed"], (val) => ({position: val})),
+  fontSize: styleVariants(fontSizes, (val) => ({fontSize: `${val / 16}rem`})),
 
-  width: styleArray(["100%"], (val) => ({width: val})),
+  borderWidth: styleArray([0, 1, 2], (val) =>
+    val ? [withBorder, {borderWidth: val}] : {borderWidth: val}
+  ),
+  borderColor: styleVariants(borderColors, (val) => ({borderColor: val})),
+
+  width: styleArray(["1rem", "100%"], (val) => ({width: val})),
   maxWidth: styleArray(["100%"], (val) => ({maxWidth: val})),
-  height: styleArray(["100%"], (val) => ({height: val})),
+  height: styleArray(["3rem", "100%"], (val) => ({height: val})),
   maxHeight: styleArray(["100%"], (val) => ({maxHeight: val})),
+
+  textTransform: styleArray(["uppercase"], (val) => ({textTransform: val})),
+  weight: styleArray(["normal", "bold"], (val) => ({fontWeight: val})),
 };
 
 export const uiStyles = {
@@ -121,7 +241,7 @@ export const uiStyles = {
   pa: spacingSteps.map((_, idx) =>
     style([baseStyles.pl[idx], baseStyles.pr[idx], baseStyles.pt[idx], baseStyles.pb[idx]])
   ),
-  // bold: {true: baseStyles.weight.bold},
+  bold: {true: baseStyles.weight.bold},
   relative: {true: baseStyles.position.relative},
   absolute: {true: baseStyles.position.absolute},
   fillParent: {true: style({flex: "auto"})},

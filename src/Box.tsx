@@ -2,9 +2,14 @@ import {uiStyles} from "./ui.css";
 import type {UiStyles} from "./ui.css";
 import {BoxFnWithJSXDefault} from "./BoxFn";
 import {forwardRef} from "preact/compat";
+import type {ComponentProps, JSX} from "preact";
 
 type Booleanify<E> = E extends "true" ? true : E;
-type BoxProps = {[Key in keyof UiStyles]?: Booleanify<keyof UiStyles[Key]> | false};
+type BoxOwnProps = {[Key in keyof UiStyles]?: Booleanify<keyof UiStyles[Key]> | false};
+
+export type BoxProps<DefaultAs extends keyof JSX.IntrinsicElements = "div"> = ComponentProps<
+  BoxFnWithJSXDefault<BoxOwnProps, DefaultAs>
+>;
 
 const getBoxProps = (props: any) => {
   let Comp = "div";
@@ -42,14 +47,14 @@ const getBoxProps = (props: any) => {
   return {Comp, boxProps: forwardProps, classNames};
 };
 
-const createBoxProps = (defaultProps: BoxProps) => {
+const createBoxProps = (defaultProps: BoxOwnProps) => {
   const defaultBoxProps = getBoxProps(defaultProps);
   return forwardRef((props, ref) => {
     const {Comp, boxProps, classNames} = getBoxProps(props);
     classNames.push(...defaultBoxProps.classNames);
     boxProps.className = classNames.join(" ");
     return <Comp {...boxProps} ref={ref} />;
-  }) as BoxFnWithJSXDefault<BoxProps>;
+  }) as BoxFnWithJSXDefault<BoxOwnProps>;
 };
 
 export const Box = createBoxProps({});
