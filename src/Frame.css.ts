@@ -8,6 +8,7 @@ export const frameStyle = style({
       maxWidth: "28rem",
       maxHeight: "50rem",
       border: `2px solid ${themeVars.border}`,
+      margin: "1rem",
     },
   },
 });

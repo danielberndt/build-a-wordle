@@ -5,6 +5,7 @@ import LetterButton, {BaseButton} from "./LetterButton";
 import {AnnotadedLetter, AnnotatedKeys} from "./types";
 import {themeBright} from "./ui.css";
 import deWords from "./word-lists/valid_words_de.json";
+import LetterBox, {LetterRow} from "./WordBox";
 
 const Heading = () => <div>Heading</div>;
 
@@ -58,13 +59,11 @@ const SubmittedWord = ({word, guessWord}: SubmittedWordProps) => {
   const annotatedLetters = evaluateWord({word, guessWord});
 
   return (
-    <div style={{fontFamily: "monospace", fontSize: "6rem"}}>
+    <LetterRow>
       {annotatedLetters.map(({letter, type}, idx) => (
-        <span key={idx} style={{color: typeByColor[type]}}>
-          {letter}
-        </span>
+        <LetterBox key={idx} letter={letter} type={type} />
       ))}
-    </div>
+    </LetterRow>
   );
 };
 
@@ -75,18 +74,35 @@ type BoardProps = {
 };
 
 const fillWith = (input: string, fillChar: string, len: number) => {
-  if (input.length >= len) return input;
-  return input + Array.from(new Array(len - input.length), () => fillChar).join("");
+  if (input.length >= len) return Array.from(input);
+  return [...input, ...Array.from(new Array(len - input.length), () => fillChar)];
 };
 
+const EmptyRow = () => (
+  <LetterRow>
+    <LetterBox />
+    <LetterBox />
+    <LetterBox />
+    <LetterBox />
+    <LetterBox />
+  </LetterRow>
+);
+
 const Board = ({input, submittedWords, guessWord}: BoardProps) => (
-  <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+  <Col sp={1} fillParent px={5} py={5} justify="center">
     {submittedWords.map((word, idx) => (
       <SubmittedWord key={idx} word={word} guessWord={guessWord} />
     ))}
 
-    <div style={{fontFamily: "monospace", fontSize: "6rem"}}>{fillWith(input, "·", 5)}</div>
-  </div>
+    <LetterRow>
+      {fillWith(input, "", 5).map((letter, idx) => (
+        <LetterBox key={idx} letter={letter} />
+      ))}
+    </LetterRow>
+    {Array.from(new Array(5 - submittedWords.length)).map((_, idx) => (
+      <EmptyRow key={idx} />
+    ))}
+  </Col>
 );
 
 const keyRows = ["qwertzuiop".split(""), "asdfghjkl".split(""), "yxcvbnm".split("")];
@@ -249,6 +265,7 @@ const getAnnotatedKeys = ({
 export function App() {
   const [guessWord, setGuessWord] = useState<string>(getRandomWord);
   const [input, setInput] = useState<string>("");
+  // const [submittedWords, setSubmittedWords] = useState<string[]>(["bonus", "pferd", "autos"]);
   const [submittedWords, setSubmittedWords] = useState<string[]>([]);
 
   const handleSubmitWord = (word: string) => {
@@ -262,7 +279,6 @@ export function App() {
       <Frame>
         {/* <Heading /> */}
         <Board guessWord={guessWord} input={input} submittedWords={submittedWords} />
-        <Box fillParent />
         <ButtonInput
           setInput={setInput}
           input={input}

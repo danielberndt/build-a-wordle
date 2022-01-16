@@ -119,10 +119,45 @@ export const buttonThemes = {
   }),
 };
 
+export const wordBoxTheme = createThemeContract({
+  bg: "",
+  border: "",
+  text: "",
+});
+
+export const wordBoxThemes = {
+  green: createTheme(wordBoxTheme, {
+    bg: colors.green600,
+    border: colors.green400,
+    text: colors.green100,
+  }),
+  yellow: createTheme(wordBoxTheme, {
+    bg: colors.amber400,
+    border: colors.amber500,
+    text: colors.amber800,
+  }),
+  inactive: createTheme(wordBoxTheme, {
+    bg: colors.gray500,
+    border: colors.gray700,
+    text: colors.gray200,
+  }),
+  neutral: createTheme(wordBoxTheme, {
+    bg: colors.white,
+    border: colors.gray400,
+    text: colors.gray800,
+  }),
+  empty: createTheme(wordBoxTheme, {
+    bg: colors.white,
+    border: colors.gray200,
+    text: colors.gray800,
+  }),
+};
+
 const spacingSteps = [0, 0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4, 6, 10];
 const fontSizes = {
-  sm: 16,
-  md: 20,
+  sm: 12,
+  md: 16,
+  xl: 30,
 };
 
 const sizes = {sm: "20rem", md: "30rem", lg: "45rem"};
@@ -140,6 +175,7 @@ const bgColors = {
   back: themeVars.backgrounBg,
 
   button: buttonTheme.bg,
+  wordBox: wordBoxTheme.bg,
 };
 
 const hoverBgColors = {
@@ -148,11 +184,13 @@ const hoverBgColors = {
 
 const borderColors = {
   button: buttonTheme.border,
+  wordBox: wordBoxTheme.border,
 };
 
 const textColors = {
   primary: themeVars.textPrimary,
   button: buttonTheme.text,
+  wordBox: wordBoxTheme.text,
 };
 
 const withColorsTransition = style([
@@ -228,7 +266,8 @@ const baseStyles = {
   width: styleArray(["1rem", "100%"], (val) => ({width: val})),
   maxWidth: styleArray(["100%"], (val) => ({maxWidth: val})),
   height: styleArray(["3rem", "100%"], (val) => ({height: val})),
-  maxHeight: styleArray(["100%"], (val) => ({maxHeight: val})),
+  maxHeight: styleArray(["5rem", "100%"], (val) => ({maxHeight: val})),
+  minHeight: styleArray(["2rem"], (val) => ({minHeight: val})),
 
   textTransform: styleArray(["uppercase"], (val) => ({textTransform: val})),
   weight: styleArray(["normal", "bold"], (val) => ({fontWeight: val})),

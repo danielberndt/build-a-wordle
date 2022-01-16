@@ -2,20 +2,6 @@ import {Box, BoxProps} from "./Box";
 import {AnnotadedLetter} from "./types";
 import {buttonThemes} from "./ui.css";
 
-const buttonColorsByType: {[Type in AnnotadedLetter["type"]]: string} = {
-  correctPosition: "green",
-  found: "yellow",
-  notFound: "gray",
-};
-
-const buttonStyle = {
-  flex: "auto",
-  minHeight: "2.5rem",
-  minWidth: "1rem",
-  margin: "2px 0.5vw",
-  fontFamily: "monospace",
-};
-
 type LetterButtonProps = {
   letter: string;
   annotatedKey: AnnotadedLetter["type"] | undefined;
