@@ -1,14 +1,28 @@
 import {useState} from "preact/hooks";
 import Board from "./Board";
-import {Box, Col} from "./Box";
+import {Box, Col, Row} from "./Box";
 import Frame from "./Frame";
+import IntroOverlay from "./IntroOverlay";
 import Keyboard from "./Keyboard";
 import {BaseButton} from "./LetterButton";
 import {AnnotadedLetter, AnnotatedKeys} from "./types";
 import {themeBright} from "./ui.css";
+import {useLocalStorageState} from "./useLocalStorage";
 import deWords from "./word-lists/valid_words_de.json";
 
-const Heading = () => <div>Heading</div>;
+type HeadingProps = {onShowIntro: () => void};
+const Heading = ({onShowIntro}: HeadingProps) => {
+  return (
+    <Row px={3} sp={3} pt={3} align="baseline">
+      <Box bold fontSize="lg">
+        Wörtle
+      </Box>
+      <BaseButton px={4} onClick={onShowIntro} ml="auto" style={{flex: "none"}}>
+        Hilfe
+      </BaseButton>
+    </Row>
+  );
+};
 
 const MAX_GUESSES = 6;
 
@@ -107,6 +121,7 @@ export function App() {
 
   const [guessWord, setGuessWord] = useState<string>(getRandomWord);
   const [submittedWords, setSubmittedWords] = useState<string[]>([]);
+  const [skpiIntro, setSkipIntro] = useLocalStorageState("skipIntro", false);
 
   const [input, setInput] = useState<string>("");
 
@@ -126,7 +141,7 @@ export function App() {
   return (
     <Col className={themeBright} fillParent>
       <Frame>
-        {/* <Heading /> */}
+        <Heading onShowIntro={() => setSkipIntro(false)} />
         <Board guessWord={guessWord} input={input} submittedWords={submittedWords} />
         <Col minHeight="12rem">
           {gameState === "won" ? (
@@ -144,6 +159,7 @@ export function App() {
           )}
         </Col>
       </Frame>
+      <IntroOverlay show={!skpiIntro} onClose={() => setSkipIntro(true)} />
     </Col>
   );
 }

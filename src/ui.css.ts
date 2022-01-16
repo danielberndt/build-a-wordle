@@ -20,6 +20,8 @@ const colors = {
   gray800: "#27272a",
   gray900: "#18181b",
 
+  gray200_a90: "#e4e4e7e6",
+
   green100: "#dcfce7",
   green200: "#bbf7d0",
   green300: "#86efac",
@@ -56,6 +58,7 @@ export const [themeBright, themeVars] = createTheme({
   backgrounBg: colors.gray200,
   textPrimary: colors.gray700,
   border: colors.gray300,
+  backdropBg: colors.gray200_a90,
 
   actions: {
     green: {
@@ -175,8 +178,6 @@ const fontSizes = {
   xl: 30,
 };
 
-const sizes = {sm: "20rem", md: "30rem", lg: "45rem"};
-
 export const radiusScale = {
   xs: "0.125rem",
   sm: "0.25rem",
@@ -188,6 +189,7 @@ export const radiusScale = {
 const bgColors = {
   front: themeVars.foregroundBg,
   back: themeVars.backgrounBg,
+  backdrop: themeVars.backdropBg,
 
   button: buttonTheme.bg,
   wordBox: wordBoxTheme.bg,
@@ -247,6 +249,8 @@ const baseStyles = {
   pr: spacingSteps.map((v) => style({paddingRight: `${v}rem`})),
   pb: spacingSteps.map((v) => style({paddingBottom: `${v}rem`})),
 
+  ml: styleArray(["auto"], (val) => ({marginLeft: val})),
+
   sp: spacingSteps.map((v) => style({gap: `${v}rem`})),
 
   display: styleVariants(
@@ -284,7 +288,7 @@ const baseStyles = {
   borderColor: styleVariants(borderColors, (val) => ({borderColor: val})),
 
   width: styleArray(["1rem", "100%"], (val) => ({width: val})),
-  maxWidth: styleArray(["100%"], (val) => ({maxWidth: val})),
+  maxWidth: styleArray(["100%", "28rem"], (val) => ({maxWidth: val})),
   height: styleArray(["100%"], (val) => ({height: val})),
   maxHeight: styleArray(["3rem", "5rem", "100%"], (val) => ({maxHeight: val})),
   minHeight: styleArray(["2rem", "12rem"], (val) => ({minHeight: val})),
@@ -299,6 +303,9 @@ const baseStyles = {
   textAlign: styleArray(["left", "right", "center"], (val) => ({textAlign: val})),
 
   overflow: styleArray(["hidden"], (val) => ({overflow: val})),
+  userSelect: styleArray(["none"], (val) => ({userSelect: val})),
+
+  zIndex: styleArray([3], (val) => ({zIndex: val})),
 };
 
 export const uiStyles = {

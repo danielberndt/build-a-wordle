@@ -34,6 +34,7 @@ export const BaseButton = ({
     bold
     textTransform="uppercase"
     fontSize="md"
+    userSelect="none"
     className={buttonThemes[annotationProps[annotation || "none"]]}
     {...props}
   />
