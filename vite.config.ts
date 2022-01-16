@@ -5,4 +5,10 @@ import {vanillaExtractPlugin} from "@vanilla-extract/vite-plugin";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [preact(), vanillaExtractPlugin()],
+  resolve: {
+    alias: {
+      react: "preact/compat",
+      "react-dom": "preact/compat",
+    },
+  },
 });

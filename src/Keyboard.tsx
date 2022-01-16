@@ -1,28 +1,51 @@
 import {StateUpdater, useEffect, useMemo, useRef, useState} from "preact/hooks";
+import {useTransition, animated} from "react-spring";
+import {springConfigs} from "./animation-utils";
 import {Box, Col, Row} from "./Box";
 import LetterButton, {BaseButton} from "./LetterButton";
 import {AnnotatedKeys} from "./types";
 import {pillThemes} from "./ui.css";
 
-const ErrorPill = ({error}: {error: string}) => (
-  <Col absolute bottom="100%" left="0" right="0" align="center" py={4} px={2}>
-    <Box
-      className={pillThemes.error}
-      rounded="md"
-      px={4}
-      py={2}
-      align="center"
-      bg="pill"
-      color="pill"
-      borderWidth={2}
-      bold
-      borderColor="pill"
-      textAlign="center"
-    >
-      {error}
-    </Box>
-  </Col>
-);
+const ErrorPill = ({error}: {error: string | null}) => {
+  const fn = useTransition(error, {
+    from: {y: "3rem", opacity: 0, scale: 0.5},
+    enter: {y: "0", opacity: 1, scale: 1},
+    leave: {y: "-0.5rem", opacity: 0, scale: 1},
+    config: springConfigs.quick,
+  });
+  return fn(
+    (props, error) =>
+      error && (
+        <Col
+          as={animated.div as any}
+          style={props}
+          absolute
+          bottom="100%"
+          left="0"
+          right="0"
+          align="center"
+          py={4}
+          px={2}
+        >
+          <Box
+            className={pillThemes.error}
+            rounded="md"
+            px={4}
+            py={2}
+            align="center"
+            bg="pill"
+            color="pill"
+            borderWidth={2}
+            bold
+            borderColor="pill"
+            textAlign="center"
+          >
+            {error}
+          </Box>
+        </Col>
+      )
+  );
+};
 
 const keyRows = ["qwertzuiop".split(""), "asdfghjkl".split(""), "yxcvbnm".split("")];
 
@@ -112,7 +135,7 @@ const Keyboard = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Keybo
 
   return (
     <Col px={3} pb={3} sp={2} fillParent relative>
-      {error && <ErrorPill error={error} />}
+      <ErrorPill error={error} />
       <Row sp={2} fillParent>
         {keyRows[0].map((letter) => (
           <LetterButton
