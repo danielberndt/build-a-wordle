@@ -51,14 +51,14 @@ const evaluateWord = ({word, guessWord}: {word: string; guessWord: string}): Ann
   });
 };
 
-type SubmittedWordProps = {word: string; guessWord: string};
-const SubmittedWord = ({word, guessWord}: SubmittedWordProps) => {
+type SubmittedWordProps = {word: string; guessWord: string; isLast: boolean};
+const SubmittedWord = ({word, guessWord, isLast}: SubmittedWordProps) => {
   const annotatedLetters = evaluateWord({word, guessWord});
 
   return (
     <LetterRow>
       {annotatedLetters.map(({letter, type}, idx) => (
-        <LetterBox key={idx} letter={letter} type={type} />
+        <LetterBox key={idx} letter={letter} type={type} animateReveal={isLast} idx={idx} />
       ))}
     </LetterRow>
   );
@@ -88,7 +88,12 @@ const EmptyRow = () => (
 const Board = ({input, submittedWords, guessWord}: BoardProps) => (
   <Col sp={1} fillParent px={5} py={5} justify="center">
     {submittedWords.map((word, idx) => (
-      <SubmittedWord key={idx} word={word} guessWord={guessWord} />
+      <SubmittedWord
+        key={idx}
+        word={word}
+        guessWord={guessWord}
+        isLast={idx === submittedWords.length - 1}
+      />
     ))}
 
     {submittedWords.length < MAX_GUESSES && (

@@ -1,6 +1,6 @@
 import {ComponentChildren} from "preact";
-import {useState} from "preact/hooks";
-import {useEffect} from "react";
+import {useRef, useState} from "preact/hooks";
+import {useEffect, useLayoutEffect} from "react";
 import {animated, useSpring} from "react-spring";
 import {springConfigs} from "./animation-utils";
 import {Col, Row} from "./Box";
@@ -10,6 +10,8 @@ import {wordBoxThemes} from "./ui.css";
 type LetterBoxProps = {
   letter?: string;
   type?: AnnotadedLetter["type"] | "none" | "empty";
+  animateReveal?: boolean;
+  idx?: number;
 };
 
 const annotationProps: {
@@ -28,24 +30,50 @@ export const LetterRow = ({children}: {children: ComponentChildren}) => (
   </Row>
 );
 
-const LetterBox = ({letter, type = letter ? "none" : "empty"}: LetterBoxProps) => {
-  const [lastType, setLastType] = useState(type);
-  useEffect(() => {
-    setLastType(type);
-  }, [type]);
+const LetterBox = ({
+  letter,
+  type = letter ? "none" : "empty",
+  animateReveal,
+  idx = 0,
+}: LetterBoxProps) => {
+  if (animateReveal) console.log("reveal", letter);
+  const [themeClass, setThemeClass] = useState<NonNullable<LetterBoxProps["type"]>>("none");
 
-  const props = useSpring({
-    from: type === "none" ? {opacity: 0, scale: 1.5} : {opacity: 1, scale: 1},
-    to: {opacity: 1, scale: 1},
+  const lastTypeRef = useRef(type);
+
+  const [styles, api] = useSpring(() => ({
+    to: {opacity: 1, scale: 1, scaleX: 1},
     config: springConfigs.quick,
-    reset: lastType !== type,
-  });
+  }));
+
+  useLayoutEffect(() => {
+    if (lastTypeRef.current !== type) {
+      if (type === "none") {
+        api.set({scale: 2, opacity: 0});
+        api.start({scale: 1, opacity: 1});
+      }
+    }
+    lastTypeRef.current = type;
+  }, [type, animateReveal, api]);
+
+  useLayoutEffect(() => {
+    if (animateReveal) {
+      api.start({
+        to: async (next) => {
+          await next({scaleX: 0, config: {duration: 250}, delay: idx * 250});
+          setThemeClass(type);
+          await next({scaleX: 1, scale: 1.25, config: {duration: 250}});
+          await next({scale: 1});
+        },
+      });
+    }
+  }, [animateReveal, api, idx]);
 
   return (
     <Col
       as={animated.div as any}
-      style={props}
-      className={wordBoxThemes[annotationProps[type]]}
+      style={styles}
+      className={wordBoxThemes[annotationProps[animateReveal ? themeClass : type]]}
       width="1rem"
       rounded="sm"
       align="center"
