@@ -290,7 +290,6 @@ docks
 dogma
 dohle
 dolde
-doofe
 dorne
 dosen
 dosis
@@ -313,7 +312,6 @@ duerr
 duese
 duett
 dufte
-dumme
 dummy
 dumpf
 dunst
@@ -388,10 +386,8 @@ euren
 eurer
 eures
 euter
-ewige
 exakt
 exile
-exote
 extra
 fabel
 faden
@@ -410,7 +406,6 @@ farne
 fasan
 faser
 fatal
-faule
 fauna
 faust
 faxen
@@ -423,7 +418,6 @@ feier
 feige
 feile
 feind
-feine
 felge
 felle
 ferne
@@ -477,10 +471,8 @@ frage
 frass
 freak
 frech
-freie
 fremd
 frist
-frohe
 fromm
 frost
 frueh
@@ -515,9 +507,7 @@ gegen
 gehen
 geier
 geige
-geile
 geist
-gelbe
 gemse
 genau
 genie
@@ -542,7 +532,6 @@ gosse
 gotik
 gramm
 grate
-graue
 graus
 greif
 greis
@@ -570,7 +559,6 @@ hafer
 hagel
 hager
 haken
-halbe
 halle
 hallo
 halme
@@ -591,13 +579,10 @@ heere
 hefte
 hegen
 heide
-heile
-helle
 helme
 henne
 herab
 heran
-herbe
 herde
 hertz
 herum
@@ -622,7 +607,6 @@ hocke
 hoden
 hoefe
 hoehe
-holde
 holen
 honig
 horde
@@ -694,7 +678,6 @@ kaaba
 kabel
 kader
 kaese
-kahle
 kakao
 kalif
 kamel
@@ -706,7 +689,6 @@ kanon
 kante
 kappe
 karat
-karge
 karos
 karre
 karte
@@ -728,7 +710,6 @@ kerbe
 kerle
 kerne
 kerze
-kesse
 kette
 keule
 kiele
@@ -740,7 +721,6 @@ kippe
 kiste
 klage
 klang
-klare
 kleid
 kleie
 klein
@@ -750,7 +730,6 @@ klops
 klotz
 klubs
 kluft
-kluge
 knabe
 knall
 knapp
@@ -816,7 +795,6 @@ lager
 laibe
 laien
 lampe
-lange
 larve
 laser
 lasso
@@ -925,7 +903,6 @@ messe
 meter
 meute
 miene
-miese
 miete
 mikro
 milan
@@ -974,7 +951,6 @@ naehe
 nagel
 nagen
 nahen
-naive
 namen
 narbe
 nasen
@@ -992,7 +968,6 @@ netze
 nicht
 niere
 niete
-noble
 noete
 nomen
 nonne
@@ -1001,8 +976,6 @@ noten
 notiz
 nudel
 nylon
-obere
-obige
 ochse
 ocker
 oedem
@@ -1131,7 +1104,6 @@ raete
 ragen
 ramme
 rampe
-rande
 rares
 rasch
 rasen
@@ -1141,7 +1113,6 @@ raten
 ratio
 ratte
 rauch
-reale
 reben
 recht
 reden
@@ -1155,7 +1126,6 @@ reich
 reife
 reihe
 reime
-reine
 reise
 reize
 remis
@@ -1527,7 +1497,6 @@ wicht
 wider
 wiese
 wieso
-wilde
 wille
 wippe
 wirte
