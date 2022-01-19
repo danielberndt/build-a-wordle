@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && VITE_SSR=true vite build --ssr src/prerender.tsx --outDir dist/server && NODE_ENV=production node dist/server/prerender.js && rm -rf dist/server",
     "preview": "vite preview",
     "postinstall": "node scripts/extract-words.mjs ./data/german-pruned.txt > src/word-lists/valid_words_de.json"
   },
@@ -14,9 +14,11 @@
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.1.5",
+    "@types/node": "^17.0.10",
     "@types/react": "^17.0.38",
     "@vanilla-extract/css": "^1.6.8",
     "@vanilla-extract/vite-plugin": "^3.1.2",
+    "preact-render-to-string": "^5.1.19",
     "typescript": "^4.4.4",
     "vite": "^2.7.2"
   }
