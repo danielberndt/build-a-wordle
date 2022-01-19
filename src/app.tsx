@@ -15,7 +15,7 @@ const Heading = ({onShowIntro}: HeadingProps) => {
   return (
     <Row px={3} sp={3} pt={3} align="baseline">
       <Box bold fontSize="lg">
-        Wörtle
+        Wortle
       </Box>
       <BaseButton px={4} onClick={onShowIntro} ml="auto" style={{flex: "none"}}>
         Hilfe

@@ -58,8 +58,8 @@ const IntroOverlay = ({show, onClose}: {show: boolean; onClose: () => void}) => 
                 Errate das Wort!
               </Box>
               <Box>
-                Du hast <b>sechs Versuche</b>. Gib mir ein irgendein Wort mit <b>fünf Buchstaben</b>{" "}
-                und ich sage dir, welche Buchstaben korrekt waren.
+                Du hast <b>sechs Versuche</b>. Gib mir irgendein Wort mit <b>fünf Buchstaben</b> und
+                ich sage dir, welche Buchstaben korrekt waren.
               </Box>
             </Col>
             <Col sp={3}>
