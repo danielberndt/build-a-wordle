@@ -491,7 +491,6 @@ gaben
 galan
 galle
 gamma
-ganze
 garde
 garen
 garne
@@ -1672,3 +1671,9 @@ sooft
 model
 nasal
 wogen
+zutat
+wumme
+wecke
+aehre
+logos
+burka
