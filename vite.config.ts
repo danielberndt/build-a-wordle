@@ -18,7 +18,7 @@ export default defineConfig({
         ? undefined
         : {
             main: resolve(__dirname, "index.html"),
-            about: resolve(__dirname, "about.html"),
+            about: resolve(__dirname, "about/index.html"),
           },
     },
   },
