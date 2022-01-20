@@ -156,7 +156,7 @@ const Keyboard = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Keybo
         ))}
       </Row>
       <Row sp={2} fillParent>
-        <BaseButton fontSize="sm" onClick={handleFormSubmit}>
+        <BaseButton fontSize="xs" onClick={handleFormSubmit}>
           enter
         </BaseButton>
         {keyRows[2].map((letter) => (
@@ -167,7 +167,7 @@ const Keyboard = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Keybo
             onClick={onAddLetter}
           />
         ))}
-        <BaseButton fontSize="sm" onClick={onBackspace}>
+        <BaseButton fontSize="xs" onClick={onBackspace}>
           del
         </BaseButton>
       </Row>

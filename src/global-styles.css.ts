@@ -33,6 +33,10 @@ globalStyle("#app", {
 globalStyle("img", {
   maxWidth: "100%",
 });
+globalStyle("a", {
+  textDecoration: "inherit",
+  color: "inherit",
+});
 globalStyle("input, button, textarea, select", {
   font: "inherit",
 });

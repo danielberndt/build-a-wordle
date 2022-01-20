@@ -21,6 +21,10 @@ export const BaseButton = ({
 }: BoxProps<"button"> & {annotation?: AnnotadedLetter["type"]}) => (
   <Box
     as="button"
+    display="flex"
+    flexDir="row"
+    align="center"
+    justify="center"
     minHeight="2rem"
     maxHeight="3rem"
     height="100%"

@@ -59,33 +59,10 @@ export const [themeBright, themeVars] = createTheme({
   textPrimary: colors.gray700,
   border: colors.gray300,
   backdropBg: colors.gray200_a90,
+  brandBg: colors.amber400,
 
-  actions: {
-    green: {
-      bg: colors.green600,
-      bgHover: colors.green500,
-      border: colors.green200,
-      text: colors.green100,
-    },
-    yellow: {
-      bg: colors.amber600,
-      bgHover: colors.amber500,
-      border: colors.amber200,
-      text: colors.amber100,
-    },
-    inactive: {
-      bg: colors.gray600,
-      bgHover: colors.gray500,
-      border: colors.gray200,
-      text: colors.gray100,
-    },
-    neutral: {
-      bg: colors.gray600,
-      bgHover: colors.gray500,
-      border: colors.gray200,
-      text: colors.gray100,
-    },
-  },
+  textLink: colors.amber500,
+  textLinkHover: colors.amber600,
 });
 
 const buttonTheme = createThemeContract({
@@ -172,7 +149,8 @@ export const pillThemes = {
 
 const spacingSteps = [0, 0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4, 6, 10];
 const fontSizes = {
-  sm: 12,
+  xs: 12,
+  sm: 14,
   md: 16,
   lg: 24,
   xl: 30,
@@ -190,6 +168,7 @@ const bgColors = {
   front: themeVars.foregroundBg,
   back: themeVars.backgrounBg,
   backdrop: themeVars.backdropBg,
+  brand: themeVars.brandBg,
 
   button: buttonTheme.bg,
   wordBox: wordBoxTheme.bg,
@@ -208,9 +187,14 @@ const borderColors = {
 
 const textColors = {
   primary: themeVars.textPrimary,
+  link: themeVars.textLink,
   button: buttonTheme.text,
   wordBox: wordBoxTheme.text,
   pill: pillTheme.text,
+};
+
+const textHoverColors = {
+  link: themeVars.textLinkHover,
 };
 
 const withColorsTransition = style([
@@ -273,6 +257,7 @@ const baseStyles = {
     (val) => ({justifyContent: val})
   ),
   color: styleVariants(textColors, (val) => [withColorsTransition, {color: val}]),
+  hoverColor: styleVariants(textHoverColors, (val) => ({":hover": {color: val}})),
   bg: styleVariants(bgColors, (val) => [withColorsTransition, {backgroundColor: val}]),
   hoverBg: styleVariants(hoverBgColors, (val) => [
     withColorsTransition,
@@ -288,8 +273,8 @@ const baseStyles = {
   borderColor: styleVariants(borderColors, (val) => ({borderColor: val})),
 
   width: styleArray(["1rem", "100%"], (val) => ({width: val})),
-  maxWidth: styleArray(["100%", "28rem"], (val) => ({maxWidth: val})),
-  height: styleArray(["100%"], (val) => ({height: val})),
+  maxWidth: styleArray(["100%", "28rem", "40rem"], (val) => ({maxWidth: val})),
+  height: styleArray(["8rem", "100%"], (val) => ({height: val})),
   maxHeight: styleArray(["3rem", "5rem", "100%"], (val) => ({maxHeight: val})),
   minHeight: styleArray(["2rem", "12rem"], (val) => ({minHeight: val})),
 

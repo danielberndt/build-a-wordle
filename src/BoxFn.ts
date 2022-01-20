@@ -1,6 +1,6 @@
 import {ComponentType} from "preact";
 
-export type Merge<P1 = {}, P2 = {}> = Omit<P1, keyof P2> & P2;
+export type Merge<P1 = {}, P2 = {}> = Omit<P1, keyof P2> & P2 & {forwardProps?: P1};
 
 export type BoxProps<OwnProps, As = "div"> = As extends keyof JSX.IntrinsicElements
   ? Merge<JSX.IntrinsicElements[As], OwnProps & {as?: As}>

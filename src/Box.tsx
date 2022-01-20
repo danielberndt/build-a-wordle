@@ -2,15 +2,14 @@ import {uiStyles} from "./ui.css";
 import type {UiStyles} from "./ui.css";
 import {BoxFnWithJSXDefault, Merge, BoxProps as OrgBoxProps} from "./BoxFn";
 import {forwardRef} from "preact/compat";
-import type {ComponentType} from "preact";
 
 type Booleanify<E> = E extends "true" ? true : E;
 type BoxOwnProps = {[Key in keyof UiStyles]?: Booleanify<keyof UiStyles[Key]> | false};
 
 export type BoxProps<As = "div"> = OrgBoxProps<BoxOwnProps, As>;
 
-const getBoxProps = (props: any) => {
-  let Comp = "div";
+const getBoxProps = (props: any, defaultComp: string) => {
+  let Comp = defaultComp;
   const forwardProps = {} as any;
   const classNames = [];
   for (const prop in props) {
@@ -45,10 +44,10 @@ const getBoxProps = (props: any) => {
   return {Comp, boxProps: forwardProps, classNames};
 };
 
-const createBoxProps = (defaultProps: BoxOwnProps) => {
-  const defaultBoxProps = getBoxProps(defaultProps);
+const createBoxProps = (defaultProps: BoxOwnProps, defaultComp: string = "div") => {
+  const defaultBoxProps = getBoxProps(defaultProps, defaultComp);
   return forwardRef((props, ref) => {
-    const {Comp, boxProps, classNames} = getBoxProps(props);
+    const {Comp, boxProps, classNames} = getBoxProps(props, defaultComp);
     classNames.push(...defaultBoxProps.classNames);
     boxProps.className = classNames.join(" ");
     return <Comp {...boxProps} ref={ref} />;
@@ -58,3 +57,4 @@ const createBoxProps = (defaultProps: BoxOwnProps) => {
 export const Box = createBoxProps({});
 export const Row = createBoxProps({display: "flex", flexDir: "row"});
 export const Col = createBoxProps({display: "flex", flexDir: "column"});
+export const Link = createBoxProps({color: "link", hoverColor: "link", bold: true}, "a");
