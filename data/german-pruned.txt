@@ -1677,3 +1677,7 @@ wecke
 aehre
 logos
 burka
+moped
+linde
+pfaue
+tukan
