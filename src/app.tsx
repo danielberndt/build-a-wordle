@@ -1,4 +1,5 @@
 import {useState} from "preact/hooks";
+import logo from "./assets/logo-wide.svg";
 import Board from "./Board";
 import {Box, Col, Row} from "./Box";
 import Frame from "./Frame";
@@ -13,9 +14,16 @@ import deWords from "./word-lists/valid_words_de.json";
 type HeadingProps = {onShowIntro: () => void};
 const Heading = ({onShowIntro}: HeadingProps) => {
   return (
-    <Row px={3} sp={3} pt={3} align="baseline">
-      <Box bold fontSize="lg">
-        Wortle
+    <Row px={4} sp={3} pt={5} align="center">
+      <Box as="a" href="/about/">
+        <Box
+          as="img"
+          src={logo}
+          alt="Wortle Logo"
+          width="auto"
+          height="2rem"
+          forwardProps={{width: 730, height: 115}}
+        />
       </Box>
       <BaseButton px={4} onClick={onShowIntro} ml="auto" style={{flex: "none"}}>
         Hilfe

@@ -56,7 +56,8 @@ const About = () => (
               as="img"
               src={sampleWordImage}
               alt="Beispiel Spiel"
-              // height="8rem"
+              width="20rem"
+              height="auto"
               forwardProps={{width: 434, height: 364}}
             />
           </Box>
