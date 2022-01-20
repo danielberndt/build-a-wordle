@@ -1,15 +1,13 @@
 import {uiStyles} from "./ui.css";
 import type {UiStyles} from "./ui.css";
-import {BoxFnWithJSXDefault} from "./BoxFn";
+import {BoxFnWithJSXDefault, Merge, BoxProps as OrgBoxProps} from "./BoxFn";
 import {forwardRef} from "preact/compat";
-import type {ComponentProps, JSX} from "preact";
+import type {ComponentType} from "preact";
 
 type Booleanify<E> = E extends "true" ? true : E;
 type BoxOwnProps = {[Key in keyof UiStyles]?: Booleanify<keyof UiStyles[Key]> | false};
 
-export type BoxProps<DefaultAs extends keyof JSX.IntrinsicElements = "div"> = ComponentProps<
-  BoxFnWithJSXDefault<BoxOwnProps, DefaultAs>
->;
+export type BoxProps<As = "div"> = OrgBoxProps<BoxOwnProps, As>;
 
 const getBoxProps = (props: any) => {
   let Comp = "div";

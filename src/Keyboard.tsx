@@ -17,7 +17,7 @@ const ErrorPill = ({error}: {error: string | null}) => {
     (props, error) =>
       error && (
         <Col
-          as={animated.div as any}
+          as={animated.div}
           style={props}
           absolute
           bottom="100%"

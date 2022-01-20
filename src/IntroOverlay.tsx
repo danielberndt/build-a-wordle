@@ -29,7 +29,7 @@ const IntroOverlay = ({show, onClose}: {show: boolean; onClose: () => void}) => 
           overflow="hidden"
         >
           <Col
-            as={animated.div as any}
+            as={animated.div}
             absolute
             bg="backdrop"
             top="0"
@@ -43,7 +43,7 @@ const IntroOverlay = ({show, onClose}: {show: boolean; onClose: () => void}) => 
             onClick={onClose}
           />
           <Col
-            as={animated.div as any}
+            as={animated.div}
             style={props}
             bg="front"
             rounded="md"

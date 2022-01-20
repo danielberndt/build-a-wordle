@@ -1,28 +1,16 @@
-import {ComponentType, JSX, Ref} from "preact";
+import {ComponentType} from "preact";
 
-type Merge<P1 = {}, P2 = {}> = Omit<P1, keyof P2> & P2;
+export type Merge<P1 = {}, P2 = {}> = Omit<P1, keyof P2> & P2;
 
-type WithClassName<P> = P extends {className: string}
-  ? Omit<P, "className"> & {className?: string}
-  : P extends {className?: string}
-  ? P
+export type BoxProps<OwnProps, As = "div"> = As extends keyof JSX.IntrinsicElements
+  ? Merge<JSX.IntrinsicElements[As], OwnProps & {as?: As}>
+  : As extends ComponentType<infer P>
+  ? Merge<P, OwnProps & {as: As}>
   : never;
 
-type ExtractCompProps<T> = T extends ComponentType<infer P> ? WithClassName<P> : never;
-
-export type BoxFnWithJSXDefault<
-  OwnProps,
-  DefaultAs extends keyof JSX.IntrinsicElements = "div"
-> = (<
-  Comp extends ComponentType<WithClassName<P>>,
-  P,
-  Intrinsic extends keyof JSX.IntrinsicElements
->(
-  props:
-    | ({as: Comp} & Merge<ExtractCompProps<Comp>, OwnProps>)
-    | ({as: Intrinsic} & Merge<JSX.IntrinsicElements[Intrinsic], OwnProps>)
-) => JSX.Element) &
-  ((props: {as?: never} & Merge<JSX.IntrinsicElements[DefaultAs], OwnProps>) => JSX.Element);
+export type BoxFnWithJSXDefault<OwnProps, DefaultAs = "div"> = <As = DefaultAs>(
+  props: BoxProps<OwnProps, As>
+) => JSX.Element;
 
 // const Box: BoxFnWithJSXDefault<{myCol?: "green"}> = (props: any) => {
 //   const {as: Comp = "div", ...rest} = props;
@@ -37,10 +25,13 @@ export type BoxFnWithJSXDefault<
 // };
 
 // const comps = [
+//   Box({onClick: (e: any) => console.log(e)}),
+//   Box({as: "button", onClick: (e) => console.log(e)}),
+//   Box({as: "button", disabled: true, onClick: (e) => console.log(e), myCol: "green"}),
 //   <Box as="button" myCol="green" onClick={(e) => console.log(e)} />,
-//   <Box disabled onClick={(e) => console.log(e)} myCol="green" />,
 //   <Box as="div" disabled />,
 //   <Box as={MyButton} active hi={2} />,
+//   <Box as={animated.div} style={{}} myCol="green" />,
 
 //   <Box as="badButton" />,
 //   <Box as="button" myCol="green" bad />,
