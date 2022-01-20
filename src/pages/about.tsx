@@ -40,11 +40,11 @@ const About = () => (
             <Link href="https://www.powerlanguage.co.uk/wordle/" target="_blank">
               Wordle
             </Link>{" "}
-            ist ein Riesenerfolg auf der ganzen, weiten Welt. Aber Wortspiele machen in der eigenen
-            Muttersprache dann doch meist am meisten Spaß.
+            ist ein Riesenerfolg auf der ganzen, weiten Welt. Aber eine gute deutsche Version fehlte
+            bislang.
           </Box>
           <Box as="p">
-            Deswegen habe ich für euch hier an einer deutsche Worlde Alternative gearbeitet:
+            Deswegen habe ich für euch an einer deutsche Worlde Alternative gearbeitet:
           </Box>
         </Col>
         <Col align="center" sp={6}>
