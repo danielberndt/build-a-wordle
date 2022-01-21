@@ -1,26 +1,5 @@
-import {
-  ComplexStyleRule,
-  createTheme,
-  createThemeContract,
-  style,
-  styleVariants,
-} from "@vanilla-extract/css";
+import {ComplexStyleRule, style, styleVariants} from "@vanilla-extract/css";
 import {themeVars} from "./app-theme.css";
-import {colors} from "./colors";
-
-export const pillTheme = createThemeContract({
-  bg: "",
-  border: "",
-  text: "",
-});
-
-export const pillThemes = {
-  error: createTheme(pillTheme, {
-    bg: colors.rose600,
-    border: colors.rose400,
-    text: colors.rose100,
-  }),
-};
 
 const spacingSteps = [0, 0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4, 6, 10];
 const fontSizes = {
@@ -46,8 +25,6 @@ const bgColors = {
   brand: themeVars.brandBg,
 
   subTheme: themeVars.subThemeBg,
-
-  pill: pillTheme.bg,
 };
 
 const hoverBgColors = {
@@ -56,8 +33,6 @@ const hoverBgColors = {
 
 const borderColors = {
   subTheme: themeVars.subThemeBorder,
-
-  pill: pillTheme.border,
 };
 
 const textColors = {
@@ -65,8 +40,6 @@ const textColors = {
   link: themeVars.textLink,
 
   subTheme: themeVars.subThemeText,
-
-  pill: pillTheme.text,
 };
 
 const textHoverColors = {

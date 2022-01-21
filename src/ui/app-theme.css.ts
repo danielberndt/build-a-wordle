@@ -42,6 +42,12 @@ export const themeVars = createThemeContract({
       border: "",
       text: "",
     },
+    error: {
+      bg: "",
+      bgHover: "",
+      border: "",
+      text: "",
+    },
   },
 
   subThemeBg: "",
@@ -85,6 +91,12 @@ createGlobalTheme(":root", themeVars, {
       bgHover: colors.gray100,
       border: colors.gray300,
       text: colors.gray800,
+    },
+    error: {
+      bg: colors.rose600,
+      bgHover: colors.rose500,
+      border: colors.rose400,
+      text: colors.rose100,
     },
   },
 
@@ -132,6 +144,12 @@ globalStyle(":root", {
             bgHover: colors.gray500,
             border: colors.gray600,
             text: colors.gray300,
+          },
+          error: {
+            bg: colors.rose800,
+            bgHover: colors.rose600,
+            border: colors.rose500,
+            text: colors.rose200,
           },
         },
 

@@ -1,10 +1,10 @@
 import {StateUpdater, useEffect, useMemo, useRef, useState} from "preact/hooks";
 import {useTransition, animated} from "react-spring";
 import {springConfigs} from "./animation-utils";
-import {Box, Col, Row} from "./ui/Box";
+import {Col, Row} from "./ui/Box";
 import LetterButton, {NonLetterKeyboardButton} from "./LetterButton";
 import {AnnotatedKeys} from "./types";
-import {pillThemes} from "./ui/ui.css";
+import {Pill} from "./ui/Pill";
 
 const ErrorPill = ({error}: {error: string | null}) => {
   const fn = useTransition(error, {
@@ -18,21 +18,7 @@ const ErrorPill = ({error}: {error: string | null}) => {
       error && (
         <Col styleChild absolute bottom="100%" left="0" right="0" align="center" py={4} px={2}>
           <animated.div style={props}>
-            <Box
-              className={pillThemes.error}
-              rounded="md"
-              px={4}
-              py={2}
-              align="center"
-              bg="pill"
-              color="pill"
-              borderWidth={2}
-              bold
-              borderColor="pill"
-              textAlign="center"
-            >
-              {error}
-            </Box>
+            <Pill type="error">{error}</Pill>
           </animated.div>
         </Col>
       )
