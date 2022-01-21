@@ -16,32 +16,24 @@ const ErrorPill = ({error}: {error: string | null}) => {
   return fn(
     (props, error) =>
       error && (
-        <Col
-          as={animated.div}
-          style={props}
-          absolute
-          bottom="100%"
-          left="0"
-          right="0"
-          align="center"
-          py={4}
-          px={2}
-        >
-          <Box
-            className={pillThemes.error}
-            rounded="md"
-            px={4}
-            py={2}
-            align="center"
-            bg="pill"
-            color="pill"
-            borderWidth={2}
-            bold
-            borderColor="pill"
-            textAlign="center"
-          >
-            {error}
-          </Box>
+        <Col styleChild absolute bottom="100%" left="0" right="0" align="center" py={4} px={2}>
+          <animated.div style={props}>
+            <Box
+              className={pillThemes.error}
+              rounded="md"
+              px={4}
+              py={2}
+              align="center"
+              bg="pill"
+              color="pill"
+              borderWidth={2}
+              bold
+              borderColor="pill"
+              textAlign="center"
+            >
+              {error}
+            </Box>
+          </animated.div>
         </Col>
       )
   );

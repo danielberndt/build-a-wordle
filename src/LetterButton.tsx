@@ -1,4 +1,6 @@
-import {Box, BoxProps} from "./Box";
+import {JSX} from "preact";
+import {ReactNode} from "react";
+import {Row, StyleProps} from "./Box";
 import {AnnotadedLetter} from "./types";
 import {buttonThemes} from "./ui.css";
 
@@ -15,14 +17,11 @@ const annotationProps: {[Type in AnnotadedLetter["type"] | "none"]: keyof typeof
   none: "neutral",
 };
 
-export const BaseButton = ({
-  annotation,
-  ...props
-}: BoxProps<"button"> & {annotation?: AnnotadedLetter["type"]}) => (
-  <Box
-    as="button"
-    display="flex"
-    flexDir="row"
+export const ButtonStyle = (
+  props: StyleProps & {children: ReactNode; className?: string; style?: JSX.CSSProperties}
+) => (
+  <Row
+    styleChild
     align="center"
     justify="center"
     minHeight="2rem"
@@ -39,9 +38,25 @@ export const BaseButton = ({
     textTransform="uppercase"
     fontSize="md"
     userSelect="none"
-    className={buttonThemes[annotationProps[annotation || "none"]]}
+    className={buttonThemes[annotationProps["none"]]}
     {...props}
   />
+);
+
+export const BaseButton = ({
+  annotation,
+  onClick,
+  children,
+  ...props
+}: StyleProps & {annotation?: AnnotadedLetter["type"]; style?: JSX.CSSProperties} & Pick<
+    JSX.IntrinsicElements["button"],
+    "onClick" | "children"
+  >) => (
+  <ButtonStyle className={buttonThemes[annotationProps[annotation || "none"]]} {...props}>
+    <button type="button" onClick={onClick}>
+      {children}
+    </button>
+  </ButtonStyle>
 );
 
 const LetterButton = ({letter, annotatedKey, onClick}: LetterButtonProps) => (

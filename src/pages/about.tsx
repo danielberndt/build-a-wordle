@@ -1,9 +1,9 @@
-import {Box, Col, Link, Row} from "../Box";
+import {Box, Col, StyleLink, Row} from "../Box";
 import "../global-styles.css";
 import logo from "../assets/logo.svg";
 import sampleWordImage from "../assets/sample-word.png";
 import {themeBright} from "../ui.css";
-import {BaseButton} from "../LetterButton";
+import {ButtonStyle} from "../LetterButton";
 import {ReactNode} from "react";
 
 const Fact = ({title, children}: {title: ReactNode; children: ReactNode}) => (
@@ -22,13 +22,9 @@ const Fact = ({title, children}: {title: ReactNode; children: ReactNode}) => (
 const About = () => (
   <Col className={themeBright} fillParent>
     <Col px={4} py={7} align="center" bg="brand">
-      <Box
-        as="img"
-        src={logo}
-        alt="Wortle Logo"
-        height="8rem"
-        forwardProps={{width: 372, height: 257}}
-      />
+      <Box styleChild height="8rem">
+        <img width={372} height={257} src={logo} alt="Wortle Logo" />
+      </Box>
     </Col>
     <Col bg="front" fillParent align="center">
       <Col width="100%" maxWidth="40rem" px={4} py={7} sp={7}>
@@ -37,9 +33,11 @@ const About = () => (
         </Box>
         <Col sp={5}>
           <Box as="p">
-            <Link href="https://www.powerlanguage.co.uk/wordle/" target="_blank">
-              Wordle
-            </Link>{" "}
+            <StyleLink>
+              <a href="https://www.powerlanguage.co.uk/wordle/" target="_blank">
+                Wordle
+              </a>
+            </StyleLink>{" "}
             ist ein Riesenerfolg auf der ganzen, weiten Welt. Aber eine gute deutsche Version fehlte
             bislang.
           </Box>
@@ -48,19 +46,14 @@ const About = () => (
           </Box>
         </Col>
         <Col align="center" sp={6}>
-          <BaseButton as="a" href="/" px={4}>
-            Zum Spiel
-          </BaseButton>
-          <Box as="a" href="/">
-            <Box
-              as="img"
-              src={sampleWordImage}
-              alt="Beispiel Spiel"
-              width="20rem"
-              height="auto"
-              forwardProps={{width: 434, height: 364}}
-            />
-          </Box>
+          <ButtonStyle px={4}>
+            <a href="/">Zum Spiel</a>
+          </ButtonStyle>
+          <a href="/">
+            <Box styleChild width="20rem" height="auto">
+              <img width={434} height={364} src={sampleWordImage} alt="Beispiel Spiel" />
+            </Box>
+          </a>
         </Col>
         <Col sp={5}>
           <Box as="h2" fontSize="lg">
@@ -73,9 +66,9 @@ const About = () => (
             </Fact>
             <Fact title="Open Source">
               Entstanden aus dem Spaß an der Sache. Für die Neugierigen:{" "}
-              <Link href="https://github.com/danielberndt/build-a-wordle">
-                Hier geht's zum Code.
-              </Link>
+              <StyleLink>
+                <a href="https://github.com/danielberndt/build-a-wordle">Hier geht's zum Code.</a>
+              </StyleLink>
             </Fact>
             <Fact title="Flink und Schlank">
               Hier geht es einfach nur um den Spaß am Spiel. Keine Werbung, keine

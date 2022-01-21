@@ -70,8 +70,7 @@ const LetterBox = ({
 
   return (
     <Col
-      as={animated.div as any}
-      style={styles}
+      styleChild
       className={wordBoxThemes[annotationProps[animateReveal ? themeClass : type]]}
       width="1rem"
       rounded="sm"
@@ -86,7 +85,7 @@ const LetterBox = ({
       textTransform="uppercase"
       fontSize="xl"
     >
-      {letter}
+      <animated.div style={styles}>{letter}</animated.div>
     </Col>
   );
 };

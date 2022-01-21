@@ -1,60 +1,89 @@
 import {uiStyles} from "./ui.css";
-import type {UiStyles} from "./ui.css";
-import {BoxFnWithJSXDefault, Merge, BoxProps as OrgBoxProps} from "./BoxFn";
-import {forwardRef} from "preact/compat";
+import {forwardRef, cloneElement} from "preact/compat";
+import type {UiStyles as RawStyleProps} from "./ui.css";
+import type {ReactNode} from "react";
 
 type Booleanify<E> = E extends "true" ? true : E;
-type BoxOwnProps = {[Key in keyof UiStyles]?: Booleanify<keyof UiStyles[Key]> | false};
+export type StyleProps = {
+  [Key in keyof RawStyleProps]?: Booleanify<keyof RawStyleProps[Key]> | false;
+};
 
-export type BoxProps<As = "div"> = OrgBoxProps<BoxOwnProps, As>;
+export type BoxProps = StyleProps & {className?: string; style?: JSX.CSSProperties} & (
+    | {
+        as?: keyof JSX.IntrinsicElements;
+        children?: ReactNode;
+        styleChild?: null;
+      }
+    | {
+        as?: null;
+        styleChild: true;
+        children: ReactNode;
+      }
+  );
 
-const getBoxProps = (props: any, defaultComp: string) => {
-  let Comp = defaultComp;
-  const forwardProps = {} as any;
-  const classNames = [];
+const applyProps = (props: Partial<BoxProps>, defaultComp: keyof JSX.IntrinsicElements) => {
+  let Comp: any = defaultComp;
+  const classList = [];
   for (const prop in props) {
-    const val = (props as any)[prop];
+    const val = props[prop as keyof BoxProps];
     if (val === null || val === undefined) continue;
     switch (prop) {
       case "as":
         Comp = val;
         break;
       case "children":
-        forwardProps[prop] = val;
+      case "styleChild":
+      case "style":
         break;
       case "className":
-        classNames.push(val);
-        break;
-      case "forwardProps":
-        if (val.className) classNames.push(val.className);
-        Object.assign(forwardProps, val);
+        classList.push(val);
         break;
       default:
-        const s = (uiStyles as any)[prop];
+        const s = uiStyles[prop as keyof StyleProps];
         if (!s) {
-          forwardProps[prop] = val;
-        } else {
-          if (val === false) continue;
-          const className = s[val];
-          if (!className) throw new Error(`Unknown style '${prop}=${val}'`);
-          classNames.push(className);
+          console.warn(`Can't apply style prop '${prop}' with value '${val as any}'`);
+          continue;
         }
+        if (val === false) continue;
+        console.log({s, val, prop});
+        classList.push((s as any)[val as any]);
     }
   }
-  return {Comp, boxProps: forwardProps, classNames};
+  return {
+    Comp,
+    compProps: {
+      className: classList.join(" "),
+      children: props.children,
+      styleChild: props.styleChild,
+      style: props.style,
+    },
+  };
 };
 
-const createBoxProps = (defaultProps: BoxOwnProps, defaultComp: string = "div") => {
-  const defaultBoxProps = getBoxProps(defaultProps, defaultComp);
-  return forwardRef((props, ref) => {
-    const {Comp, boxProps, classNames} = getBoxProps(props, defaultComp);
-    classNames.push(...defaultBoxProps.classNames);
-    boxProps.className = classNames.join(" ");
-    return <Comp {...boxProps} ref={ref} />;
-  }) as BoxFnWithJSXDefault<BoxOwnProps>;
+const createBox = (
+  opts: StyleProps & Pick<BoxProps, "styleChild">,
+  defaultComp: keyof JSX.IntrinsicElements = "div"
+) => {
+  return forwardRef((props: BoxProps, ref) => {
+    const {Comp, compProps} = applyProps({...opts, ...props}, defaultComp);
+    if (!props.styleChild) {
+      return <Comp {...compProps} ref={ref} />;
+    } else {
+      return cloneElement(compProps.children as any, {
+        className: compProps.className,
+        style: compProps.style,
+      });
+    }
+  });
 };
 
-export const Box = createBoxProps({});
-export const Row = createBoxProps({display: "flex", flexDir: "row"});
-export const Col = createBoxProps({display: "flex", flexDir: "column"});
-export const Link = createBoxProps({color: "link", hoverColor: "link", bold: true}, "a");
+export const Box = createBox({}, "div");
+export const Row = createBox({display: "flex", flexDir: "row"}, "div");
+export const Col = createBox({display: "flex", flexDir: "column"}, "div");
+
+export const StyleLink = createBox({
+  color: "link",
+  hoverColor: "link",
+  bold: true,
+  styleChild: true,
+});

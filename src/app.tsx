@@ -15,16 +15,11 @@ type HeadingProps = {onShowIntro: () => void};
 const Heading = ({onShowIntro}: HeadingProps) => {
   return (
     <Row px={4} sp={3} pt={5} align="center">
-      <Box as="a" href="/about/">
-        <Box
-          as="img"
-          src={logo}
-          alt="Wortle Logo"
-          width="auto"
-          height="2rem"
-          forwardProps={{width: 730, height: 115}}
-        />
-      </Box>
+      <a href="/about/">
+        <Box styleChild width="auto" height="2rem">
+          <img src={logo} alt="Wortle Logo" width={730} height={115} />
+        </Box>
+      </a>
       <BaseButton px={4} onClick={onShowIntro} ml="auto" style={{flex: "none"}}>
         Hilfe
       </BaseButton>
