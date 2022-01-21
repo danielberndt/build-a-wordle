@@ -1,8 +1,8 @@
-import {Box, Col, StyleLink, Row} from "../Box";
-import "../global-styles.css";
+import {Box, Col, StyleLink} from "../ui/Box";
+import "../ui/global-styles.css";
 import logo from "../assets/logo.svg";
 import sampleWordImage from "../assets/sample-word.png";
-import {themeBright} from "../ui.css";
+import {themeBright} from "../ui/ui.css";
 import {ButtonStyle} from "../LetterButton";
 import {ReactNode} from "react";
 

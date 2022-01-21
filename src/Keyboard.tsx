@@ -1,10 +1,10 @@
 import {StateUpdater, useEffect, useMemo, useRef, useState} from "preact/hooks";
 import {useTransition, animated} from "react-spring";
 import {springConfigs} from "./animation-utils";
-import {Box, Col, Row} from "./Box";
+import {Box, Col, Row} from "./ui/Box";
 import LetterButton, {BaseButton} from "./LetterButton";
 import {AnnotatedKeys} from "./types";
-import {pillThemes} from "./ui.css";
+import {pillThemes} from "./ui/ui.css";
 
 const ErrorPill = ({error}: {error: string | null}) => {
   const fn = useTransition(error, {

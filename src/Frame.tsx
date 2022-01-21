@@ -1,5 +1,5 @@
 import {ComponentChildren} from "preact";
-import {Col} from "./Box";
+import {Col} from "./ui/Box";
 import {frameStyle} from "./Frame.css";
 
 const Frame = ({children}: {children: ComponentChildren}) => {

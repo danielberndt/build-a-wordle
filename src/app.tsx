@@ -1,13 +1,13 @@
 import {useState} from "preact/hooks";
 import logo from "./assets/logo-wide.svg";
 import Board from "./Board";
-import {Box, Col, Row} from "./Box";
+import {Box, Col, Row} from "./ui/Box";
 import Frame from "./Frame";
 import IntroOverlay from "./IntroOverlay";
 import Keyboard from "./Keyboard";
 import {BaseButton} from "./LetterButton";
 import {AnnotadedLetter, AnnotatedKeys} from "./types";
-import {themeBright} from "./ui.css";
+import {themeBright} from "./ui/ui.css";
 import {useLocalStorageState} from "./useLocalStorage";
 import deWords from "./word-lists/valid_words_de.json";
 

@@ -1,4 +1,4 @@
-import {Col} from "./Box";
+import {Col} from "./ui/Box";
 import {AnnotadedLetter} from "./types";
 import LetterBox, {LetterRow} from "./WordBox";
 

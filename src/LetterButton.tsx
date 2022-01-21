@@ -1,8 +1,8 @@
 import {JSX} from "preact";
 import {ReactNode} from "react";
-import {Row, StyleProps} from "./Box";
+import {Row, StyleProps} from "./ui/Box";
 import {AnnotadedLetter} from "./types";
-import {buttonThemes} from "./ui.css";
+import {buttonThemes} from "./ui/ui.css";
 
 type LetterButtonProps = {
   letter: string;

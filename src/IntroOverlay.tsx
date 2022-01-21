@@ -1,6 +1,6 @@
 import {animated, useTransition} from "react-spring";
 import {springConfigs} from "./animation-utils";
-import {Box, Col} from "./Box";
+import {Box, Col} from "./ui/Box";
 import {BaseButton} from "./LetterButton";
 import LetterBox, {LetterRow} from "./WordBox";
 

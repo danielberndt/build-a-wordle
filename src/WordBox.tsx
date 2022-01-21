@@ -3,9 +3,9 @@ import {useRef, useState} from "preact/hooks";
 import {useEffect, useLayoutEffect} from "react";
 import {animated, useSpring} from "react-spring";
 import {springConfigs} from "./animation-utils";
-import {Col, Row} from "./Box";
+import {Col, Row} from "./ui/Box";
 import {AnnotadedLetter} from "./types";
-import {wordBoxThemes} from "./ui.css";
+import {wordBoxThemes} from "./ui/ui.css";
 
 type LetterBoxProps = {
   letter?: string;

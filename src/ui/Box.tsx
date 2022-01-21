@@ -21,7 +21,7 @@ export type BoxProps = StyleProps & {className?: string; style?: JSX.CSSProperti
       }
   );
 
-const applyProps = (props: Partial<BoxProps>, defaultComp: keyof JSX.IntrinsicElements) => {
+const applyProps = (props: BoxProps, defaultComp: keyof JSX.IntrinsicElements) => {
   let Comp: any = defaultComp;
   const classList = [];
   for (const prop in props) {
@@ -65,7 +65,7 @@ const createBox = (
   defaultComp: keyof JSX.IntrinsicElements = "div"
 ) => {
   return forwardRef((props: BoxProps, ref) => {
-    const {Comp, compProps} = applyProps({...opts, ...props}, defaultComp);
+    const {Comp, compProps} = applyProps({...opts, ...props} as BoxProps, defaultComp);
     if (!props.styleChild) {
       return <Comp {...compProps} ref={ref} />;
     } else {
