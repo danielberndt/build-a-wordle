@@ -5,7 +5,7 @@ import {Box, Col, Row} from "./ui/Box";
 import Frame from "./Frame";
 import IntroOverlay from "./IntroOverlay";
 import Keyboard from "./Keyboard";
-import {BaseButton} from "./LetterButton";
+import {BaseButton} from "./ui/Button";
 import {AnnotadedLetter, AnnotatedKeys} from "./types";
 import {themeBright} from "./ui/ui.css";
 import {useLocalStorageState} from "./useLocalStorage";
@@ -20,9 +20,9 @@ const Heading = ({onShowIntro}: HeadingProps) => {
           <img src={logo} alt="Wortle Logo" width={730} height={115} />
         </Box>
       </a>
-      <BaseButton px={4} onClick={onShowIntro} ml="auto" style={{flex: "none"}}>
-        Hilfe
-      </BaseButton>
+      <Box ml="auto">
+        <BaseButton onClick={onShowIntro}>Hilfe</BaseButton>
+      </Box>
     </Row>
   );
 };
@@ -49,9 +49,7 @@ const WonMessage = ({onReplay}: {onReplay: () => void}) => (
     <Box bold fontSize="lg">
       Gewonnen 🎉
     </Box>
-    <BaseButton onClick={onReplay} px={4}>
-      Neuer Versuch
-    </BaseButton>
+    <BaseButton onClick={onReplay}>Neuer Versuch</BaseButton>
   </Col>
 );
 const LostMessage = ({onReplay, guessWord}: {onReplay: () => void; guessWord: string}) => (
@@ -65,9 +63,7 @@ const LostMessage = ({onReplay, guessWord}: {onReplay: () => void; guessWord: st
         {guessWord}
       </Box>
     </Col>
-    <BaseButton onClick={onReplay} px={4}>
-      Neuer Versuch
-    </BaseButton>
+    <BaseButton onClick={onReplay}>Neuer Versuch</BaseButton>
   </Col>
 );
 

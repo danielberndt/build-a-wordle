@@ -2,7 +2,7 @@ import {StateUpdater, useEffect, useMemo, useRef, useState} from "preact/hooks";
 import {useTransition, animated} from "react-spring";
 import {springConfigs} from "./animation-utils";
 import {Box, Col, Row} from "./ui/Box";
-import LetterButton, {BaseButton} from "./LetterButton";
+import LetterButton, {NonLetterKeyboardButton} from "./LetterButton";
 import {AnnotatedKeys} from "./types";
 import {pillThemes} from "./ui/ui.css";
 
@@ -132,8 +132,8 @@ const Keyboard = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Keybo
           <LetterButton
             key={letter}
             letter={letter}
-            annotatedKey={annotatedKeys[letter]}
-            onClick={onAddLetter}
+            annotatedKey={annotatedKeys[letter] || "none"}
+            onClick={() => onAddLetter(letter)}
           />
         ))}
       </Row>
@@ -142,26 +142,22 @@ const Keyboard = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: Keybo
           <LetterButton
             key={letter}
             letter={letter}
-            annotatedKey={annotatedKeys[letter]}
-            onClick={onAddLetter}
+            annotatedKey={annotatedKeys[letter] || "none"}
+            onClick={() => onAddLetter(letter)}
           />
         ))}
       </Row>
       <Row sp={2} fillParent>
-        <BaseButton fontSize="xs" onClick={handleFormSubmit}>
-          enter
-        </BaseButton>
+        <NonLetterKeyboardButton onClick={handleFormSubmit}>enter</NonLetterKeyboardButton>
         {keyRows[2].map((letter) => (
           <LetterButton
             key={letter}
             letter={letter}
-            annotatedKey={annotatedKeys[letter]}
-            onClick={onAddLetter}
+            annotatedKey={annotatedKeys[letter] || "none"}
+            onClick={() => onAddLetter(letter)}
           />
         ))}
-        <BaseButton fontSize="xs" onClick={onBackspace}>
-          del
-        </BaseButton>
+        <NonLetterKeyboardButton onClick={onBackspace}>del</NonLetterKeyboardButton>
       </Row>
     </Col>
   );

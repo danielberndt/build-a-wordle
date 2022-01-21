@@ -1,7 +1,7 @@
 import {animated, useTransition} from "react-spring";
 import {springConfigs} from "./animation-utils";
 import {Box, Col} from "./ui/Box";
-import {BaseButton} from "./LetterButton";
+import {BaseButton} from "./ui/Button";
 import LetterBox, {LetterRow} from "./WordBox";
 
 const IntroOverlay = ({show, onClose}: {show: boolean; onClose: () => void}) => {
@@ -37,7 +37,7 @@ const IntroOverlay = ({show, onClose}: {show: boolean; onClose: () => void}) => 
               onClick={onClose}
             />
           </Box>
-          <Box
+          <Col
             styleChild
             bg="front"
             rounded="md"
@@ -80,12 +80,10 @@ const IntroOverlay = ({show, onClose}: {show: boolean; onClose: () => void}) => 
               </Col>
 
               <Col align="center">
-                <BaseButton px={4} onClick={onClose}>
-                  Los geht's!
-                </BaseButton>
+                <BaseButton onClick={onClose}>Los geht's!</BaseButton>
               </Col>
             </animated.div>
-          </Box>
+          </Col>
         </Col>
       )
   );

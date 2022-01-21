@@ -3,8 +3,8 @@ import "../ui/global-styles.css";
 import logo from "../assets/logo.svg";
 import sampleWordImage from "../assets/sample-word.png";
 import {themeBright} from "../ui/ui.css";
-import {ButtonStyle} from "../LetterButton";
 import {ReactNode} from "react";
+import {ButtonStyle} from "../ui/Button";
 
 const Fact = ({title, children}: {title: ReactNode; children: ReactNode}) => (
   <Box as="li">

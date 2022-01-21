@@ -5,53 +5,7 @@ import {
   style,
   styleVariants,
 } from "@vanilla-extract/css";
-
-// inspired by tailwind
-const colors = {
-  white: "#ffffff",
-
-  gray100: "#f4f4f5",
-  gray200: "#e4e4e7",
-  gray300: "#d4d4d8",
-  gray400: "#a1a1aa",
-  gray500: "#71717a",
-  gray600: "#52525b",
-  gray700: "#3f3f46",
-  gray800: "#27272a",
-  gray900: "#18181b",
-
-  gray200_a90: "#e4e4e7e6",
-
-  green100: "#dcfce7",
-  green200: "#bbf7d0",
-  green300: "#86efac",
-  green400: "#4ade80",
-  green500: "#22c55e",
-  green600: "#16a34a",
-  green700: "#15803d",
-  green800: "#166534",
-  green900: "#14532d",
-
-  amber100: "#fef3c7",
-  amber200: "#fde68a",
-  amber300: "#fcd34d",
-  amber400: "#fbbf24",
-  amber500: "#f59e0b",
-  amber600: "#d97706",
-  amber700: "#b45309",
-  amber800: "#92400e",
-  amber900: "#78350f",
-
-  rose100: "#ffe4e6",
-  rose200: "#fecdd3",
-  rose300: "#fda4af",
-  rose400: "#fb7185",
-  rose500: "#f43f5e",
-  rose600: "#e11d48",
-  rose700: "#be123c",
-  rose800: "#9f1239",
-  rose900: "#881337",
-};
+import {colors} from "./colors";
 
 export const [themeBright, themeVars] = createTheme({
   foregroundBg: colors.white,
@@ -61,43 +15,14 @@ export const [themeBright, themeVars] = createTheme({
   backdropBg: colors.gray200_a90,
   brandBg: colors.amber400,
 
+  subThemeBg: colors.amber600,
+  subThemeBgHover: colors.amber600,
+  subThemeBorder: colors.amber600,
+  subThemeText: colors.amber600,
+
   textLink: colors.amber500,
   textLinkHover: colors.amber600,
 });
-
-const buttonTheme = createThemeContract({
-  bg: "",
-  bgHover: "",
-  border: "",
-  text: "",
-});
-
-export const buttonThemes = {
-  green: createTheme(buttonTheme, {
-    bg: colors.green600,
-    bgHover: colors.green500,
-    border: colors.green400,
-    text: colors.green100,
-  }),
-  yellow: createTheme(buttonTheme, {
-    bg: colors.amber400,
-    bgHover: colors.amber300,
-    border: colors.amber500,
-    text: colors.amber800,
-  }),
-  inactive: createTheme(buttonTheme, {
-    bg: colors.gray600,
-    bgHover: colors.gray500,
-    border: colors.gray700,
-    text: colors.gray300,
-  }),
-  neutral: createTheme(buttonTheme, {
-    bg: colors.gray200,
-    bgHover: colors.gray100,
-    border: colors.gray300,
-    text: colors.gray800,
-  }),
-};
 
 export const wordBoxTheme = createThemeContract({
   bg: "",
@@ -170,17 +95,19 @@ const bgColors = {
   backdrop: themeVars.backdropBg,
   brand: themeVars.brandBg,
 
-  button: buttonTheme.bg,
+  subTheme: themeVars.subThemeBg,
+
   wordBox: wordBoxTheme.bg,
   pill: pillTheme.bg,
 };
 
 const hoverBgColors = {
-  button: buttonTheme.bgHover,
+  subTheme: themeVars.subThemeBgHover,
 };
 
 const borderColors = {
-  button: buttonTheme.border,
+  subTheme: themeVars.subThemeBorder,
+
   wordBox: wordBoxTheme.border,
   pill: pillTheme.border,
 };
@@ -188,7 +115,9 @@ const borderColors = {
 const textColors = {
   primary: themeVars.textPrimary,
   link: themeVars.textLink,
-  button: buttonTheme.text,
+
+  subTheme: themeVars.subThemeText,
+
   wordBox: wordBoxTheme.text,
   pill: pillTheme.text,
 };

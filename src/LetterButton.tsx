@@ -1,68 +1,51 @@
 import {JSX} from "preact";
 import {ReactNode} from "react";
-import {Row, StyleProps} from "./ui/Box";
 import {AnnotadedLetter} from "./types";
-import {buttonThemes} from "./ui/ui.css";
+import {StyleProps} from "./ui/Box";
+import {ButtonStyle, ButtonStyleProps} from "./ui/Button";
 
 type LetterButtonProps = {
   letter: string;
-  annotatedKey: AnnotadedLetter["type"] | undefined;
-  onClick: (letter: string) => unknown;
-};
+  annotatedKey: AnnotadedLetter["type"] | "none";
+} & JSX.IntrinsicElements["button"];
 
-const annotationProps: {[Type in AnnotadedLetter["type"] | "none"]: keyof typeof buttonThemes} = {
+const annotationProps: {[Type in AnnotadedLetter["type"] | "none"]: ButtonStyleProps["theme"]} = {
   correctPosition: "green",
   found: "yellow",
   notFound: "inactive",
   none: "neutral",
 };
 
-export const ButtonStyle = (
-  props: StyleProps & {children: ReactNode; className?: string; style?: JSX.CSSProperties}
-) => (
-  <Row
-    styleChild
-    align="center"
-    justify="center"
+const LetterButtonStyle = ({
+  annotatedKey,
+  ...props
+}: {annotatedKey: AnnotadedLetter["type"] | "none"; children: ReactNode} & StyleProps) => (
+  <ButtonStyle
+    theme={annotationProps[annotatedKey]}
     minHeight="2rem"
-    maxHeight="3rem"
+    maxHeight="5rem"
     height="100%"
-    rounded="md"
     fillParent
-    bg="button"
-    hoverBg="button"
-    borderWidth={2}
-    borderColor="button"
-    color="button"
-    bold
-    textTransform="uppercase"
-    fontSize="md"
-    userSelect="none"
-    className={buttonThemes[annotationProps["none"]]}
+    px={0}
+    py={1}
     {...props}
   />
 );
 
-export const BaseButton = ({
-  annotation,
-  onClick,
-  children,
-  ...props
-}: StyleProps & {annotation?: AnnotadedLetter["type"]; style?: JSX.CSSProperties} & Pick<
-    JSX.IntrinsicElements["button"],
-    "onClick" | "children"
-  >) => (
-  <ButtonStyle className={buttonThemes[annotationProps[annotation || "none"]]} {...props}>
-    <button type="button" onClick={onClick}>
-      {children}
-    </button>
-  </ButtonStyle>
+const LetterButton = ({letter, annotatedKey, ...rest}: LetterButtonProps) => (
+  <LetterButtonStyle width="1rem" annotatedKey={annotatedKey}>
+    <button {...rest}>{letter}</button>
+  </LetterButtonStyle>
 );
 
-const LetterButton = ({letter, annotatedKey, onClick}: LetterButtonProps) => (
-  <BaseButton annotation={annotatedKey} width="1rem" onClick={() => onClick(letter)}>
-    {letter}
-  </BaseButton>
+type NonLetterProps = {
+  annotatedKey?: AnnotadedLetter["type"] | "none";
+} & JSX.IntrinsicElements["button"];
+
+export const NonLetterKeyboardButton = ({annotatedKey, ...rest}: NonLetterProps) => (
+  <LetterButtonStyle annotatedKey={annotatedKey || "none"} fontSize="xs">
+    <button {...rest} />
+  </LetterButtonStyle>
 );
 
 export default LetterButton;

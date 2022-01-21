@@ -8,16 +8,18 @@ export type StyleProps = {
   [Key in keyof RawStyleProps]?: Booleanify<keyof RawStyleProps[Key]> | false;
 };
 
-export type BoxProps = StyleProps & {className?: string; style?: JSX.CSSProperties} & (
+export type BoxProps = StyleProps & {className?: string} & (
     | {
         as?: keyof JSX.IntrinsicElements;
         children?: ReactNode;
         styleChild?: null;
+        style?: JSX.CSSProperties;
       }
     | {
         as?: null;
         styleChild: true;
         children: ReactNode;
+        style?: null;
       }
   );
 
@@ -45,7 +47,6 @@ const applyProps = (props: BoxProps, defaultComp: keyof JSX.IntrinsicElements) =
           continue;
         }
         if (val === false) continue;
-        console.log({s, val, prop});
         classList.push((s as any)[val as any]);
     }
   }
@@ -71,7 +72,6 @@ const createBox = (
     } else {
       return cloneElement(compProps.children as any, {
         className: compProps.className,
-        style: compProps.style,
       });
     }
   });
