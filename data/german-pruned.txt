@@ -1682,3 +1682,5 @@ linde
 pfaue
 tukan
 lasch
+teige
+polio
