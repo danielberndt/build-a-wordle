@@ -1,11 +1,11 @@
 import {ComponentChildren} from "preact";
 import {useRef, useState} from "preact/hooks";
-import {useEffect, useLayoutEffect} from "react";
+import {useLayoutEffect} from "react";
 import {animated, useSpring} from "react-spring";
 import {springConfigs} from "./animation-utils";
 import {Col, Row} from "./ui/Box";
 import {AnnotadedLetter} from "./types";
-import {wordBoxThemes} from "./ui/ui.css";
+import {wordBoxThemes} from "./WordBox.css";
 
 type LetterBoxProps = {
   letter?: string;
@@ -36,7 +36,6 @@ const LetterBox = ({
   animateReveal,
   idx = 0,
 }: LetterBoxProps) => {
-  if (animateReveal) console.log("reveal", letter);
   const [themeClass, setThemeClass] = useState<NonNullable<LetterBoxProps["type"]>>("none");
 
   const lastTypeRef = useRef(type);
@@ -78,9 +77,9 @@ const LetterBox = ({
       justify="center"
       fillParent
       borderWidth={2}
-      bg="wordBox"
-      borderColor="wordBox"
-      color="wordBox"
+      bg="subTheme"
+      borderColor="subTheme"
+      color="subTheme"
       bold
       textTransform="uppercase"
       fontSize="xl"

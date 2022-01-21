@@ -66,8 +66,9 @@ const createBox = (
   defaultComp: keyof JSX.IntrinsicElements = "div"
 ) => {
   return forwardRef((props: BoxProps, ref) => {
-    const {Comp, compProps} = applyProps({...opts, ...props} as BoxProps, defaultComp);
-    if (!props.styleChild) {
+    const combinedProps = {...opts, ...props} as BoxProps;
+    const {Comp, compProps} = applyProps(combinedProps, defaultComp);
+    if (!combinedProps.styleChild) {
       return <Comp {...compProps} ref={ref} />;
     } else {
       return cloneElement(compProps.children as any, {

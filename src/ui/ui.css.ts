@@ -5,58 +5,8 @@ import {
   style,
   styleVariants,
 } from "@vanilla-extract/css";
+import {themeVars} from "./app-theme.css";
 import {colors} from "./colors";
-
-export const [themeBright, themeVars] = createTheme({
-  foregroundBg: colors.white,
-  backgrounBg: colors.gray200,
-  textPrimary: colors.gray700,
-  border: colors.gray300,
-  backdropBg: colors.gray200_a90,
-  brandBg: colors.amber400,
-
-  subThemeBg: colors.amber600,
-  subThemeBgHover: colors.amber600,
-  subThemeBorder: colors.amber600,
-  subThemeText: colors.amber600,
-
-  textLink: colors.amber500,
-  textLinkHover: colors.amber600,
-});
-
-export const wordBoxTheme = createThemeContract({
-  bg: "",
-  border: "",
-  text: "",
-});
-
-export const wordBoxThemes = {
-  green: createTheme(wordBoxTheme, {
-    bg: colors.green600,
-    border: colors.green400,
-    text: colors.green100,
-  }),
-  yellow: createTheme(wordBoxTheme, {
-    bg: colors.amber400,
-    border: colors.amber500,
-    text: colors.amber800,
-  }),
-  inactive: createTheme(wordBoxTheme, {
-    bg: colors.gray500,
-    border: colors.gray700,
-    text: colors.gray200,
-  }),
-  neutral: createTheme(wordBoxTheme, {
-    bg: colors.white,
-    border: colors.gray400,
-    text: colors.gray800,
-  }),
-  empty: createTheme(wordBoxTheme, {
-    bg: colors.white,
-    border: colors.gray200,
-    text: colors.gray800,
-  }),
-};
 
 export const pillTheme = createThemeContract({
   bg: "",
@@ -97,7 +47,6 @@ const bgColors = {
 
   subTheme: themeVars.subThemeBg,
 
-  wordBox: wordBoxTheme.bg,
   pill: pillTheme.bg,
 };
 
@@ -108,7 +57,6 @@ const hoverBgColors = {
 const borderColors = {
   subTheme: themeVars.subThemeBorder,
 
-  wordBox: wordBoxTheme.border,
   pill: pillTheme.border,
 };
 
@@ -118,7 +66,6 @@ const textColors = {
 
   subTheme: themeVars.subThemeText,
 
-  wordBox: wordBoxTheme.text,
   pill: pillTheme.text,
 };
 

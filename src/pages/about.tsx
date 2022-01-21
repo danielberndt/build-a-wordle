@@ -2,7 +2,6 @@ import {Box, Col, StyleLink} from "../ui/Box";
 import "../ui/global-styles.css";
 import logo from "../assets/logo.svg";
 import sampleWordImage from "../assets/sample-word.png";
-import {themeBright} from "../ui/ui.css";
 import {ReactNode} from "react";
 import {ButtonStyle} from "../ui/Button";
 
@@ -20,7 +19,7 @@ const Fact = ({title, children}: {title: ReactNode; children: ReactNode}) => (
 );
 
 const About = () => (
-  <Col className={themeBright} fillParent>
+  <Col fillParent color="primary">
     <Col px={4} py={7} align="center" bg="brand">
       <Box styleChild height="8rem">
         <img width={372} height={257} src={logo} alt="Wortle Logo" />

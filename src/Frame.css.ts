@@ -1,5 +1,6 @@
 import {style} from "@vanilla-extract/css";
-import {media, radiusScale, themeVars} from "./ui/ui.css";
+import {themeVars} from "./ui/app-theme.css";
+import {media, radiusScale} from "./ui/ui.css";
 
 export const frameStyle = style({
   "@media": {
