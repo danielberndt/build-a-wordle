@@ -63,7 +63,7 @@ const EmptyRow = () => (
 );
 
 const Board = ({input, submittedWords, guessWord}: BoardProps) => (
-  <Col sp={1} fillParent px={5} py={5} justify="center">
+  <Col sp={1} fillParent px={5} py={4} justify="center">
     {submittedWords.map((word, idx) => (
       <SubmittedWord
         key={idx}

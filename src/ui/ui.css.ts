@@ -122,8 +122,10 @@ const baseStyles = {
   width: styleArray(["auto", "0.5rem", "1em", "1rem", "8rem", "20rem", "100%"], (val) => ({
     width: val,
   })),
-  maxWidth: styleArray(["100%", "28rem", "40rem"], (val) => ({maxWidth: val})),
-  height: styleArray(["auto", "1em", "1rem", "2rem", "8rem", "100%"], (val) => ({height: val})),
+  maxWidth: styleArray(["100%", "20rem", "28rem", "40rem"], (val) => ({maxWidth: val})),
+  height: styleArray(["auto", "1em", "1rem", "2rem", "8rem", "16rem", "100%"], (val) => ({
+    height: val,
+  })),
   maxHeight: styleArray(["3rem", "5rem", "100%"], (val) => ({maxHeight: val})),
   minHeight: styleArray(["2rem", "12rem"], (val) => ({minHeight: val})),
 

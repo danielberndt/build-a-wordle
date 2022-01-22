@@ -4,6 +4,7 @@ import logo from "../assets/logo.svg";
 import sampleWordImage from "../assets/sample-word.png";
 import {ReactNode} from "react";
 import {ButtonStyle} from "../ui/Button";
+import LetterBox, {LetterRow} from "../WordBox";
 
 const Fact = ({title, children}: {title: ReactNode; children: ReactNode}) => (
   <Box as="li">
@@ -44,19 +45,46 @@ const About = () => (
             Deswegen habe ich für euch an einer deutsche Worlde Alternative gearbeitet:
           </Box>
         </Col>
-        <Col align="center" sp={6}>
+        <Col sp={6} align="center">
           <ButtonStyle px={4}>
             <a href="/">Zum Spiel</a>
           </ButtonStyle>
-          <a href="/">
-            <Box styleChild width="20rem" height="auto">
-              <img width={434} height={364} src={sampleWordImage} alt="Beispiel Spiel" />
-            </Box>
-          </a>
+          <Col styleChild sp={1} maxWidth="20rem" width="100%" height="16rem">
+            <a href="/">
+              <LetterRow>
+                <LetterBox letter="r" type="found" />
+                <LetterBox letter="a" type="notFound" />
+                <LetterBox letter="t" type="notFound" />
+                <LetterBox letter="e" type="correctPosition" />
+                <LetterBox letter="n" type="notFound" />
+              </LetterRow>
+              <LetterRow>
+                <LetterBox letter="e" type="found" />
+                <LetterBox letter="i" type="found" />
+                <LetterBox letter="m" type="notFound" />
+                <LetterBox letter="e" type="correctPosition" />
+                <LetterBox letter="r" type="correctPosition" />
+              </LetterRow>
+              <LetterRow>
+                <LetterBox letter="g" type="found" />
+                <LetterBox letter="e" type="correctPosition" />
+                <LetterBox letter="i" type="correctPosition" />
+                <LetterBox letter="e" type="correctPosition" />
+                <LetterBox letter="r" type="correctPosition" />
+              </LetterRow>
+              <LetterRow>
+                <LetterBox letter="f" type="correctPosition" />
+                <LetterBox letter="e" type="correctPosition" />
+                <LetterBox letter="i" type="correctPosition" />
+                <LetterBox letter="e" type="correctPosition" />
+                <LetterBox letter="r" type="correctPosition" />
+              </LetterRow>
+            </a>
+          </Col>
         </Col>
         <Col sp={5}>
           <Box as="h2" fontSize="lg">
-            Hier ein paar Fakten zur deutschen Wordle Variante
+            Hier ein paar Infos zur deutschen Wordle Variante
           </Box>
           <Col as="ul" pl={4} sp={3}>
             <Fact title="Handverlesenes Lexikon">
@@ -66,7 +94,7 @@ const About = () => (
             <Fact title="Open Source">
               Entstanden aus dem Spaß an der Sache. Für die Neugierigen:{" "}
               <StyleLink>
-                <a href="https://github.com/danielberndt/build-a-wordle">Hier geht's zum Code.</a>
+                <a href="https://github.com/danielberndt/build-a-wordle">Hier der Code.</a>
               </StyleLink>
             </Fact>
             <Fact title="Flink und Schlank">
