@@ -1,6 +1,6 @@
 import {ReactNode} from "react";
 import {Box, StyleProps} from "./Box";
-import {buttonStyles, iconButtonStyle} from "./button.css";
+import {buttonStyles, iconButtonStyle} from "./Button.css";
 
 export type ButtonStyleProps = {
   theme?: keyof typeof buttonStyles;

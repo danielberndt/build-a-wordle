@@ -18,6 +18,10 @@ export const radiusScale = {
   full: "9999em",
 };
 
+const elevations = {
+  sm: "0 0.1rem 0.2rem rgba(0,0,0,0.1), 0 0.2rem 1rem rgba(0,0,0,0.2)",
+};
+
 const bgColors = {
   front: themeVars.foregroundBg,
   back: themeVars.backgrounBg,
@@ -113,8 +117,11 @@ const baseStyles = {
     val ? [withBorder, {borderWidth: val}] : {borderWidth: val}
   ),
   borderColor: styleVariants(borderColors, (val) => ({borderColor: val})),
+  elevations: styleVariants(elevations, (val) => ({boxShadow: val})),
 
-  width: styleArray(["auto", "1em", "1rem", "20rem", "100%"], (val) => ({width: val})),
+  width: styleArray(["auto", "0.5rem", "1em", "1rem", "8rem", "20rem", "100%"], (val) => ({
+    width: val,
+  })),
   maxWidth: styleArray(["100%", "28rem", "40rem"], (val) => ({maxWidth: val})),
   height: styleArray(["auto", "1em", "1rem", "2rem", "8rem", "100%"], (val) => ({height: val})),
   maxHeight: styleArray(["3rem", "5rem", "100%"], (val) => ({maxHeight: val})),

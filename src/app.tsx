@@ -10,20 +10,25 @@ import {AnnotadedLetter, AnnotatedKeys} from "./types";
 import {useLocalStorageState} from "./useLocalStorage";
 import deWords from "./word-lists/valid_words_de.json";
 import {ReactComponent as HelpIcon} from "./assets/icons/question-mark.svg";
+import ModePicker from "./ui/ModePicker";
+import ChallengePreviewOverlay from "./ChallengePreviewOverlay";
 
-type HeadingProps = {onShowIntro: () => void};
-const Heading = ({onShowIntro}: HeadingProps) => {
+type HeadingProps = {onShowIntro: () => void; onShowChallengePreview: () => void};
+const Heading = ({onShowIntro, onShowChallengePreview}: HeadingProps) => {
   return (
     <Row px={4} sp={3} pt={5} align="center">
-      <a href="/about/">
-        <Box styleChild width="auto" height="2rem">
-          <img src={logo} alt="Wortle Logo" width={730} height={115} />
-        </Box>
-      </a>
-      <Box ml="auto" align="center">
+      <Row align="center" sp={3}>
+        <a href="/about/">
+          <Box styleChild height="auto" width="8rem">
+            <img src={logo} alt="Wortle Logo" width={730} height={115} />
+          </Box>
+        </a>
         <IconButton onClick={onShowIntro}>
           <HelpIcon />
         </IconButton>
+      </Row>
+      <Box ml="auto">
+        <ModePicker onClick={onShowChallengePreview} />
       </Box>
     </Row>
   );
@@ -123,6 +128,7 @@ export function App() {
   const [guessWord, setGuessWord] = useState<string>(getRandomWord);
   const [submittedWords, setSubmittedWords] = useState<string[]>([]);
   const [skpiIntro, setSkipIntro] = useLocalStorageState("skipIntro", false);
+  const [showChallengeMode, setShowChallengeMode] = useState(false);
 
   const [input, setInput] = useState<string>("");
 
@@ -142,7 +148,10 @@ export function App() {
   return (
     <Col fillParent color="primary">
       <Frame>
-        <Heading onShowIntro={() => setSkipIntro(false)} />
+        <Heading
+          onShowIntro={() => setSkipIntro(false)}
+          onShowChallengePreview={() => setShowChallengeMode(true)}
+        />
         <Board guessWord={guessWord} input={input} submittedWords={submittedWords} />
         <Col minHeight="12rem">
           {gameState === "won" ? (
@@ -161,6 +170,10 @@ export function App() {
         </Col>
       </Frame>
       <IntroOverlay show={!skpiIntro} onClose={() => setSkipIntro(true)} />
+      <ChallengePreviewOverlay
+        show={showChallengeMode}
+        onClose={() => setShowChallengeMode(false)}
+      />
     </Col>
   );
 }

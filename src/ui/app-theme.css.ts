@@ -119,8 +119,8 @@ globalStyle(":root", {
         textLinkHover: colors.amber400,
 
         transparentHover: colors.gray200_a20,
-        iconButtonColor: "",
-        iconButtonColorHover: colors.gray600,
+        iconButtonColor: colors.gray400,
+        iconButtonColorHover: colors.gray300,
 
         actions: {
           green: {
