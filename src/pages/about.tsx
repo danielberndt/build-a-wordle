@@ -126,7 +126,7 @@ const About = () => (
                   <Box styleChild width="1em" height="1em" display="block" relative top="0.1rem">
                     <TwitterIcon />
                   </Box>
-                  <div>D40B</div>
+                  <span>D40B</span>
                 </a>
               </Row>
             </StyleLink>
