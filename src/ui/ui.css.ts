@@ -36,6 +36,7 @@ const borderColors = {};
 
 const textColors = {
   primary: themeVars.textPrimary,
+  secondary: themeVars.textSecondary,
   link: themeVars.textLink,
 };
 
@@ -84,7 +85,14 @@ const baseStyles = {
   sp: spacingSteps.map((v) => style({gap: `${v}rem`})),
 
   display: styleVariants(
-    {block: "block", flex: "flex", inlineBlock: "inline-block", grid: "grid", none: "none"},
+    {
+      block: "block",
+      flex: "flex",
+      inlineBlock: "inline-block",
+      grid: "grid",
+      none: "none",
+      inlineFlex: "inline-flex",
+    },
     (val) => ({display: val})
   ),
   flexDir: styleArray(["column", "row"], (val) => ({flexDirection: val})),
@@ -119,7 +127,7 @@ const baseStyles = {
   borderColor: styleVariants(borderColors, (val) => ({borderColor: val})),
   elevations: styleVariants(elevations, (val) => ({boxShadow: val})),
 
-  width: styleArray(["auto", "0.5rem", "1em", "1rem", "8rem", "20rem", "100%"], (val) => ({
+  width: styleArray(["auto", "0.5rem", "1em", "1rem", "6rem", "8rem", "20rem", "100%"], (val) => ({
     width: val,
   })),
   maxWidth: styleArray(["100%", "20rem", "28rem", "40rem"], (val) => ({maxWidth: val})),
@@ -131,7 +139,7 @@ const baseStyles = {
 
   left: styleArray(baseDims, (val) => ({left: val})),
   right: styleArray(baseDims, (val) => ({right: val})),
-  top: styleArray(baseDims, (val) => ({top: val})),
+  top: styleArray([...baseDims, "0.1rem"], (val) => ({top: val})),
   bottom: styleArray(baseDims, (val) => ({bottom: val})),
 
   textTransform: styleArray(["uppercase"], (val) => ({textTransform: val})),
