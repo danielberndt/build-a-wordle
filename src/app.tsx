@@ -5,10 +5,11 @@ import {Box, Col, Row} from "./ui/Box";
 import Frame from "./Frame";
 import IntroOverlay from "./IntroOverlay";
 import Keyboard from "./Keyboard";
-import {BaseButton} from "./ui/Button";
+import {BaseButton, IconButton} from "./ui/Button";
 import {AnnotadedLetter, AnnotatedKeys} from "./types";
 import {useLocalStorageState} from "./useLocalStorage";
 import deWords from "./word-lists/valid_words_de.json";
+import {ReactComponent as HelpIcon} from "./assets/icons/question-mark.svg";
 
 type HeadingProps = {onShowIntro: () => void};
 const Heading = ({onShowIntro}: HeadingProps) => {
@@ -19,8 +20,10 @@ const Heading = ({onShowIntro}: HeadingProps) => {
           <img src={logo} alt="Wortle Logo" width={730} height={115} />
         </Box>
       </a>
-      <Box ml="auto">
-        <BaseButton onClick={onShowIntro}>Hilfe</BaseButton>
+      <Box ml="auto" align="center">
+        <IconButton onClick={onShowIntro}>
+          <HelpIcon />
+        </IconButton>
       </Box>
     </Row>
   );

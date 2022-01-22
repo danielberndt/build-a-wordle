@@ -1,24 +1,21 @@
 import {ReactNode} from "react";
 import {Box} from "./Box";
-import {pillThemes} from "./Pill.css";
+import {pillStyles} from "./Pill.css";
 
 type PillProps = {
-  type: keyof typeof pillThemes;
+  type: keyof typeof pillStyles;
   children: ReactNode;
 };
 
 export const Pill = ({type, children}: PillProps) => (
   <Box
-    className={pillThemes[type]}
+    className={pillStyles[type]}
     rounded="md"
     px={4}
     py={2}
     align="center"
-    bg="subTheme"
-    color="subTheme"
     borderWidth={2}
     bold
-    borderColor="subTheme"
     textAlign="center"
   >
     {children}

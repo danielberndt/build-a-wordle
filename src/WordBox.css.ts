@@ -1,19 +1,15 @@
 import {style, styleVariants} from "@vanilla-extract/css";
 import {themeVars} from "./ui/app-theme.css";
 
-export const wordBoxThemes = {
+export const wordBoxStyles = {
   ...styleVariants(themeVars.actions, (val, key) => ({
-    vars: {
-      [themeVars.subThemeBg]: themeVars.actions[key].bg,
-      [themeVars.subThemeBorder]: themeVars.actions[key].border,
-      [themeVars.subThemeText]: themeVars.actions[key].text,
-    },
+    backgroundColor: themeVars.actions[key].bg,
+    borderColor: themeVars.actions[key].border,
+    color: themeVars.actions[key].text,
   })),
   empty: style({
-    vars: {
-      [themeVars.subThemeBg]: themeVars.foregroundBg,
-      [themeVars.subThemeBorder]: themeVars.border,
-      [themeVars.subThemeText]: themeVars.textPrimary,
-    },
+    backgroundColor: themeVars.foregroundBg,
+    borderColor: themeVars.border,
+    color: themeVars.textPrimary,
   }),
 };

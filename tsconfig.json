@@ -16,7 +16,8 @@
     "noEmit": true,
     "jsx": "preserve",
     "jsxFactory": "h",
-    "jsxFragmentFactory": "Fragment"
+    "jsxFragmentFactory": "Fragment",
+    "types": ["vite-plugin-svgr/client"]
   },
   "include": ["src"]
 }

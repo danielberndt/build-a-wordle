@@ -5,7 +5,7 @@ import {animated, useSpring} from "react-spring";
 import {springConfigs} from "./animation-utils";
 import {Col, Row} from "./ui/Box";
 import {AnnotadedLetter} from "./types";
-import {wordBoxThemes} from "./WordBox.css";
+import {wordBoxStyles} from "./WordBox.css";
 
 type LetterBoxProps = {
   letter?: string;
@@ -15,7 +15,7 @@ type LetterBoxProps = {
 };
 
 const annotationProps: {
-  [Type in NonNullable<LetterBoxProps["type"]>]: keyof typeof wordBoxThemes;
+  [Type in NonNullable<LetterBoxProps["type"]>]: keyof typeof wordBoxStyles;
 } = {
   correctPosition: "green",
   found: "yellow",
@@ -70,16 +70,13 @@ const LetterBox = ({
   return (
     <Col
       styleChild
-      className={wordBoxThemes[annotationProps[animateReveal ? themeClass : type]]}
+      className={wordBoxStyles[annotationProps[animateReveal ? themeClass : type]]}
       width="1rem"
       rounded="sm"
       align="center"
       justify="center"
       fillParent
       borderWidth={2}
-      bg="subTheme"
-      borderColor="subTheme"
-      color="subTheme"
       bold
       textTransform="uppercase"
       fontSize="xl"

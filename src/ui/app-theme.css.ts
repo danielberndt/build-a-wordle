@@ -17,6 +17,10 @@ export const themeVars = createThemeContract({
   textLink: "",
   textLinkHover: "",
 
+  transparentHover: "",
+  iconButtonColor: "",
+  iconButtonColorHover: "",
+
   actions: {
     green: {
       bg: "",
@@ -49,11 +53,6 @@ export const themeVars = createThemeContract({
       text: "",
     },
   },
-
-  subThemeBg: "",
-  subThemeBgHover: "",
-  subThemeBorder: "",
-  subThemeText: "",
 });
 
 createGlobalTheme(":root", themeVars, {
@@ -66,6 +65,10 @@ createGlobalTheme(":root", themeVars, {
 
   textLink: colors.amber500,
   textLinkHover: colors.amber600,
+
+  transparentHover: colors.gray700_a10,
+  iconButtonColor: colors.gray500,
+  iconButtonColorHover: colors.gray600,
 
   actions: {
     green: {
@@ -99,11 +102,6 @@ createGlobalTheme(":root", themeVars, {
       text: colors.rose100,
     },
   },
-
-  subThemeBg: colors.amber600,
-  subThemeBgHover: colors.amber600,
-  subThemeBorder: colors.amber600,
-  subThemeText: colors.amber600,
 });
 
 globalStyle(":root", {
@@ -119,6 +117,10 @@ globalStyle(":root", {
 
         textLink: colors.amber500,
         textLinkHover: colors.amber400,
+
+        transparentHover: colors.gray200_a20,
+        iconButtonColor: "",
+        iconButtonColorHover: colors.gray600,
 
         actions: {
           green: {
@@ -152,11 +154,6 @@ globalStyle(":root", {
             text: colors.rose200,
           },
         },
-
-        subThemeBg: colors.amber600,
-        subThemeBgHover: colors.amber600,
-        subThemeBorder: colors.amber600,
-        subThemeText: colors.amber600,
       }),
     },
   },

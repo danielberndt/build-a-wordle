@@ -23,30 +23,23 @@ const bgColors = {
   back: themeVars.backgrounBg,
   backdrop: themeVars.backdropBg,
   brand: themeVars.brandBg,
-
-  subTheme: themeVars.subThemeBg,
+  transparent: "transparent",
 };
 
-const hoverBgColors = {
-  subTheme: themeVars.subThemeBgHover,
-};
+const hoverBgColors = {};
 
-const borderColors = {
-  subTheme: themeVars.subThemeBorder,
-};
+const borderColors = {};
 
 const textColors = {
   primary: themeVars.textPrimary,
   link: themeVars.textLink,
-
-  subTheme: themeVars.subThemeText,
 };
 
 const textHoverColors = {
   link: themeVars.textLinkHover,
 };
 
-const withColorsTransition = style([
+export const withColorsTransition = style([
   {
     transitionProperty: "background-color, border-color, color, fill, stroke, box-shadow",
     transitionDuration: "0.15s",
@@ -121,9 +114,9 @@ const baseStyles = {
   ),
   borderColor: styleVariants(borderColors, (val) => ({borderColor: val})),
 
-  width: styleArray(["auto", "1rem", "20rem", "100%"], (val) => ({width: val})),
+  width: styleArray(["auto", "1em", "1rem", "20rem", "100%"], (val) => ({width: val})),
   maxWidth: styleArray(["100%", "28rem", "40rem"], (val) => ({maxWidth: val})),
-  height: styleArray(["auto", "2rem", "8rem", "100%"], (val) => ({height: val})),
+  height: styleArray(["auto", "1em", "1rem", "2rem", "8rem", "100%"], (val) => ({height: val})),
   maxHeight: styleArray(["3rem", "5rem", "100%"], (val) => ({maxHeight: val})),
   minHeight: styleArray(["2rem", "12rem"], (val) => ({minHeight: val})),
 

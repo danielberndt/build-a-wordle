@@ -1,11 +1,12 @@
 import {defineConfig} from "vite";
-const {resolve} = require("path");
+import {resolve} from "path";
 import preact from "@preact/preset-vite";
 import {vanillaExtractPlugin} from "@vanilla-extract/vite-plugin";
+import svgr from "vite-plugin-svgr";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [preact(), vanillaExtractPlugin()],
+  plugins: [preact(), vanillaExtractPlugin(), svgr()],
   resolve: {
     alias: {
       react: "preact/compat",
