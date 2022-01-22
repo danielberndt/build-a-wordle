@@ -15,7 +15,7 @@ const Content = ({onClose}: {onClose: () => void}) => (
       </Box>
     </Col>
     <Col sp={3}>
-      <Box bold>Beispiel:</Box>
+      <Box bold>Beispiel</Box>
       <LetterRow>
         <LetterBox letter="s" type="notFound" />
         <LetterBox letter="p" type="found" />
@@ -23,16 +23,21 @@ const Content = ({onClose}: {onClose: () => void}) => (
         <LetterBox letter="e" type="notFound" />
         <LetterBox letter="l" type="notFound" />
       </LetterRow>
-      <Box>
+      <Box as="p">
         <b>Graue Buchstaben:</b> Das gesuchte Wort enthält keinen dieser Buchstaben.
       </Box>
-      <Box>
+      <Box as="p">
         <b>Gelbe Buchstaben:</b> Das gesuchte Wort enthält diesen Buchstaben, aber an anderer
         Stelle.
       </Box>
-      <Box>
+      <Box as="p">
         <b>Grüne Buchstaben:</b> Das gesuchte Wort enthält diesen Buchstaben an genau dieser Stelle.
       </Box>
+    </Col>
+
+    <Col sp={2}>
+      <Box bold>Ah, und es gelten Kreuzwortregeln</Box>
+      <Box as="p">also Ä=AE, Ö=OE, Ü=UE, ß=SS</Box>
     </Col>
 
     <Col align="center">

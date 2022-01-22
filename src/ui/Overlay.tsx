@@ -42,7 +42,16 @@ const Overlay = ({ContentComp, show, onClose}: OverlayProps) => {
               onClick={onClose}
             />
           </Box>
-          <Col styleChild bg="front" rounded="md" relative width="100%" maxWidth="28rem">
+          <Col
+            styleChild
+            bg="front"
+            rounded="md"
+            relative
+            width="100%"
+            maxWidth="28rem"
+            maxHeight="100%"
+            overflow="auto"
+          >
             <animated.div style={props}>
               <ContentComp onClose={onClose} />
             </animated.div>

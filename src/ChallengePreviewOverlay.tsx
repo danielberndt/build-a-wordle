@@ -12,7 +12,7 @@ const Content = ({onClose}: {onClose: () => void}) => (
       </Box>
     </Col>
     <Col sp={3}>
-      <Box bold>Der Challenge Mode ist noch in Arbeit:</Box>
+      <Box bold>Der Challenge Mode ist noch in Arbeit.</Box>
       <Box>
         Löse ein fixe Anzahl an Wörtern unterschiedlicher Schwierigkeit in möglichst schnell und mit
         möglichst wenig Versuchen, um a) deinen Platz an der Sonne und b) in der täglichen und

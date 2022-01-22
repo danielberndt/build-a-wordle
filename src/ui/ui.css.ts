@@ -136,7 +136,7 @@ const baseStyles = {
   weight: styleArray(["normal", "bold"], (val) => ({fontWeight: val})),
   textAlign: styleArray(["left", "right", "center"], (val) => ({textAlign: val})),
 
-  overflow: styleArray(["hidden"], (val) => ({overflow: val})),
+  overflow: styleArray(["hidden", "auto"], (val) => ({overflow: val})),
   userSelect: styleArray(["none"], (val) => ({userSelect: val})),
 
   zIndex: styleArray([3], (val) => ({zIndex: val})),
