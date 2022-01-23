@@ -21,7 +21,7 @@ export default defineConfig({
         description: "Wortle auf Deutsch",
         theme_color: colors.amber400,
         start_url: ".",
-        orientation: "landscape",
+        orientation: "portrait",
         display: "standalone",
         background_color: "#fff",
         lang: "de",
