@@ -7,3 +7,6 @@
   for = "/assets/*"
   [headers.values]
      Cache-Control = 'max-age=31536000,immutable'
+
+[[plugins]]
+package = "netlify-purge-cloudflare-on-deploy"
