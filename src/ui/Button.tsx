@@ -44,7 +44,7 @@ export const IconButtonStyle = (props: IconButtonStyleProps) => (
     rounded="md"
     bg="transparent"
     borderWidth={0}
-    fontSize="md"
+    fontSize="lg"
     userSelect="none"
     className={iconButtonStyle}
     {...props}
