@@ -6,7 +6,6 @@ import Frame from "./Frame";
 import IntroOverlay from "./IntroOverlay";
 import Keyboard from "./Keyboard";
 import {BaseButton, IconButton} from "./ui/Button";
-import {AnnotadedLetter, AnnotatedKeys} from "./types";
 import {useLocalStorageState} from "./useLocalStorage";
 import deWords from "./word-lists/valid_words_de.json";
 import {ReactComponent as HelpIcon} from "./assets/icons/question-mark.svg";
