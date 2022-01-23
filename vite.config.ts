@@ -20,13 +20,21 @@ export default defineConfig({
         short_name: "Wortle",
         description: "Wortle auf Deutsch",
         theme_color: colors.amber400,
+        start_url: ".",
         orientation: "landscape",
+        display: "standalone",
+        background_color: "#fff",
         lang: "de",
         icons: [
           {
-            src: "favicon.svg",
+            src: "icon.svg",
             sizes: "192x192",
-            type: "image/svg",
+            type: "image/svg+xml",
+          },
+          {
+            src: "icon-512.png",
+            sizes: "512x512",
+            type: "image/png",
           },
         ],
       },
