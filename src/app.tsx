@@ -12,6 +12,7 @@ import deWords from "./word-lists/valid_words_de.json";
 import {ReactComponent as HelpIcon} from "./assets/icons/question-mark.svg";
 import ModePicker from "./ui/ModePicker";
 import ChallengePreviewOverlay from "./ChallengePreviewOverlay";
+import {useEffect} from "react";
 
 type HeadingProps = {onShowIntro: () => void; onShowChallengePreview: () => void};
 const Heading = ({onShowIntro, onShowChallengePreview}: HeadingProps) => {
@@ -35,21 +36,6 @@ const Heading = ({onShowIntro, onShowChallengePreview}: HeadingProps) => {
 };
 
 const MAX_GUESSES = 6;
-
-type GuessWordMapping = {[letter: string]: number[]};
-
-const createGuessWordMapping = (guessWord: string): GuessWordMapping => {
-  const mapping: {[letter: string]: number[]} = {};
-  Array.from(guessWord).forEach((letter, idx) => {
-    const exist = mapping[letter];
-    if (exist) {
-      exist.push(idx);
-    } else {
-      mapping[letter] = [idx];
-    }
-  });
-  return mapping;
-};
 
 const WonMessage = ({onReplay}: {onReplay: () => void}) => (
   <Col sp={4} align="center" justify="center" px={4} fillParent pb={4}>
@@ -81,32 +67,6 @@ const getRandomElement = (list: string[]): string => {
 
 const getRandomWord = () => getRandomElement(deWords);
 
-const getAnnotatedKeys = ({
-  submittedWords,
-  guessWordMapping,
-}: {
-  submittedWords: string[];
-  guessWordMapping: GuessWordMapping;
-}): AnnotatedKeys => {
-  const keys: AnnotatedKeys = {};
-
-  submittedWords.forEach((word) => {
-    Array.from(word).forEach((letter, idx) => {
-      const indeces = guessWordMapping[letter];
-      const getType = (): AnnotadedLetter["type"] => {
-        if (indeces === undefined) return "notFound";
-        if (indeces.includes(idx)) return "correctPosition";
-        return "found";
-      };
-      const type = getType();
-      if (type === "notFound") keys[letter] = type;
-      if (type === "correctPosition") keys[letter] = type;
-      if (type === "found" && keys[letter] !== "correctPosition") keys[letter] = type;
-    });
-  });
-  return keys;
-};
-
 const getGameState = (opts: {submittedWords: string[]; guessWord: string}) => {
   const {submittedWords, guessWord} = opts;
   if (submittedWords[submittedWords.length - 1] === guessWord) return "won";
@@ -127,6 +87,7 @@ export function App() {
 
   const [guessWord, setGuessWord] = useState<string>(getRandomWord);
   const [submittedWords, setSubmittedWords] = useState<string[]>([]);
+  const [isRevealing, setIsRevealing] = useState(false);
   const [skpiIntro, setSkipIntro] = useLocalStorageState("skipIntro", false);
   const [showChallengeMode, setShowChallengeMode] = useState(false);
 
@@ -135,9 +96,17 @@ export function App() {
   const gameState = getGameState({submittedWords, guessWord});
   const handleSubmitWord = (word: string) => {
     setSubmittedWords((prev) => [...prev, word]);
+    setIsRevealing(true);
   };
-  const guessWordMapping = createGuessWordMapping(guessWord);
-  const annotatedKeys = getAnnotatedKeys({submittedWords, guessWordMapping});
+
+  useEffect(() => {
+    if (isRevealing) {
+      let id = setTimeout(() => {
+        setIsRevealing(false);
+      }, 1000);
+      return () => clearTimeout(id);
+    }
+  }, [isRevealing]);
 
   const handleReplay = () => {
     setGuessWord(getRandomWord());
@@ -154,9 +123,9 @@ export function App() {
         />
         <Board guessWord={guessWord} input={input} submittedWords={submittedWords} />
         <Col minHeight="12rem">
-          {gameState === "won" ? (
+          {!isRevealing && gameState === "won" ? (
             <WonMessage onReplay={handleReplay} />
-          ) : gameState === "lost" ? (
+          ) : !isRevealing && gameState === "lost" ? (
             <LostMessage guessWord={guessWord} onReplay={handleReplay} />
           ) : (
             <Keyboard
@@ -164,7 +133,8 @@ export function App() {
               input={input}
               onSubmitWord={handleSubmitWord}
               deWords={deWords}
-              annotatedKeys={annotatedKeys}
+              submittedWords={isRevealing ? submittedWords.slice(0, -1) : submittedWords}
+              guessWord={guessWord}
             />
           )}
         </Col>

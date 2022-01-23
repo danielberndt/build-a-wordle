@@ -12,6 +12,7 @@ type LetterBoxProps = {
   type?: AnnotadedLetter["type"] | "none" | "empty";
   animateReveal?: boolean;
   idx?: number;
+  won?: boolean;
 };
 
 const annotationProps: {
@@ -35,25 +36,26 @@ const LetterBox = ({
   type = letter ? "none" : "empty",
   animateReveal,
   idx = 0,
+  won,
 }: LetterBoxProps) => {
   const [themeClass, setThemeClass] = useState<NonNullable<LetterBoxProps["type"]>>("none");
 
-  const lastTypeRef = useRef(type);
+  const lastInfoRef = useRef({type, won});
 
   const [styles, api] = useSpring(() => ({
-    to: {opacity: 1, scale: 1, scaleX: 1, rotate: 0},
+    to: {opacity: 1, scale: 1, scaleX: 1, rotate: 0, y: "0rem"},
     config: springConfigs.quick,
   }));
 
   useLayoutEffect(() => {
-    if (lastTypeRef.current !== type) {
+    if (lastInfoRef.current.type !== type) {
       if (type === "none") {
         api.set({scale: 2, opacity: 0});
         api.start({scale: 1, opacity: 1});
       }
     }
-    lastTypeRef.current = type;
-  }, [type, animateReveal, api]);
+    lastInfoRef.current = {type, won};
+  }, [type, animateReveal, api, won]);
 
   useLayoutEffect(() => {
     if (animateReveal) {
@@ -62,6 +64,14 @@ const LetterBox = ({
           await next({scale: 0, rotate: 180, delay: idx * 150, config: {restVelocity: 0.1}});
           setThemeClass(type);
           await next({scale: 1, rotate: 360});
+          if (lastInfoRef.current.won) {
+            await next({
+              y: "-2rem",
+              delay: 3 * 150 - idx * 50,
+              config: {restVelocity: 0.1},
+            });
+            await next({y: "0rem", config: {friction: 12}});
+          }
         },
       });
     }

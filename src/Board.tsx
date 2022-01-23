@@ -35,7 +35,14 @@ const SubmittedWord = ({word, guessWord, isLast}: SubmittedWordProps) => {
   return (
     <LetterRow>
       {annotatedLetters.map(({letter, type}, idx) => (
-        <LetterBox key={idx} letter={letter} type={type} animateReveal={isLast} idx={idx} />
+        <LetterBox
+          key={idx}
+          letter={letter}
+          type={type}
+          animateReveal={isLast}
+          idx={idx}
+          won={guessWord == word}
+        />
       ))}
     </LetterRow>
   );

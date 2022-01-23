@@ -3,8 +3,49 @@ import {useTransition, animated} from "react-spring";
 import {springConfigs} from "./animation-utils";
 import {Col, Row} from "./ui/Box";
 import LetterButton, {NonLetterKeyboardButton} from "./LetterButton";
-import {AnnotatedKeys} from "./types";
+import {AnnotadedLetter, AnnotatedKeys} from "./types";
 import {Pill} from "./ui/Pill";
+
+const getAnnotatedKeys = ({
+  submittedWords,
+  guessWordMapping,
+}: {
+  submittedWords: string[];
+  guessWordMapping: GuessWordMapping;
+}): AnnotatedKeys => {
+  const keys: AnnotatedKeys = {};
+
+  submittedWords.forEach((word) => {
+    Array.from(word).forEach((letter, idx) => {
+      const indeces = guessWordMapping[letter];
+      const getType = (): AnnotadedLetter["type"] => {
+        if (indeces === undefined) return "notFound";
+        if (indeces.includes(idx)) return "correctPosition";
+        return "found";
+      };
+      const type = getType();
+      if (type === "notFound") keys[letter] = type;
+      if (type === "correctPosition") keys[letter] = type;
+      if (type === "found" && keys[letter] !== "correctPosition") keys[letter] = type;
+    });
+  });
+  return keys;
+};
+
+type GuessWordMapping = {[letter: string]: number[]};
+
+const createGuessWordMapping = (guessWord: string): GuessWordMapping => {
+  const mapping: {[letter: string]: number[]} = {};
+  Array.from(guessWord).forEach((letter, idx) => {
+    const exist = mapping[letter];
+    if (exist) {
+      exist.push(idx);
+    } else {
+      mapping[letter] = [idx];
+    }
+  });
+  return mapping;
+};
 
 const ErrorPill = ({error}: {error: string | null}) => {
   const fn = useTransition(error, {
@@ -32,11 +73,22 @@ type KeyboardProps = {
   setInput: StateUpdater<string>;
   onSubmitWord: (word: string) => void;
   deWords: string[];
-  annotatedKeys: AnnotatedKeys;
+  submittedWords: string[];
+  guessWord: string;
 };
-const Keyboard = ({input, setInput, onSubmitWord, deWords, annotatedKeys}: KeyboardProps) => {
+const Keyboard = ({
+  input,
+  setInput,
+  onSubmitWord,
+  deWords,
+  submittedWords,
+  guessWord,
+}: KeyboardProps) => {
   const [error, setError] = useState<string | null>(null);
   const wordSet = useMemo(() => new Set(deWords), []);
+
+  const guessWordMapping = createGuessWordMapping(guessWord);
+  const annotatedKeys = getAnnotatedKeys({submittedWords, guessWordMapping});
 
   const handleSubmit = () => {
     if (!input) {
