@@ -14,11 +14,14 @@ export default defineConfig({
     svgr(),
     VitePWA({
       includeAssets: ["favicon.svg", "robots.txt"],
+      registerType: "autoUpdate",
       manifest: {
         name: "Wortle",
         short_name: "Wortle",
         description: "Wortle auf Deutsch",
         theme_color: colors.amber400,
+        orientation: "landscape",
+        lang: "de",
         icons: [
           {
             src: "favicon.svg",
