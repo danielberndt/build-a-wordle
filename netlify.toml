@@ -4,6 +4,6 @@
     Content-Type = "application/manifest+json"
 
 [[headers]]
-  for = "/*"
+  for = "/assets/*"
   [headers.values]
-    Access-Control-Allow-Origin = "*"
+     Cache-Control = 'max-age=31536000,immutable'
