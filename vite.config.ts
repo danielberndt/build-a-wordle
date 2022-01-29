@@ -53,6 +53,7 @@ export default defineConfig({
     },
   },
   build: {
+    cssCodeSplit: false,
     rollupOptions: {
       input: process.env.VITE_SSR
         ? undefined
