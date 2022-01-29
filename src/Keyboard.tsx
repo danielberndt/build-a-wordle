@@ -5,6 +5,7 @@ import {Col, Row} from "./ui/Box";
 import LetterButton, {NonLetterKeyboardButton} from "./LetterButton";
 import {AnnotadedLetter, AnnotatedKeys} from "./types";
 import {Pill} from "./ui/Pill";
+import {useSetDevMode} from "./useDevMode";
 
 const getAnnotatedKeys = ({
   submittedWords,
@@ -84,6 +85,7 @@ const Keyboard = ({
   submittedWords,
   guessWord,
 }: KeyboardProps) => {
+  const setDevMode = useSetDevMode();
   const [error, setError] = useState<string | null>(null);
   const wordSet = useMemo(() => new Set(deWords), []);
 
@@ -103,6 +105,12 @@ const Keyboard = ({
 
     if (input.length !== 5) {
       setError("Ich brauche 5 Buchstaben!");
+      return;
+    }
+
+    if (input === "dajbm") {
+      setError("Dev mode aktiv!");
+      setDevMode(true);
       return;
     }
 

@@ -1,3 +1,5 @@
+import cx from "../cx";
+import {GameMode} from "../types";
 import {Box, Col, Row} from "./Box";
 import {modePickerStyles as styles} from "./ModePicker.css";
 
@@ -27,7 +29,13 @@ const OptionLabel = ({
   </Box>
 );
 
-const ModePicker = ({onClick}: {onClick?: () => void}) => (
+const ModePicker = ({
+  onClick,
+  value,
+}: {
+  onClick: (mode: GameMode | null) => void;
+  value: GameMode;
+}) => (
   <Row sp={2}>
     <Col
       styleChild
@@ -38,13 +46,27 @@ const ModePicker = ({onClick}: {onClick?: () => void}) => (
       align="start"
       overflow="hidden"
     >
-      <button onClick={onClick}>
-        <Box rounded="full" bg="front" className={styles.knob} elevations="sm" />
+      <button onClick={() => onClick(null)}>
+        <Box
+          rounded="full"
+          bg="front"
+          className={cx(styles.knob, value === "challenge" && styles.knobBottom)}
+          elevations="sm"
+          relative
+        />
       </button>
     </Col>
     <Col sp={1}>
-      <OptionLabel label="Training" active onClick={onClick} />
-      <OptionLabel label="Challenge" onClick={onClick} />
+      <OptionLabel
+        label="Training"
+        active={value === "training"}
+        onClick={() => onClick("training")}
+      />
+      <OptionLabel
+        label="Challenge"
+        active={value === "challenge"}
+        onClick={() => onClick("challenge")}
+      />
     </Col>
   </Row>
 );

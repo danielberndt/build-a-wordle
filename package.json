@@ -10,7 +10,8 @@
   "dependencies": {
     "preact": "^10.5.15",
     "preact-compat": "^3.19.0",
-    "react-spring": "^9.4.2"
+    "react-spring": "^9.4.2",
+    "zustand": "^3.6.9"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.1.5",

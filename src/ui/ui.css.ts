@@ -50,6 +50,12 @@ export const withColorsTransition = style([
     transitionDuration: "0.15s",
   },
 ]);
+export const withTransformTransition = style([
+  {
+    transitionProperty: "transform",
+    transitionDuration: "0.15s",
+  },
+]);
 
 const withBorder = style({borderStyle: "solid"});
 

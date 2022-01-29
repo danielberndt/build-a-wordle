@@ -1,5 +1,6 @@
 import {createVar, style, styleVariants} from "@vanilla-extract/css";
 import {themeVars} from "./app-theme.css";
+import {withTransformTransition} from "./ui.css";
 
 export const pillStyles = styleVariants({error: themeVars.actions.error}, (val, key) => ({
   backgroundColor: themeVars.actions[key].bg,
@@ -24,8 +25,15 @@ export const modePickerStyles = {
     },
     borderColor: themeVars.actions.neutral.border,
   }),
-  knob: style({
-    width: sizeVar,
-    height: sizeVar,
+  knob: style([
+    withTransformTransition,
+    {
+      width: sizeVar,
+      height: sizeVar,
+      transform: `translate3d(0,0,0)`,
+    },
+  ]),
+  knobBottom: style({
+    transform: `translate3d(0,calc(1.8rem - ${sizeVar}),0)`,
   }),
 };
