@@ -57,16 +57,8 @@ const ModePicker = ({
       </button>
     </Col>
     <Col sp={1}>
-      <OptionLabel
-        label="Training"
-        active={value === "training"}
-        onClick={() => onClick("training")}
-      />
-      <OptionLabel
-        label="Challenge"
-        active={value === "challenge"}
-        onClick={() => onClick("challenge")}
-      />
+      <OptionLabel label="Training" active={value === "training"} onClick={() => onClick(null)} />
+      <OptionLabel label="Challenge" active={value === "challenge"} onClick={() => onClick(null)} />
     </Col>
   </Row>
 );
