@@ -1716,3 +1716,5 @@ pater
 viech
 farce
 tapir
+toele
+kogge
