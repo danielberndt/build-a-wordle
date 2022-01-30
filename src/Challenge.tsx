@@ -107,7 +107,7 @@ const getBuckets = (): Buckets => {
 const createWordGenerator = () => {
   const buckets = getBuckets();
   const recentlyUsed: string[] = [];
-  const getNextSet = (): string[] => {
+  const getNextSet = (first: boolean): string[] => {
     const recentlyUsedSet = new Set(recentlyUsed);
     const pickWord = (list: string[]) => {
       while (true) {
@@ -119,23 +119,25 @@ const createWordGenerator = () => {
         }
       }
     };
-    const list: string[] = [
-      pickWord(buckets.simple),
-      pickWord(buckets.simple),
-      pickWord(buckets.medium),
-      pickWord(buckets.medium),
-      pickWord(buckets.hard),
-    ];
+    const list: string[] = first
+      ? [pickWord(buckets.simple), pickWord(buckets.simple)]
+      : [
+          pickWord(buckets.simple),
+          pickWord(buckets.simple),
+          pickWord(buckets.medium),
+          pickWord(buckets.medium),
+          pickWord(buckets.hard),
+        ];
     shuffleArray(list);
     if (recentlyUsed.length > 25) recentlyUsed.splice(0, 5);
     return list;
   };
 
-  let currSet = getNextSet();
+  let currSet = getNextSet(true);
 
   return {
     getNext: () => {
-      if (!currSet.length) currSet = getNextSet();
+      if (!currSet.length) currSet = getNextSet(false);
       return currSet.shift()!;
     },
   };
