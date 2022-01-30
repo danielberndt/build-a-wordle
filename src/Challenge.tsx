@@ -1,5 +1,5 @@
 import {useState} from "preact/hooks";
-import {useEffect} from "react";
+import {ReactNode, useEffect} from "react";
 import {GameArea} from "./GameArea";
 import {HeaderSlot} from "./HeaderSlot";
 import {getRandomElement, shuffleArray} from "./random";
@@ -20,6 +20,18 @@ const GameOver = ({onReset, guessWord}: {onReset: () => void; guessWord: string}
       </Box>
     </Col>
     <BaseButton onClick={onReset}>Neuer Versuch</BaseButton>
+  </Col>
+);
+
+const LostMessage = ({onReset, guessWord}: {onReset: () => void; guessWord: string}) => (
+  <Col sp={2} align="center" px={4} fillParent pb={4}>
+    <Col align="center" justify="center" sp={1} fillParent>
+      <Box>Das gesuchte Wort war</Box>
+      <Box textTransform="uppercase" bold fontSize="xl">
+        {guessWord}
+      </Box>
+    </Col>
+    <BaseButton onClick={onReset}>Nächstes Wort</BaseButton>
   </Col>
 );
 
@@ -146,6 +158,7 @@ const useGuessWord = () => {
 
 export const Challenge = ({}) => {
   const {guessWord, getNextGuessWord, resetWordGenerator} = useGuessWord();
+  const [showLostWordComp, setShowLostWordComp] = useState<ReactNode>();
   const [gameKey, setGameKey] = useState(0);
   const [gameOverAt, setGameOverAt] = useState<Date>(
     () => new Date(new Date().getTime() + BASE_LENGHT_MS)
@@ -189,9 +202,17 @@ export const Challenge = ({}) => {
     setScore(score + scoreWord(guessWord));
   };
   const handleLost = ({onReset}: {onReset: () => void}) => {
-    onReset();
     setGameOverAt(new Date(gameOverAt.getTime() - 30 * 1000));
-    getNextGuessWord();
+    setShowLostWordComp(
+      <LostMessage
+        guessWord={guessWord}
+        onReset={() => {
+          onReset();
+          getNextGuessWord();
+          setShowLostWordComp(null);
+        }}
+      />
+    );
   };
 
   const handleReset = () => {
@@ -211,7 +232,9 @@ export const Challenge = ({}) => {
       <GameArea
         mode="challenge"
         guessWord={guessWord}
-        messageArea={timeIsOut && <GameOver onReset={handleReset} guessWord={guessWord} />}
+        messageArea={
+          timeIsOut ? <GameOver onReset={handleReset} guessWord={guessWord} /> : showLostWordComp
+        }
         onWon={handleWon}
         onLost={handleLost}
         gameKey={gameKey}
