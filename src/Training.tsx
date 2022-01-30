@@ -1,5 +1,5 @@
 import {useState} from "preact/hooks";
-import {ComponentType, ReactElement, ReactNode, useEffect} from "react";
+import {ComponentType} from "react";
 import {GameArea} from "./GameArea";
 import {Box, Col} from "./ui/Box";
 import {BaseButton} from "./ui/Button";

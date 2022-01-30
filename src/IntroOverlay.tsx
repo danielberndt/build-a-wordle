@@ -47,7 +47,7 @@ const Content = ({onClose}: {onClose: () => void}) => (
       </Col>
     </Col>
     <Box fontSize="xs" color="secondary" px={6} pb={2}>
-      Version: {import.meta.env.VITE_APP_ID || "DEV"}
+      Version: {((import.meta.env.VITE_APP_ID as string) || "DEV").slice(0, 24)}
     </Box>
   </Col>
 );
