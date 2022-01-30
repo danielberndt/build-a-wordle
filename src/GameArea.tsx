@@ -20,10 +20,11 @@ type GameAreaProps = {
   messageArea: ReactNode;
   onWon: (opts: {submittedWords: string[]; onReset: () => void}) => void;
   onLost: (opts: {submittedWords: string[]; onReset: () => void}) => void;
+  gameKey?: number | string;
 };
 
 export const GameArea = (props: GameAreaProps) => {
-  const {guessWord, onWon, onLost, messageArea} = props;
+  const {guessWord, onWon, onLost, messageArea, gameKey} = props;
   const [submittedWords, setSubmittedWords] = useState<string[]>([]);
   const [isRevealing, setIsRevealing] = useState(false);
 
@@ -34,6 +35,10 @@ export const GameArea = (props: GameAreaProps) => {
   useEffect(() => {
     refs.current = {submittedWords, guessWord, resetState};
   });
+
+  useEffect(() => {
+    refs.current.resetState();
+  }, [gameKey]);
 
   const [input, setInput] = useState<string>("");
 

@@ -1,5 +1,5 @@
 import {useState} from "preact/hooks";
-import {ComponentType, ReactElement, ReactNode, useEffect} from "react";
+import {useEffect} from "react";
 import {GameArea} from "./GameArea";
 import {HeaderSlot} from "./HeaderSlot";
 import {Box, Col, Row} from "./ui/Box";
@@ -60,8 +60,8 @@ const Label = ({children}: {children: string}) => (
 );
 
 export const Challenge = ({}) => {
-  // const [guessWord, setGuessWord] = useState<string>("halte");
   const [guessWord, setGuessWord] = useState<string>(getRandomWord);
+  const [gameKey, setGameKey] = useState(0);
   const [gameOverAt, setGameOverAt] = useState<Date>(
     () => new Date(new Date().getTime() + BASE_LENGHT_MS)
   );
@@ -111,6 +111,7 @@ export const Challenge = ({}) => {
   const handleReset = () => {
     setGameOverAt(() => new Date(new Date().getTime() + BASE_LENGHT_MS));
     setGuessWord(getRandomWord);
+    setGameKey((prev) => prev + 1);
   };
 
   return (
@@ -121,6 +122,7 @@ export const Challenge = ({}) => {
         messageArea={timeIsOut && <GameOver onReset={handleReset} guessWord={guessWord} />}
         onWon={handleWon}
         onLost={handleLost}
+        gameKey={gameKey}
       />
       <HeaderSlot>
         <Row sp={2}>

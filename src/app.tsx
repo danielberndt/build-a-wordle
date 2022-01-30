@@ -14,6 +14,7 @@ import {ReactNode} from "react";
 import {GameMode} from "./types";
 import {ActiveThemeProvider, useHeaderSlotStore} from "./HeaderSlot";
 import {Challenge} from "./Challenge";
+import {useDevMode} from "./useDevMode";
 
 const DefaultHeaderSlot = ({onShowIntro}: any) => (
   <Row align="center" sp={3}>
@@ -92,9 +93,14 @@ export function App() {
   const [skpiIntro, setSkipIntro] = useLocalStorageState("skipIntro", false);
   const [showChallengeMode, setShowChallengeMode] = useState(false);
   const [mode, setMode] = useState<GameMode>("training");
+  const isDevMode = useDevMode();
 
   const handleClickMode = (target: GameMode | null) => {
-    setMode(target || (mode === "training" ? "challenge" : "training"));
+    if (isDevMode) {
+      setMode(target || (mode === "training" ? "challenge" : "training"));
+    } else {
+      setShowChallengeMode(true);
+    }
   };
 
   return (
