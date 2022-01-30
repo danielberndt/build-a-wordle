@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && VITE_SSR=true vite build --ssr src/prerender.tsx --outDir dist/server && NODE_ENV=production node dist/server/prerender.js && rm -rf dist/server",
+    "build": "VITE_APP_ID=\"`date +%Y%m%d_%H%M%S`-$BUILD_ID\" vite build && VITE_SSR=true vite build --ssr src/prerender.tsx --outDir dist/server && NODE_ENV=production node dist/server/prerender.js && rm -rf dist/server",
     "preview": "vite preview",
     "postinstall": "node scripts/extract-words.mjs ./data/german-pruned.txt > src/word-lists/valid_words_de.json"
   },
