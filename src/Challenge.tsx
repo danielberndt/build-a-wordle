@@ -120,7 +120,7 @@ const createWordGenerator = () => {
       }
     };
     const list: string[] = first
-      ? [pickWord(buckets.simple), pickWord(buckets.simple)]
+      ? [pickWord(buckets.simple), pickWord(buckets.simple), pickWord(buckets.medium)]
       : [
           pickWord(buckets.simple),
           pickWord(buckets.simple),
@@ -130,7 +130,7 @@ const createWordGenerator = () => {
         ];
     shuffleArray(list);
     if (recentlyUsed.length > 25) recentlyUsed.splice(0, 5);
-    return list;
+    return first ? list.slice(0, 2) : list;
   };
 
   let currSet = getNextSet(true);
