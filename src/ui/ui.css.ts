@@ -151,6 +151,9 @@ const baseStyles = {
   textTransform: styleArray(["uppercase"], (val) => ({textTransform: val})),
   weight: styleArray(["normal", "bold"], (val) => ({fontWeight: val})),
   textAlign: styleArray(["left", "right", "center"], (val) => ({textAlign: val})),
+  variantNumeric: {
+    tabularNums: style({fontVariantNumeric: "tabular-nums"}),
+  },
 
   overflow: styleArray(["hidden", "auto"], (val) => ({overflow: val})),
   userSelect: styleArray(["none"], (val) => ({userSelect: val})),

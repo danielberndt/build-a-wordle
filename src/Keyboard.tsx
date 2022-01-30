@@ -76,15 +76,10 @@ type KeyboardProps = {
   deWords: string[];
   submittedWords: string[];
   guessWord: string;
+  forbiddenWords?: Set<string>;
 };
-const Keyboard = ({
-  input,
-  setInput,
-  onSubmitWord,
-  deWords,
-  submittedWords,
-  guessWord,
-}: KeyboardProps) => {
+const Keyboard = (props: KeyboardProps) => {
+  const {input, setInput, onSubmitWord, deWords, submittedWords, guessWord, forbiddenWords} = props;
   const setDevMode = useSetDevMode();
   const [error, setError] = useState<string | null>(null);
   const wordSet = useMemo(() => new Set(deWords), []);
@@ -114,13 +109,20 @@ const Keyboard = ({
       return;
     }
 
-    if (!wordSet.has(input.toLowerCase())) {
+    if (forbiddenWords) {
+      if (input !== guessWord && forbiddenWords.has(input)) {
+        setError("Das Wort hast du in dieser Challenge bereits verwendet.");
+        return;
+      }
+    }
+
+    if (!wordSet.has(input)) {
       setError("Das Wort ist nicht in meiner Liste!");
       return;
     }
 
     setError(null);
-    onSubmitWord(input.toLowerCase());
+    onSubmitWord(input);
     setInput("");
   };
 

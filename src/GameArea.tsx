@@ -21,10 +21,12 @@ type GameAreaProps = {
   onWon: (opts: {submittedWords: string[]; onReset: () => void}) => void;
   onLost: (opts: {submittedWords: string[]; onReset: () => void}) => void;
   gameKey?: number | string;
+  onWordSubmitted?: (word: string) => void;
+  forbiddenWords?: Set<string>;
 };
 
 export const GameArea = (props: GameAreaProps) => {
-  const {guessWord, onWon, onLost, messageArea, gameKey} = props;
+  const {guessWord, onWon, onLost, messageArea, gameKey, onWordSubmitted, forbiddenWords} = props;
   const [submittedWords, setSubmittedWords] = useState<string[]>([]);
   const [isRevealing, setIsRevealing] = useState(false);
 
@@ -45,6 +47,7 @@ export const GameArea = (props: GameAreaProps) => {
   const handleSubmitWord = (word: string) => {
     setSubmittedWords((prev) => [...prev, word]);
     setIsRevealing(true);
+    if (onWordSubmitted) onWordSubmitted(word);
   };
 
   useEffect(() => {
@@ -78,6 +81,7 @@ export const GameArea = (props: GameAreaProps) => {
             deWords={deWords}
             submittedWords={isRevealing ? submittedWords.slice(0, -1) : submittedWords}
             guessWord={guessWord}
+            forbiddenWords={forbiddenWords}
           />
         )}
       </Col>
