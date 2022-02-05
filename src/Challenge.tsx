@@ -158,7 +158,7 @@ const useGuessWord = () => {
   };
 };
 
-export const Challenge = ({}) => {
+export const Challenge = () => {
   const {guessWord, getNextGuessWord, resetWordGenerator} = useGuessWord();
   const [showLostWordComp, setShowLostWordComp] = useState<ReactNode>();
   const [gameKey, setGameKey] = useState(0);

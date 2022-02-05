@@ -48,7 +48,7 @@ const createGuessWordMapping = (guessWord: string): GuessWordMapping => {
   return mapping;
 };
 
-const ErrorPill = ({error}: {error: string | null}) => {
+export const ErrorPill = ({error}: {error: string | null}) => {
   const fn = useTransition(error, {
     from: {y: "3rem", opacity: 0, scale: 0.5},
     enter: {y: "0", opacity: 1, scale: 1},
@@ -68,6 +68,98 @@ const ErrorPill = ({error}: {error: string | null}) => {
 };
 
 const keyRows = ["qwertzuiop".split(""), "asdfghjkl".split(""), "yxcvbnm".split("")];
+
+type RawKeyboardProps = {
+  onAddLetter: (l: string) => void;
+  annotatedKeys?: AnnotatedKeys;
+  onEnter: () => void;
+  onBackspace: () => void;
+};
+export const RawKeyboard = ({
+  onAddLetter,
+  annotatedKeys = {},
+  onEnter,
+  onBackspace,
+}: RawKeyboardProps) => {
+  const handleFormSubmit = (e: any) => {
+    e.preventDefault();
+    onEnter();
+  };
+
+  const refs = useRef({onEnter, onAddLetter, onBackspace});
+  useEffect(() => {
+    refs.current = {
+      onEnter,
+      onAddLetter,
+      onBackspace,
+    };
+  });
+
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      const key = e.key.toLowerCase();
+      if (key === "enter") {
+        (window.document.activeElement as any)?.blur();
+        refs.current.onEnter();
+      }
+      if (key.match(/^[a-z]$/)) {
+        (window.document.activeElement as any)?.blur();
+        refs.current.onAddLetter(key);
+      }
+    };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.key === "Backspace") {
+        (window.document.activeElement as any)?.blur();
+        refs.current.onBackspace();
+      }
+    };
+
+    document.addEventListener("keypress", handleKeyPress);
+    document.addEventListener("keyup", handleKeyUp);
+    return () => {
+      document.removeEventListener("keypress", handleKeyPress);
+      document.removeEventListener("keyup", handleKeyUp);
+    };
+  }, []);
+
+  return (
+    <>
+      <Row sp={2} fillParent>
+        {keyRows[0].map((letter) => (
+          <LetterButton
+            key={letter}
+            letter={letter}
+            annotatedKey={annotatedKeys[letter] || "none"}
+            onClick={() => onAddLetter(letter)}
+          />
+        ))}
+      </Row>
+      <Row sp={2} px={4} fillParent>
+        {keyRows[1].map((letter) => (
+          <LetterButton
+            key={letter}
+            letter={letter}
+            annotatedKey={annotatedKeys[letter] || "none"}
+            onClick={() => onAddLetter(letter)}
+          />
+        ))}
+      </Row>
+      <Row sp={2} fillParent>
+        <NonLetterKeyboardButton onClick={handleFormSubmit}>enter</NonLetterKeyboardButton>
+        {keyRows[2].map((letter) => (
+          <LetterButton
+            key={letter}
+            letter={letter}
+            annotatedKey={annotatedKeys[letter] || "none"}
+            onClick={() => onAddLetter(letter)}
+          />
+        ))}
+        <NonLetterKeyboardButton onClick={onBackspace}>del</NonLetterKeyboardButton>
+      </Row>
+    </>
+  );
+};
 
 type KeyboardProps = {
   input: string;
@@ -126,87 +218,25 @@ const Keyboard = (props: KeyboardProps) => {
     setInput("");
   };
 
-  const onAddLetter = (l: string) => {
+  const handlerLetter = (l: string) => {
     setInput((prev) => (prev.length < 5 ? prev + l : prev));
     setError(null);
   };
 
-  const onBackspace = () => {
+  const handleBackspace = () => {
     setInput((prev) => prev.slice(0, -1));
     setError(null);
-  };
-
-  const refs = useRef({handleSubmit, setInput, onAddLetter, onBackspace});
-  useEffect(() => {
-    refs.current = {
-      handleSubmit,
-      setInput,
-      onAddLetter,
-      onBackspace,
-    };
-  });
-
-  useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      const key = e.key.toLowerCase();
-      if (key === "enter") {
-        refs.current.handleSubmit();
-      }
-      if (key.match(/^[a-z]$/)) refs.current.onAddLetter(key);
-    };
-
-    const handleKeyUp = (e: KeyboardEvent) => {
-      if (e.key === "Backspace") refs.current.onBackspace();
-    };
-
-    document.addEventListener("keypress", handleKeyPress);
-    document.addEventListener("keyup", handleKeyUp);
-    return () => {
-      document.removeEventListener("keypress", handleKeyPress);
-      document.removeEventListener("keyup", handleKeyUp);
-    };
-  }, []);
-
-  const handleFormSubmit = (e: any) => {
-    e.preventDefault();
-    handleSubmit();
   };
 
   return (
     <Col px={3} pb={3} sp={2} fillParent relative>
       <ErrorPill error={error} />
-      <Row sp={2} fillParent>
-        {keyRows[0].map((letter) => (
-          <LetterButton
-            key={letter}
-            letter={letter}
-            annotatedKey={annotatedKeys[letter] || "none"}
-            onClick={() => onAddLetter(letter)}
-          />
-        ))}
-      </Row>
-      <Row sp={2} px={4} fillParent>
-        {keyRows[1].map((letter) => (
-          <LetterButton
-            key={letter}
-            letter={letter}
-            annotatedKey={annotatedKeys[letter] || "none"}
-            onClick={() => onAddLetter(letter)}
-          />
-        ))}
-      </Row>
-      <Row sp={2} fillParent>
-        <NonLetterKeyboardButton onClick={handleFormSubmit}>enter</NonLetterKeyboardButton>
-        {keyRows[2].map((letter) => (
-          <LetterButton
-            key={letter}
-            letter={letter}
-            annotatedKey={annotatedKeys[letter] || "none"}
-            onClick={() => onAddLetter(letter)}
-          />
-        ))}
-        <NonLetterKeyboardButton onClick={onBackspace}>del</NonLetterKeyboardButton>
-      </Row>
+      <RawKeyboard
+        annotatedKeys={annotatedKeys}
+        onAddLetter={handlerLetter}
+        onEnter={handleSubmit}
+        onBackspace={handleBackspace}
+      />
     </Col>
   );
 };

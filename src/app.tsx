@@ -4,7 +4,7 @@ import {Box, Col, Row} from "./ui/Box";
 import Frame from "./Frame";
 import {IntroOverlayContent} from "./IntroOverlay";
 import {IconButton} from "./ui/Button";
-import {useLocalStorageState} from "./useLocalStorage";
+import {storageWrapper, useLocalStorageState} from "./useLocalStorage";
 import {ReactComponent as HelpIcon} from "./assets/icons/question-mark.svg";
 import ModePicker from "./ui/ModePicker";
 import {ChallengePreviewContent} from "./ChallengePreviewOverlay";
@@ -16,6 +16,8 @@ import {ActiveThemeProvider, useHeaderSlotStore} from "./HeaderSlot";
 import {Challenge} from "./Challenge";
 import {useDevMode} from "./useDevMode";
 import OverlayProvider, {useOverlay} from "./ui/Overlay";
+import {ChallengeExplainContent} from "./ChallengeExplainOverlay";
+import {EnterNameContent} from "./EnterNameOverlay";
 
 const DefaultHeaderSlot = ({onShowIntro}: any) => (
   <Row align="center" sp={3}>
@@ -90,38 +92,73 @@ const ShowMode = ({mode: outerMode}: {mode: GameMode}) => {
   );
 };
 
+const getInitialOverlay = () => {
+  if (!storageWrapper.storageGet("skipIntro")) return "intro";
+  return null;
+};
+
 export function App() {
-  const [skipIntro, setSkipIntro] = useLocalStorageState("skipIntro", false);
-  const [showChallengeMode, setShowChallengeMode] = useState(false);
+  const [shownOverlay, setShownOverlay] = useState<keyof typeof overlays | null>(getInitialOverlay);
   const [mode, setMode] = useState<GameMode>("training");
   const isDevMode = useDevMode();
-  const handleCloseIntro = () => setSkipIntro(true);
-  const handleCloseChallenge = () => setShowChallengeMode(false);
+
+  const overlays = {
+    intro: {
+      el: <IntroOverlayContent onClose={() => overlays.intro.onClose()} />,
+      onClose: () => {
+        storageWrapper.storageSet("skipIntro", true);
+        setShownOverlay(null);
+      },
+    },
+    challengeNotReady: {
+      el: <ChallengePreviewContent onClose={() => overlays.challengeNotReady.onClose()} />,
+      onClose: () => setShownOverlay(null),
+    },
+    explainChallenge: {
+      el: <ChallengeExplainContent onClose={() => overlays.explainChallenge.onClose()} />,
+      onClose: () => {
+        storageWrapper.storageSet("skipExplainChallenge", true);
+        return "enterName";
+      },
+    },
+    enterName: {
+      el: (
+        <EnterNameContent
+          onReady={() => {
+            setMode("challenge");
+            setShownOverlay(null);
+          }}
+        />
+      ),
+      onClose: () => setShownOverlay(null),
+    },
+  };
 
   const getOverlay = () => {
-    if (!skipIntro) {
-      return {
-        key: "intro",
-        overlayElement: <IntroOverlayContent onClose={handleCloseIntro} />,
-        onClose: handleCloseIntro,
-      };
-    }
-    if (showChallengeMode) {
-      return {
-        key: "challenge",
-        overlayElement: <ChallengePreviewContent onClose={handleCloseChallenge} />,
-        onClose: handleCloseChallenge,
-      };
-    }
+    const info = shownOverlay && overlays[shownOverlay];
+    if (!info) return null;
+    const {el, onClose} = info;
+    return {
+      key: shownOverlay,
+      overlayElement: el,
+      onClose,
+    };
   };
 
   useOverlay(getOverlay());
 
   const handleClickMode = (target: GameMode | null) => {
     if (isDevMode) {
-      setMode(target || (mode === "training" ? "challenge" : "training"));
+      const finalTarget = target || (mode === "training" ? "challenge" : "training");
+      if (finalTarget === "training") {
+        setMode(finalTarget);
+      } else {
+        setShownOverlay(
+          storageWrapper.storageGet("skipExplainChallenge") ? "enterName" : "explainChallenge"
+        );
+      }
     } else {
-      setShowChallengeMode(true);
+      setShownOverlay("challengeNotReady");
     }
   };
 
@@ -129,7 +166,7 @@ export function App() {
     <Col fillParent color="primary">
       <Frame>
         <Heading
-          onShowIntro={() => setSkipIntro(false)}
+          onShowIntro={() => setShownOverlay("intro")}
           picker={<ModePicker value={mode} onClick={handleClickMode} />}
         />
         <ShowMode mode={mode} />

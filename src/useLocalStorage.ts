@@ -6,7 +6,7 @@ type StorageWrapper = {
   storageRemove: (key: string) => boolean;
 };
 
-const getStorage = <T>(storageGetter: () => Storage): StorageWrapper => {
+const getStorage = (storageGetter: () => Storage): StorageWrapper => {
   let storage: Storage;
   try {
     storage = storageGetter();
@@ -54,7 +54,7 @@ const getStorage = <T>(storageGetter: () => Storage): StorageWrapper => {
   };
 };
 
-const storageWrapper = getStorage(() => window.localStorage);
+export const storageWrapper = getStorage(() => window.localStorage);
 
 const getStorageValOrDefaultWithKey = <T>(
   key: string,
@@ -108,5 +108,5 @@ export const useLocalStorageState = <T>(key: string, defaultVal: T) => {
     [key]
   );
 
-  return [nextVal ? nextVal.value : data.value, handlers.setVal] as const;
+  return [(nextVal ? nextVal.value : data.value) as T, handlers.setVal] as const;
 };
