@@ -1,8 +1,7 @@
 import {Box, Col} from "./ui/Box";
 import {BaseButton} from "./ui/Button";
-import Overlay from "./ui/Overlay";
 
-const Content = ({onClose}: {onClose: () => void}) => (
+export const ChallengePreviewContent = ({onClose}: {onClose: () => void}) => (
   <Col pa={6} sp={5}>
     <Col sp={2}>
       <Box bold fontSize="lg" textAlign="center">
@@ -26,9 +25,3 @@ const Content = ({onClose}: {onClose: () => void}) => (
     </Col>
   </Col>
 );
-
-const ChallengePreviewOverlay = ({show, onClose}: {show: boolean; onClose: () => void}) => (
-  <Overlay show={show} onClose={onClose} ContentComp={Content} />
-);
-
-export default ChallengePreviewOverlay;

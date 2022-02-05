@@ -2,12 +2,12 @@ import {useState} from "preact/hooks";
 import logo from "./assets/logo-wide.svg";
 import {Box, Col, Row} from "./ui/Box";
 import Frame from "./Frame";
-import IntroOverlay from "./IntroOverlay";
+import {IntroOverlayContent} from "./IntroOverlay";
 import {IconButton} from "./ui/Button";
 import {useLocalStorageState} from "./useLocalStorage";
 import {ReactComponent as HelpIcon} from "./assets/icons/question-mark.svg";
 import ModePicker from "./ui/ModePicker";
-import ChallengePreviewOverlay from "./ChallengePreviewOverlay";
+import {ChallengePreviewContent} from "./ChallengePreviewOverlay";
 import {Training} from "./Training";
 import {animated, useTransition} from "react-spring";
 import {ReactNode} from "react";
@@ -15,6 +15,7 @@ import {GameMode} from "./types";
 import {ActiveThemeProvider, useHeaderSlotStore} from "./HeaderSlot";
 import {Challenge} from "./Challenge";
 import {useDevMode} from "./useDevMode";
+import OverlayProvider, {useOverlay} from "./ui/Overlay";
 
 const DefaultHeaderSlot = ({onShowIntro}: any) => (
   <Row align="center" sp={3}>
@@ -90,10 +91,31 @@ const ShowMode = ({mode: outerMode}: {mode: GameMode}) => {
 };
 
 export function App() {
-  const [skpiIntro, setSkipIntro] = useLocalStorageState("skipIntro", false);
+  const [skipIntro, setSkipIntro] = useLocalStorageState("skipIntro", false);
   const [showChallengeMode, setShowChallengeMode] = useState(false);
   const [mode, setMode] = useState<GameMode>("training");
   const isDevMode = useDevMode();
+  const handleCloseIntro = () => setSkipIntro(true);
+  const handleCloseChallenge = () => setShowChallengeMode(false);
+
+  const getOverlay = () => {
+    if (!skipIntro) {
+      return {
+        key: "intro",
+        overlayElement: <IntroOverlayContent onClose={handleCloseIntro} />,
+        onClose: handleCloseIntro,
+      };
+    }
+    if (showChallengeMode) {
+      return {
+        key: "challenge",
+        overlayElement: <ChallengePreviewContent onClose={handleCloseChallenge} />,
+        onClose: handleCloseChallenge,
+      };
+    }
+  };
+
+  useOverlay(getOverlay());
 
   const handleClickMode = (target: GameMode | null) => {
     if (isDevMode) {
@@ -112,11 +134,7 @@ export function App() {
         />
         <ShowMode mode={mode} />
       </Frame>
-      <IntroOverlay show={!skpiIntro} onClose={() => setSkipIntro(true)} />
-      <ChallengePreviewOverlay
-        show={showChallengeMode}
-        onClose={() => setShowChallengeMode(false)}
-      />
+      <OverlayProvider />
     </Col>
   );
 }

@@ -1,9 +1,8 @@
 import {Box, Col} from "./ui/Box";
 import {BaseButton} from "./ui/Button";
-import Overlay from "./ui/Overlay";
 import LetterBox, {LetterRow} from "./WordBox";
 
-const Content = ({onClose}: {onClose: () => void}) => (
+export const IntroOverlayContent = ({onClose}: {onClose: () => void}) => (
   <Col>
     <Col pa={6} sp={5}>
       <Col sp={2}>
@@ -51,9 +50,3 @@ const Content = ({onClose}: {onClose: () => void}) => (
     </Box>
   </Col>
 );
-
-const IntroOverlay = ({show, onClose}: {show: boolean; onClose: () => void}) => (
-  <Overlay show={show} onClose={onClose} ContentComp={Content} />
-);
-
-export default IntroOverlay;
