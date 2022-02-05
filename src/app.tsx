@@ -118,7 +118,7 @@ export function App() {
       el: <ChallengeExplainContent onClose={() => overlays.explainChallenge.onClose()} />,
       onClose: () => {
         storageWrapper.storageSet("skipExplainChallenge", true);
-        return "enterName";
+        setShownOverlay("enterName");
       },
     },
     enterName: {
