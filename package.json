@@ -3,12 +3,15 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "dev:api": "wrangler dev workers/index.ts",
+    "dev:api": "wrangler dev workers/index.ts --env dev",
     "build": "VITE_APP_ID=\"`date +%Y%m%d_%H%M%S`-$BUILD_ID\" vite build && VITE_SSR=true vite build --ssr src/prerender.tsx --outDir dist/server && NODE_ENV=production node dist/server/prerender.js && rm -rf dist/server",
+    "publish:api": "wrangler publish workers/index.ts --env production",
     "preview": "vite preview",
     "postinstall": "node scripts/extract-words.mjs ./data/german-pruned.txt > src/word-lists/valid_words_de.json"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.49.0",
+    "date-fns": "^2.28.0",
     "itty-router": "^2.4.10",
     "preact": "^10.5.15",
     "preact-compat": "^3.19.0",

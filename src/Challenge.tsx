@@ -159,6 +159,11 @@ const useGuessWord = () => {
 };
 
 export const Challenge = () => {
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_HOST}/`)
+      .then((r) => r.json())
+      .then((r) => console.log(r));
+  }, []);
   const {guessWord, getNextGuessWord, resetWordGenerator} = useGuessWord();
   const [showLostWordComp, setShowLostWordComp] = useState<ReactNode>();
   const [gameKey, setGameKey] = useState(0);
