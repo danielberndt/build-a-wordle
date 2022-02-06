@@ -131,6 +131,7 @@ export function App() {
         />
       ),
       onClose: () => setShownOverlay(null),
+      hasCustomStyle: true,
     },
   };
 
@@ -142,6 +143,7 @@ export function App() {
       key: shownOverlay,
       overlayElement: el,
       onClose,
+      hasCustomStyle: "hasCustomStyle" in info ? info.hasCustomStyle : false,
     };
   };
 

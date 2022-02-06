@@ -1,4 +1,4 @@
-import {ComponentType, ReactNode, useLayoutEffect, useRef} from "react";
+import {createContext, ReactNode, useContext, useLayoutEffect, useRef} from "react";
 import create from "zustand";
 import {animated, useTransition} from "react-spring";
 import {springConfigs} from "../animation-utils";
@@ -8,6 +8,7 @@ type ReadOverlayStoreState = {
   key: string | null;
   overlayElement: ReactNode | null;
   onClose: null | (() => void);
+  hasCustomStyle?: boolean;
 };
 const emptyState: ReadOverlayStoreState = {
   key: null,
@@ -38,11 +39,14 @@ export const useOverlay = (args: UseOverlayArgs) => {
   }, [key, set]);
 };
 
+const OverlayAnimPropsContext = createContext<any>(null);
+export const useOverlayAnimProps = () => useContext(OverlayAnimPropsContext);
+
 const OverlayProvider = () => {
-  const {key, overlayElement, onClose} = useOverlayStore();
+  const {key, overlayElement, onClose, hasCustomStyle} = useOverlayStore();
 
   const renderFn = useTransition(
-    {overlayElement, onClose},
+    {overlayElement, onClose, hasCustomStyle},
     {
       key: key || "none",
       from: {opacity: 0, scale: 0.85, y: "2rem"},
@@ -62,10 +66,6 @@ const OverlayProvider = () => {
           left="0"
           height="100%"
           width="100%"
-          align="center"
-          justify="center"
-          px={4}
-          pa={5}
           zIndex={3}
           overflow="hidden"
         >
@@ -78,18 +78,34 @@ const OverlayProvider = () => {
                 onClick={currItem.onClose || undefined}
               />
             </Box>
-            <Col
-              styleChild
-              bg="front"
-              rounded="md"
-              relative
-              width="100%"
-              maxWidth="28rem"
-              maxHeight="100%"
-              overflow="auto"
-            >
-              <animated.div style={props}>{currItem.overlayElement}</animated.div>
-            </Col>
+            {currItem.hasCustomStyle ? (
+              <OverlayAnimPropsContext.Provider value={props}>
+                {currItem.overlayElement}
+              </OverlayAnimPropsContext.Provider>
+            ) : (
+              <Col
+                align="center"
+                justify="center"
+                px={4}
+                pa={5}
+                minHeight="0"
+                minWidth="0"
+                fillParent
+              >
+                <Col
+                  styleChild
+                  bg="front"
+                  rounded="md"
+                  relative
+                  width="100%"
+                  maxWidth="28rem"
+                  maxHeight="100%"
+                  overflow="auto"
+                >
+                  <animated.div style={props}>{currItem.overlayElement}</animated.div>
+                </Col>
+              </Col>
+            )}
           </animated.div>
         </Col>
       )

@@ -1,6 +1,8 @@
 import {useState} from "react";
+import {animated} from "react-spring";
 import {ErrorPill, RawKeyboard} from "./Keyboard";
 import {Box, Col} from "./ui/Box";
+import {useOverlayAnimProps} from "./ui/Overlay";
 import {useLocalStorageState} from "./useLocalStorage";
 import LetterBox, {LetterRow} from "./WordBox";
 
@@ -11,8 +13,9 @@ const fillWith = (input: string, fillChar: string, len: number) => {
 
 export const EnterNameContent = ({onReady}: {onReady: () => void}) => {
   const [input, setInput] = useLocalStorageState("name", "");
-  console.log({input});
   const [error, setError] = useState<string | null>(null);
+
+  const animProps = useOverlayAnimProps();
 
   const handleSubmit = () => {
     if (!input) {
@@ -46,26 +49,48 @@ export const EnterNameContent = ({onReady}: {onReady: () => void}) => {
   };
 
   return (
-    <Col pa={6} sp={5}>
-      <Col sp={2}>
-        <Box bold fontSize="lg" textAlign="center">
-          Dein Name
-        </Box>
+    <Col sp={3} fillParent>
+      <Col align="center" justify="center" px={4} pa={5} minHeight="0" minWidth="0" fillParent>
+        <Col
+          styleChild
+          bg="front"
+          rounded="md"
+          relative
+          width="100%"
+          maxWidth="28rem"
+          maxHeight="100%"
+          overflow="hidden"
+          py={6}
+          px={4}
+          sp={5}
+        >
+          <animated.div style={animProps}>
+            <Col sp={2}>
+              <Box bold fontSize="lg" textAlign="center">
+                Dein Name
+              </Box>
+            </Col>
+            <Col height="4rem">
+              <LetterRow>
+                {fillWith(input, "", 5).map((letter, idx) => (
+                  <LetterBox key={idx} letter={letter} />
+                ))}
+              </LetterRow>
+            </Col>
+          </animated.div>
+        </Col>
       </Col>
-      <Col height="5rem">
-        <LetterRow>
-          {fillWith(input, "", 5).map((letter, idx) => (
-            <LetterBox key={idx} letter={letter} />
-          ))}
-        </LetterRow>
-      </Col>
-      <Col px={3} pb={3} sp={2} fillParent relative minHeight="12rem">
-        <ErrorPill error={error} />
-        <RawKeyboard
-          onAddLetter={handlerLetter}
-          onEnter={handleSubmit}
-          onBackspace={handleBackspace}
-        />
+      <Col styleChild relative bg="front" align="center">
+        <animated.div style={animProps}>
+          <ErrorPill error={error} />
+          <Col maxWidth="28rem" width="100%" fillParent sp={2} px={3} py={2} minHeight="12rem">
+            <RawKeyboard
+              onAddLetter={handlerLetter}
+              onEnter={handleSubmit}
+              onBackspace={handleBackspace}
+            />
+          </Col>
+        </animated.div>
       </Col>
     </Col>
   );
