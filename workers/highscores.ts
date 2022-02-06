@@ -71,7 +71,7 @@ type HighscoreInput = Omit<
 const processIp = async (ip: string) => {
   const m = ip.match(/(.*)\.\w+\.\w+/);
   const prefix = m ? `${m[1]}` : ip.slice(0, Math.round(ip.length * 0.75));
-  const hashArray = await crypto.subtle.digest("SHA-256", ip as any);
+  const hashArray = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(ip));
   const hashHex = Array.from(new Uint8Array(hashArray))
     .slice(0, 4)
     .map((b) => b.toString(16).padStart(2, "0"))

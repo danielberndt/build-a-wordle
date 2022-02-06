@@ -175,8 +175,6 @@ export const Challenge = ({name}: {name: string | null}) => {
 
   const {list, onSubmit, onGetList, onReset: onHighscoreReset} = useHighscoreData();
 
-  console.log({list});
-
   const refs = useRef({name, score, onSubmit, onGetList});
 
   useEffect(() => {

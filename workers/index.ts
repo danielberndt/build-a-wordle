@@ -30,7 +30,6 @@ router.post<Request>("/add-score", async (request) => {
   }
   const validFields = ["score", "name", "appVersion"];
   const data: {score: number; name: string; appVersion: string} = await request.json();
-  console.log({data});
   for (const f of validFields) {
     if (!(f in data)) {
       return new Response(`Missing field '${f}'`, {status: 400});
@@ -64,7 +63,6 @@ const corsHeaders = {
 
 const cors = {
   handleOptions: (request: Request) => {
-    console.log(Object.entries(request.headers));
     let headers = request.headers;
     if (
       headers.get("Origin") !== null &&
