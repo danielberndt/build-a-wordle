@@ -19,5 +19,7 @@
     "jsxFragmentFactory": "Fragment",
     "types": ["vite-plugin-svgr/client"]
   },
-  "include": ["src", "node_modules/vite-plugin-pwa/client.d.ts"]
+  "include": [
+    "src",
+  ]
 }

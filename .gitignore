@@ -6,3 +6,4 @@ dist-ssr
 data/*
 !data/german-pruned.txt
 src/word-lists/*.json
+wrangler.toml
