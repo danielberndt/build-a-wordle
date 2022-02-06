@@ -1,4 +1,4 @@
-import {createContext, ReactNode, useContext, useLayoutEffect, useRef} from "react";
+import {createContext, ReactNode, useContext, useEffect, useLayoutEffect, useRef} from "react";
 import create from "zustand";
 import {animated, useTransition} from "react-spring";
 import {springConfigs} from "../animation-utils";
@@ -55,6 +55,10 @@ const OverlayProvider = () => {
       config: springConfigs.quick,
     }
   );
+
+  useEffect(() => {
+    (window.document.activeElement as any)?.blur();
+  }, [key]);
 
   return renderFn(
     (props, currItem) =>
