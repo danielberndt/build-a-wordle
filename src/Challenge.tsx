@@ -243,6 +243,7 @@ export const Challenge = () => {
         gameKey={gameKey}
         onWordSubmitted={handleWordSubmitted}
         forbiddenWords={forbiddenWords}
+        showScores
       />
       <HeaderSlot>
         <Row sp={3}>

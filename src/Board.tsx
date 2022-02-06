@@ -1,6 +1,7 @@
 import {Col} from "./ui/Box";
 import {AnnotadedLetter} from "./types";
 import LetterBox, {LetterRow} from "./WordBox";
+import {letterScores} from "./word-utils";
 
 const MAX_GUESSES = 6;
 
@@ -28,8 +29,8 @@ const evaluateWord = ({word, guessWord}: {word: string; guessWord: string}): Ann
   });
 };
 
-type SubmittedWordProps = {word: string; guessWord: string; isLast: boolean};
-const SubmittedWord = ({word, guessWord, isLast}: SubmittedWordProps) => {
+type SubmittedWordProps = {word: string; guessWord: string; isLast: boolean; showScores?: boolean};
+const SubmittedWord = ({word, guessWord, isLast, showScores}: SubmittedWordProps) => {
   const annotatedLetters = evaluateWord({word, guessWord});
 
   return (
@@ -42,6 +43,7 @@ const SubmittedWord = ({word, guessWord, isLast}: SubmittedWordProps) => {
           animateReveal={isLast}
           idx={idx}
           won={guessWord == word}
+          score={showScores ? letterScores[letter as keyof typeof letterScores] : undefined}
         />
       ))}
     </LetterRow>
@@ -52,6 +54,7 @@ type BoardProps = {
   input: string;
   submittedWords: string[];
   guessWord: string;
+  showScores?: boolean;
 };
 
 const fillWith = (input: string, fillChar: string, len: number) => {
@@ -69,7 +72,7 @@ const EmptyRow = () => (
   </LetterRow>
 );
 
-const Board = ({input, submittedWords, guessWord}: BoardProps) => (
+const Board = ({input, submittedWords, guessWord, showScores}: BoardProps) => (
   <Col sp={1} fillParent px={5} py={4} justify="center">
     {submittedWords.map((word, idx) => (
       <SubmittedWord
@@ -77,6 +80,7 @@ const Board = ({input, submittedWords, guessWord}: BoardProps) => (
         word={word}
         guessWord={guessWord}
         isLast={idx === submittedWords.length - 1}
+        showScores={showScores}
       />
     ))}
 

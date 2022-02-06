@@ -23,10 +23,20 @@ type GameAreaProps = {
   gameKey?: number | string;
   onWordSubmitted?: (word: string) => void;
   forbiddenWords?: Set<string>;
+  showScores?: boolean;
 };
 
 export const GameArea = (props: GameAreaProps) => {
-  const {guessWord, onWon, onLost, messageArea, gameKey, onWordSubmitted, forbiddenWords} = props;
+  const {
+    guessWord,
+    onWon,
+    onLost,
+    messageArea,
+    gameKey,
+    onWordSubmitted,
+    forbiddenWords,
+    showScores,
+  } = props;
   const [submittedWords, setSubmittedWords] = useState<string[]>([]);
   const [isRevealing, setIsRevealing] = useState(false);
 
@@ -71,7 +81,12 @@ export const GameArea = (props: GameAreaProps) => {
 
   return (
     <>
-      <Board guessWord={guessWord} input={input} submittedWords={submittedWords} />
+      <Board
+        guessWord={guessWord}
+        input={input}
+        submittedWords={submittedWords}
+        showScores={showScores}
+      />
       <Col minHeight="12rem">
         {messageArea || (
           <Keyboard

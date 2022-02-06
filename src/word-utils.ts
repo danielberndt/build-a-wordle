@@ -1,4 +1,4 @@
-const letterScores = {
+export const letterScores = {
   e: 1, // 64.5%
   a: 2, // 36.5%
   r: 2, // 32.8%

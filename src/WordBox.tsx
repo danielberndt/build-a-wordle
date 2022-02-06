@@ -3,7 +3,7 @@ import {useRef, useState} from "preact/hooks";
 import {useLayoutEffect} from "react";
 import {animated, useSpring} from "react-spring";
 import {springConfigs} from "./animation-utils";
-import {Col, Row} from "./ui/Box";
+import {Box, Col, Row} from "./ui/Box";
 import {AnnotadedLetter} from "./types";
 import {wordBoxStyles} from "./WordBox.css";
 
@@ -13,6 +13,7 @@ type LetterBoxProps = {
   animateReveal?: boolean;
   idx?: number;
   won?: boolean;
+  score?: number;
 };
 
 const annotationProps: {
@@ -31,12 +32,19 @@ export const LetterRow = ({children}: {children: ComponentChildren}) => (
   </Row>
 );
 
+const Score = ({score}: {score: number}) => (
+  <Box absolute fontSize="xs" bottom="0.25rem" right="0.25rem">
+    {score}
+  </Box>
+);
+
 const LetterBox = ({
   letter,
   type = letter ? "none" : "empty",
   animateReveal,
   idx = 0,
   won,
+  score,
 }: LetterBoxProps) => {
   const [themeClass, setThemeClass] = useState<NonNullable<LetterBoxProps["type"]>>("none");
 
@@ -90,8 +98,13 @@ const LetterBox = ({
       bold
       textTransform="uppercase"
       fontSize="xl"
+      relative
+      lineHeight="1"
     >
-      <animated.div style={styles}>{letter}</animated.div>
+      <animated.div style={styles}>
+        {letter}
+        {score && themeClass === "correctPosition" && <Score score={score} />}
+      </animated.div>
     </Col>
   );
 };

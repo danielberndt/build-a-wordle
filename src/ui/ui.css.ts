@@ -147,10 +147,10 @@ const baseStyles = {
   maxHeight: styleArray(["3rem", "5rem", "100%"], (val) => ({maxHeight: val})),
   minHeight: styleArray(["0", "2rem", "12rem"], (val) => ({minHeight: val})),
 
-  left: styleArray(baseDims, (val) => ({left: val})),
-  right: styleArray(baseDims, (val) => ({right: val})),
+  left: styleArray([...baseDims], (val) => ({left: val})),
+  right: styleArray([...baseDims, "0.25rem"], (val) => ({right: val})),
   top: styleArray([...baseDims, "0.1rem"], (val) => ({top: val})),
-  bottom: styleArray(baseDims, (val) => ({bottom: val})),
+  bottom: styleArray([...baseDims, "0.25rem"], (val) => ({bottom: val})),
 
   textTransform: styleArray(["uppercase"], (val) => ({textTransform: val})),
   weight: styleArray(["normal", "bold"], (val) => ({fontWeight: val})),
@@ -158,6 +158,7 @@ const baseStyles = {
   variantNumeric: {
     tabularNums: style({fontVariantNumeric: "tabular-nums"}),
   },
+  lineHeight: styleArray(["1"], (val) => ({lineHeight: val})),
 
   overflow: styleArray(["hidden", "auto"], (val) => ({overflow: val})),
   userSelect: styleArray(["none"], (val) => ({userSelect: val})),
