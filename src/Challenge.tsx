@@ -92,9 +92,9 @@ const getBuckets = (): Buckets => {
     };
     for (const word of deWords) {
       const score = scoreWord(word);
-      if (score < 10) {
+      if (score < 15) {
         _buckets.simple.push(word);
-      } else if (score < 13) {
+      } else if (score < 20) {
         _buckets.medium.push(word);
       } else {
         _buckets.hard.push(word);
@@ -201,7 +201,8 @@ export const Challenge = () => {
     if (freeSlots) {
       setGameOverAt(new Date(gameOverAt.getTime() + freeSlots * 20 * 1000));
     }
-    setScore(score + scoreWord(guessWord));
+    // cap score at 35
+    setScore(score + Math.min(35, scoreWord(guessWord)));
   };
   const handleLost = ({onReset}: {onReset: () => void}) => {
     setGameOverAt(new Date(gameOverAt.getTime() - 30 * 1000));

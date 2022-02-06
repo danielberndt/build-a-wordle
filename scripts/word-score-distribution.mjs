@@ -1,3 +1,5 @@
+import {readFile} from "fs/promises";
+
 const letterScores = {
   e: 1, // 64.5%
   a: 2, // 36.5%
@@ -27,14 +29,33 @@ const letterScores = {
   q: 10, // 0.4%
 };
 
-export const scoreWord = (word: string) => {
+export const scoreWord = (word) => {
   const seenLetter = new Set();
   let score = 0;
   for (let letter of Array.from(word)) {
-    let letterScore = letterScores[letter as keyof typeof letterScores] || 0;
+    let letterScore = letterScores[letter] || 0;
     if (seenLetter.has(letter)) letterScore *= 2 + 2;
     score += letterScore;
     seenLetter.add(letter);
   }
   return score;
 };
+
+const fileName = process.argv[2];
+
+if (!fileName) throw new Error("please pass filename!");
+
+const content = await readFile(fileName, "utf8");
+
+const scores = {};
+
+for (const word of content.split("\n")) {
+  if (!word) continue;
+  const score = scoreWord(word);
+  if (score > 34) console.log(score, word);
+  scores[score] = (scores[score] || 0) + 1;
+}
+
+const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+// const percent = sorted.map(([l, c]) => [l, ((c / count) * 100).toFixed(1)]);
+console.log(Object.fromEntries(sorted));
