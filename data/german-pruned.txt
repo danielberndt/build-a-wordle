@@ -1725,3 +1725,4 @@ manta
 dativ
 panda
 ralle
+sense
