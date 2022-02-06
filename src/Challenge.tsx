@@ -265,6 +265,7 @@ export const Challenge = ({name}: {name: string | null}) => {
     resetWordGenerator();
     setGameKey((prev) => prev + 1);
     setTimeIsOut(false);
+    setForbiddenWords(new Set());
   };
 
   const handleWordSubmitted = (word: string) => {
