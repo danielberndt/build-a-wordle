@@ -62,7 +62,7 @@ const modeComp = {
   challenge: Challenge,
 };
 
-const ShowMode = ({mode: outerMode}: {mode: GameMode}) => {
+const ShowMode = ({mode: outerMode, name}: {mode: GameMode; name: string | null}) => {
   const fn = useTransition(outerMode, {
     enter: {y: "0%", opacity: 1, scale: 1},
     ...(outerMode === "training" && {
@@ -82,7 +82,7 @@ const ShowMode = ({mode: outerMode}: {mode: GameMode}) => {
           <ActiveThemeProvider activeTheme={mode === outerMode ? mode : null}>
             <Col styleChild absolute top="0" left="0" right="0" bottom="0">
               <animated.div style={props}>
-                <Comp />
+                <Comp name={name} />
               </animated.div>
             </Col>
           </ActiveThemeProvider>
@@ -100,6 +100,7 @@ const getInitialOverlay = () => {
 export function App() {
   const [shownOverlay, setShownOverlay] = useState<keyof typeof overlays | null>(getInitialOverlay);
   const [mode, setMode] = useState<GameMode>("training");
+  const [name, setName] = useState<string | null>(null);
   const isDevMode = useDevMode();
 
   const overlays = {
@@ -124,7 +125,8 @@ export function App() {
     enterName: {
       el: (
         <EnterNameContent
-          onReady={() => {
+          onReady={(n) => {
+            setName(n);
             setMode("challenge");
             setShownOverlay(null);
           }}
@@ -171,7 +173,7 @@ export function App() {
           onShowIntro={() => setShownOverlay("intro")}
           picker={<ModePicker value={mode} onClick={handleClickMode} />}
         />
-        <ShowMode mode={mode} />
+        <ShowMode mode={mode} name={name} />
       </Frame>
       <OverlayProvider />
     </Col>

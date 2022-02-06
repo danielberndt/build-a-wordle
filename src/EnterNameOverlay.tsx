@@ -11,7 +11,7 @@ const fillWith = (input: string, fillChar: string, len: number) => {
   return [...input, ...Array.from(new Array(len - input.length), () => fillChar)];
 };
 
-export const EnterNameContent = ({onReady}: {onReady: () => void}) => {
+export const EnterNameContent = ({onReady}: {onReady: (name: string) => void}) => {
   const [input, setInput] = useLocalStorageState("name", "");
   const [error, setError] = useState<string | null>(null);
 
@@ -34,8 +34,7 @@ export const EnterNameContent = ({onReady}: {onReady: () => void}) => {
     }
 
     setError(null);
-    // TODO: save word!
-    onReady();
+    onReady(input);
   };
 
   const handlerLetter = (l: string) => {

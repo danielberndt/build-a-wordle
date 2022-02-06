@@ -9,9 +9,15 @@ router.get<Request>("/_h/ok", () => {
   });
 });
 
-router.get<Request>("/", async () => {
-  const data = {ok: true, items: await getWeeklyHighscores()};
-  return new Response(JSON.stringify(data), {
+router.get<Request>("/", () => {
+  return new Response(JSON.stringify({welcome: true}), {
+    headers: {"Content-Type": "application/json"},
+  });
+});
+
+router.get<Request>("/get-weekly-scores", async () => {
+  const scores = await getWeeklyHighscores();
+  return new Response(JSON.stringify({scores}), {
     headers: {
       "Content-Type": "application/json",
     },
@@ -22,8 +28,9 @@ router.post<Request>("/add-score", async (request) => {
   if (request.headers.get("Content-Type") !== "application/json") {
     return new Response("Only support content type 'application/json'", {status: 400});
   }
-  const validFields = ["score", " name", " appVersion"];
+  const validFields = ["score", "name", "appVersion"];
   const data: {score: number; name: string; appVersion: string} = await request.json();
+  console.log({data});
   for (const f of validFields) {
     if (!(f in data)) {
       return new Response(`Missing field '${f}'`, {status: 400});
@@ -40,7 +47,7 @@ router.post<Request>("/add-score", async (request) => {
     ip: request.headers.get("cf-connecting-ip") || "none",
   });
   const scores = await getWeeklyHighscores();
-  return new Response(JSON.stringify(scores), {
+  return new Response(JSON.stringify({scores}), {
     headers: {
       "Content-Type": "application/json",
     },
@@ -57,13 +64,21 @@ const corsHeaders = {
 
 const cors = {
   handleOptions: (request: Request) => {
+    console.log(Object.entries(request.headers));
     let headers = request.headers;
     if (
       headers.get("Origin") !== null &&
       headers.get("Access-Control-Request-Method") !== null
       // && headers.get("Access-Control-Request-Headers") !== null
     ) {
-      return new Response(null, {headers: corsHeaders});
+      return new Response(null, {
+        headers: {
+          ...corsHeaders,
+          ...(headers.get("Access-Control-Request-Headers") && {
+            "Access-Control-Allow-Headers": headers.get("Access-Control-Request-Headers") || "",
+          }),
+        },
+      });
     } else {
       return new Response(null, {headers: {Allow: "GET,HEAD,POST,OPTIONS"}});
     }

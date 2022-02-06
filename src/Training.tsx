@@ -35,7 +35,7 @@ const LostMessage = ({onReset, guessWord}: {onReset: () => void; guessWord: stri
   </Col>
 );
 
-export const Training = ({}) => {
+export const Training = ({name}: {name: string | null}) => {
   // const [guessWord, setGuessWord] = useState<string>("halte");
   const [guessWord, setGuessWord] = useState<string>(getRandomWord);
   const [messageInfo, setMessageInfo] = useState<{

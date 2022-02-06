@@ -14,6 +14,7 @@ const emptyState: ReadOverlayStoreState = {
   key: null,
   overlayElement: null,
   onClose: null,
+  hasCustomStyle: false,
 };
 
 const useOverlayStore = create<
@@ -33,7 +34,7 @@ export const useOverlay = (args: UseOverlayArgs) => {
   const key = (args && args.key) || null;
   useLayoutEffect(() => {
     if (key && refs.current) {
-      set(refs.current);
+      set({...emptyState, ...refs.current});
       return () => set(emptyState);
     }
   }, [key, set]);
@@ -46,7 +47,7 @@ const OverlayProvider = () => {
   const {key, overlayElement, onClose, hasCustomStyle} = useOverlayStore();
 
   const renderFn = useTransition(
-    {overlayElement, onClose, hasCustomStyle},
+    {overlayElement, onClose, hasCustomStyle, key},
     {
       key: key || "none",
       from: {opacity: 0, scale: 0.85, y: "2rem"},
@@ -72,6 +73,7 @@ const OverlayProvider = () => {
           width="100%"
           zIndex={3}
           overflow="hidden"
+          key={currItem.key}
         >
           <animated.div
             style={{pointerEvents: props.opacity.to((val) => (val > 0.3 ? "auto" : "none"))}}

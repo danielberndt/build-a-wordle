@@ -1,14 +1,16 @@
-import {useState} from "preact/hooks";
+import {useRef, useState} from "preact/hooks";
 import {ReactNode, useEffect} from "react";
 import {GameArea} from "./GameArea";
 import {HeaderSlot} from "./HeaderSlot";
+import {HighscoresContent, useHighscoreData} from "./Highscores";
 import {getRandomElement, shuffleArray} from "./random";
 import {Box, Col, Row} from "./ui/Box";
 import {BaseButton} from "./ui/Button";
+import {useOverlay} from "./ui/Overlay";
 import deWords from "./word-lists/valid_words_de.json";
 import {scoreWord} from "./word-utils";
 
-const GameOver = ({onReset, guessWord}: {onReset: () => void; guessWord: string}) => (
+const GameOver = ({onNext, guessWord}: {onNext: () => void; guessWord: string}) => (
   <Col sp={4} align="center" justify="center" px={4} fillParent pb={4}>
     <Box bold fontSize="lg">
       Game Over
@@ -19,7 +21,7 @@ const GameOver = ({onReset, guessWord}: {onReset: () => void; guessWord: string}
         {guessWord}
       </Box>
     </Col>
-    <BaseButton onClick={onReset}>Neuer Versuch</BaseButton>
+    <BaseButton onClick={onNext}>Highscore Liste</BaseButton>
   </Col>
 );
 
@@ -158,15 +160,11 @@ const useGuessWord = () => {
   };
 };
 
-export const Challenge = () => {
-  useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_HOST}/`)
-      .then((r) => r.json())
-      .then((r) => console.log(r));
-  }, []);
+export const Challenge = ({name}: {name: string | null}) => {
   const {guessWord, getNextGuessWord, resetWordGenerator} = useGuessWord();
   const [showLostWordComp, setShowLostWordComp] = useState<ReactNode>();
   const [gameKey, setGameKey] = useState(0);
+  const [showHighscores, setShowHighscores] = useState(false);
   const [gameOverAt, setGameOverAt] = useState<Date>(
     () => new Date(new Date().getTime() + BASE_LENGHT_MS)
   );
@@ -175,6 +173,16 @@ export const Challenge = () => {
 
   const [timeIsOut, setTimeIsOut] = useState(false);
 
+  const {list, onSubmit, onGetList, onReset: onHighscoreReset} = useHighscoreData();
+
+  console.log({list});
+
+  const refs = useRef({name, score, onSubmit, onGetList});
+
+  useEffect(() => {
+    refs.current = {name, score, onSubmit, onGetList};
+  });
+
   useEffect(() => {
     let id: number | null = null;
     const checkTimeOut = () => {
@@ -182,6 +190,11 @@ export const Challenge = () => {
         id = null;
         if (new Date() >= gameOverAt) {
           setTimeIsOut(true);
+          if (refs.current.score && refs.current.name) {
+            onSubmit({score: refs.current.score, name: refs.current.name});
+          } else {
+            onGetList();
+          }
         } else {
           checkTimeOut();
         }
@@ -192,6 +205,32 @@ export const Challenge = () => {
       if (id) cancelAnimationFrame(id);
     };
   }, [gameOverAt]);
+
+  const handleCloseHighscores = () => {
+    handleReset();
+    setShowHighscores(false);
+    onHighscoreReset();
+  };
+
+  const handleHighscore = () => {
+    setShowHighscores(true);
+  };
+
+  useOverlay(
+    list &&
+      showHighscores && {
+        key: "highscores",
+        overlayElement: (
+          <HighscoresContent
+            score={score}
+            name={name}
+            onClose={handleCloseHighscores}
+            list={list}
+          />
+        ),
+        onClose: handleCloseHighscores,
+      }
+  );
 
   const handleWon = ({
     onReset,
@@ -241,7 +280,7 @@ export const Challenge = () => {
         mode="challenge"
         guessWord={guessWord}
         messageArea={
-          timeIsOut ? <GameOver onReset={handleReset} guessWord={guessWord} /> : showLostWordComp
+          timeIsOut ? <GameOver onNext={handleHighscore} guessWord={guessWord} /> : showLostWordComp
         }
         onWon={handleWon}
         onLost={handleLost}
