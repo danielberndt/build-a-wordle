@@ -4,17 +4,15 @@ import {Box, Col, Row} from "./ui/Box";
 import Frame from "./Frame";
 import {IntroOverlayContent} from "./IntroOverlay";
 import {IconButton} from "./ui/Button";
-import {storageWrapper, useLocalStorageState} from "./useLocalStorage";
+import {storageWrapper} from "./useLocalStorage";
 import {ReactComponent as HelpIcon} from "./assets/icons/question-mark.svg";
 import ModePicker from "./ui/ModePicker";
-import {ChallengePreviewContent} from "./ChallengePreviewOverlay";
 import {Training} from "./Training";
 import {animated, useTransition} from "react-spring";
 import {ReactNode} from "react";
 import {GameMode} from "./types";
 import {ActiveThemeProvider, useHeaderSlotStore} from "./HeaderSlot";
 import {Challenge} from "./Challenge";
-import {useDevMode} from "./useDevMode";
 import OverlayProvider, {useOverlay} from "./ui/Overlay";
 import {ChallengeExplainContent} from "./ChallengeExplainOverlay";
 import {EnterNameContent} from "./EnterNameOverlay";
@@ -101,7 +99,6 @@ export function App() {
   const [shownOverlay, setShownOverlay] = useState<keyof typeof overlays | null>(getInitialOverlay);
   const [mode, setMode] = useState<GameMode>("training");
   const [name, setName] = useState<string | null>(null);
-  const isDevMode = useDevMode();
 
   const overlays = {
     intro: {
@@ -110,10 +107,6 @@ export function App() {
         storageWrapper.storageSet("skipIntro", true);
         setShownOverlay(null);
       },
-    },
-    challengeNotReady: {
-      el: <ChallengePreviewContent onClose={() => overlays.challengeNotReady.onClose()} />,
-      onClose: () => setShownOverlay(null),
     },
     explainChallenge: {
       el: <ChallengeExplainContent onClose={() => overlays.explainChallenge.onClose()} />,
@@ -152,17 +145,13 @@ export function App() {
   useOverlay(getOverlay());
 
   const handleClickMode = (target: GameMode | null) => {
-    if (isDevMode) {
-      const finalTarget = target || (mode === "training" ? "challenge" : "training");
-      if (finalTarget === "training") {
-        setMode(finalTarget);
-      } else {
-        setShownOverlay(
-          storageWrapper.storageGet("skipExplainChallenge") ? "enterName" : "explainChallenge"
-        );
-      }
+    const finalTarget = target || (mode === "training" ? "challenge" : "training");
+    if (finalTarget === "training") {
+      setMode(finalTarget);
     } else {
-      setShownOverlay("challengeNotReady");
+      setShownOverlay(
+        storageWrapper.storageGet("skipExplainChallenge") ? "enterName" : "explainChallenge"
+      );
     }
   };
 
