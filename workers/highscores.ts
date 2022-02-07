@@ -42,7 +42,25 @@ export const getWeeklyHighscores = async () => {
       ":week": {S: getYearWeekKey(new Date())},
     },
     ExpressionAttributeNames: {"#n": "name"},
-    ProjectionExpression: `#n, score`,
+    ProjectionExpression: `#n, score, createdAt`,
+    ScanIndexForward: false,
+    Limit: 100,
+  });
+  const {Items} = await dyno.send(get);
+  return (Items || []).map(simplifyItem);
+};
+
+export const getYearlyHighscores = async () => {
+  const dyno = getClient();
+  const get = new QueryCommand({
+    TableName: AWS_DYNAMO_TABLE,
+    KeyConditionExpression: "#y = :year",
+    IndexName: "byYear",
+    ExpressionAttributeValues: {
+      ":year": {S: getYearKey(new Date())},
+    },
+    ExpressionAttributeNames: {"#n": "name", "#y": "year"},
+    ProjectionExpression: `#n, score, createdAt`,
     ScanIndexForward: false,
     Limit: 100,
   });

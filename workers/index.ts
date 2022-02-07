@@ -1,5 +1,5 @@
 import {Router} from "itty-router";
-import {addHighscore, getWeeklyHighscores} from "./highscores";
+import {addHighscore, getWeeklyHighscores, getYearlyHighscores} from "./highscores";
 
 const router = Router();
 
@@ -17,7 +17,16 @@ router.get<Request>("/", () => {
 
 router.get<Request>("/get-weekly-scores", async () => {
   const scores = await getWeeklyHighscores();
-  return new Response(JSON.stringify({scores}), {
+  return new Response(JSON.stringify({scores}, null, 2), {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+});
+
+router.get<Request>("/get-yearly-scores", async () => {
+  const scores = await getYearlyHighscores();
+  return new Response(JSON.stringify({scores}, null, 2), {
     headers: {
       "Content-Type": "application/json",
     },
