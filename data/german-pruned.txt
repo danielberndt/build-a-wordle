@@ -1726,3 +1726,6 @@ dativ
 panda
 ralle
 sense
+pelle
+nager
+zacke
